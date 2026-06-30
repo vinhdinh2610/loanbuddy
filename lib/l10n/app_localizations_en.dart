@@ -79,28 +79,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeSectionLoan => 'Loans & Calculations';
 
   @override
-  String get homeMortgage => 'Mortgage';
+  String get homeMortgage => 'Mortgage Loan';
 
   @override
   String get homeConsumer => 'Personal Loan';
 
   @override
-  String get homeComparison => 'Compare';
+  String get homeComparison => 'Comparison';
 
   @override
   String get homeSectionManage => 'Loan Management';
 
   @override
-  String get homeEarlySettlement => 'Early\nSettlement';
+  String get homeEarlySettlement => 'Early\nPrepayment';
 
   @override
-  String get homeEarlySettlementFull => 'Early Settlement';
+  String get homeEarlySettlementFull => 'Early Prepayment';
 
   @override
-  String get homeDebtRefinance => 'Debt\nRefinancing';
+  String get homeDebtRefinance => 'Refinance\nCalculation';
 
   @override
-  String get homeDebtRefinanceFull => 'Debt Refinancing';
+  String get homeDebtRefinanceFull => 'Refinance Calculation';
 
   @override
   String get homeSectionPersonal => 'Personal Finance';
@@ -156,7 +156,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get homeLoanTypeMortgage => 'Mortgage';
+  String get homeLoanTypeMortgage => 'Mortgage Loan';
 
   @override
   String get homeLoanTypeConsumer => 'Personal Loan';
@@ -442,7 +442,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get consumerTermMonths => 'Loan Term';
 
   @override
-  String get consumerScheduleButton => 'Calculate Schedule';
+  String get consumerScheduleButton => 'Calculate';
 
   @override
   String get estimatorTitle => 'Financial Health';
@@ -734,7 +734,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Results are estimated based on your input and may differ slightly from the official rate applied by your bank.';
 
   @override
-  String get fullPayoffTitle => 'Full Payoff';
+  String get fullPayoffTitle => 'Full Prepayment';
 
   @override
   String get fullPayoffSubtitle =>
@@ -780,7 +780,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fullPayoffPenaltyRate => 'Early repayment penalty';
 
   @override
-  String get fullPayoffButton => 'Calculate Payoff Cost';
+  String get fullPayoffButton => 'Calculate';
 
   @override
   String get fullPayoffValidation => 'Please check your input and try again';
@@ -850,7 +850,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get partialPriorityShortenTerm => 'Shorten loan term';
 
   @override
-  String get partialButton => 'Recalculate Schedule';
+  String get partialButton => 'Calculate';
 
   @override
   String get partialValidation => 'Please check your input and try again';
