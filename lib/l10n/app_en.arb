@@ -465,6 +465,8 @@
   "drawerTermsOfUse": "Terms of Use",
 
   "unitMonths": "months",
+  "unitBillion": "billion",
+  "unitMillion": "million",
   "partialInfoBox": "Actual penalty depends on your contract and year of prepayment. Please confirm with your bank.",
   "partialPaymentReduced": "Reduced by {amount}/month",
   "@partialPaymentReduced": {

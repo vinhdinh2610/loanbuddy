@@ -349,7 +349,7 @@ class _ConsumerLoanScreenState extends State<ConsumerLoanScreen> {
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                             color: Color(0xFF1A1A1A)))),
-                    _inputBox(_termController, 'tháng',
+                    _inputBox(_termController, l.unitMonths,
                         onChanged: (v) {
                       final n = int.tryParse(v);
                       if (n != null && n >= 3 && n <= 84) {

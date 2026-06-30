@@ -1117,6 +1117,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unitMonths => 'months';
 
   @override
+  String get unitBillion => 'billion';
+
+  @override
+  String get unitMillion => 'million';
+
+  @override
   String get partialInfoBox =>
       'Actual penalty depends on your contract and year of prepayment. Please confirm with your bank.';
 

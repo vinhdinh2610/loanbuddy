@@ -465,6 +465,8 @@
   "drawerTermsOfUse": "Điều khoản sử dụng",
 
   "unitMonths": "tháng",
+  "unitBillion": "tỷ",
+  "unitMillion": "triệu",
   "partialInfoBox": "Phí phạt thực tế tùy theo hợp đồng và năm trả thêm. Vui lòng kiểm tra với ngân hàng.",
   "partialPaymentReduced": "Giảm {amount}/tháng",
   "@partialPaymentReduced": {

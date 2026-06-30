@@ -76,9 +76,9 @@ class _ConsumerScheduleScreenState extends State<ConsumerScheduleScreen> {
     return buf.toString();
   }
 
-  String _fmt(double n) {
-    if (n >= 1e9) return '${(n / 1e9).toStringAsFixed(2)} tỷ';
-    return '${(n / 1e6).toStringAsFixed(1)} triệu';
+  String _fmt(double n, AppLocalizations l) {
+    if (n >= 1e9) return '${(n / 1e9).toStringAsFixed(2)} ${l.unitBillion}';
+    return '${(n / 1e6).toStringAsFixed(1)} ${l.unitMillion}';
   }
 
   void _showExportOptions(BuildContext context) {
@@ -434,15 +434,15 @@ class _ConsumerScheduleScreenState extends State<ConsumerScheduleScreen> {
             children: [
               _card(Icons.account_balance_wallet_outlined,
                   _navy, const Color(0xFFE8EAF6),
-                  l.consumerScheduleMonthly, _fmt(widget.monthlyPayment),
+                  l.consumerScheduleMonthly, _fmt(widget.monthlyPayment, l),
                   l.consumerScheduleFixed, _navy),
               _card(Icons.payments_outlined,
                   const Color(0xFF4CAF50), const Color(0xFFE8F5E9),
-                  l.consumerScheduleTotalPayment, _fmt(widget.totalAmount),
+                  l.consumerScheduleTotalPayment, _fmt(widget.totalAmount, l),
                   l.consumerScheduleIncludesPrincipal, const Color(0xFF4CAF50)),
               _card(Icons.trending_up_rounded,
                   _gold, const Color(0xFFFFF3E0),
-                  l.consumerScheduleTotalInterest, _fmt(widget.totalInterest),
+                  l.consumerScheduleTotalInterest, _fmt(widget.totalInterest, l),
                   l.consumerSchedulePercentOfTotal(
                       (widget.totalInterest / widget.totalAmount * 100).toStringAsFixed(0)),
                   _gold),

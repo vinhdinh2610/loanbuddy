@@ -1110,6 +1110,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get unitMonths => 'tháng';
 
   @override
+  String get unitBillion => 'tỷ';
+
+  @override
+  String get unitMillion => 'triệu';
+
+  @override
   String get partialInfoBox =>
       'Phí phạt thực tế tùy theo hợp đồng và năm trả thêm. Vui lòng kiểm tra với ngân hàng.';
 
