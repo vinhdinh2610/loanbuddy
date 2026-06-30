@@ -1,22 +1,69 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:device_preview/device_preview.dart';
+import 'l10n/app_localizations.dart';
 import 'screens/splash_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/history_screen.dart';
 import 'screens/settings_screen.dart';
 
 void main() {
-  runApp(const MortgageApp());
+  runApp(
+    DevicePreview(
+      enabled: false,
+      builder: (context) => const MortgageApp(),
+    ),
+  );
 }
 
-class MortgageApp extends StatelessWidget {
+class MortgageApp extends StatefulWidget {
   const MortgageApp({super.key});
+
+  static MortgageAppState? of(BuildContext context) =>
+      context.findAncestorStateOfType<MortgageAppState>();
+
+  @override
+  State<MortgageApp> createState() => MortgageAppState();
+}
+
+class MortgageAppState extends State<MortgageApp> {
+  Locale _locale = const Locale('vi');
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLocale();
+  }
+
+  Future<void> _loadLocale() async {
+    final prefs = await SharedPreferences.getInstance();
+    final code = prefs.getString('locale') ?? 'vi';
+    setState(() => _locale = Locale(code));
+  }
+
+  Future<void> setLocale(Locale locale) async {
+    setState(() => _locale = locale);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('locale', locale.languageCode);
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'LoanBuddy',
       debugShowCheckedModeBanner: false,
+      locale: _locale,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('vi'),
+        Locale('en'),
+      ],
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFFE8A020),
@@ -39,87 +86,78 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   static const _gold = Color(0xFFE8A020);
   static const _darkGreen = Color(0xFF1B4332);
+
   int _currentIndex = 0;
 
-  final List<Widget> _screens = const [
-    HomeScreen(),
-    HistoryScreen(),
-    SettingsScreen(),
+  final List<Widget> _screens = [
+    const HomeScreen(),
+    HistoryScreen(key: HistoryScreen.globalKey),
+    const SettingsScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Scaffold(
-  extendBody: true,
-  body: Stack(
-        children: [
-          // Main content
-          Padding(
-  padding: const EdgeInsets.only(bottom: 100),
-  child: IndexedStack(
-    index: _currentIndex,
-    children: _screens,
-  ),
-),
-
-          // Floating glassmorphism navbar
-          Positioned(
-            left: 32,
-            right: 32,
-            bottom: 28 + MediaQuery.of(context).padding.bottom,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(50),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
-                child: Container(
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: _darkGreen.withOpacity(0.7),
-                    borderRadius: BorderRadius.circular(50),
-                    border: Border.all(
-                      color: Colors.white.withOpacity(0.2),
-                      width: 1,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: _darkGreen.withOpacity(0.4),
-                        blurRadius: 20,
-                        offset: const Offset(0, 8),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _navItem(0, Icons.home_outlined, Icons.home_rounded),
-                      _navItem(1, Icons.history_outlined, Icons.history_rounded),
-                      _navItem(2, Icons.settings_outlined, Icons.settings_rounded),
-                    ],
-                  ),
-                ),
-              ),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _screens,
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: _darkGreen,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.15),
+              blurRadius: 12,
+              offset: const Offset(0, -2),
+            ),
+          ],
+        ),
+        child: SafeArea(
+          top: false,
+          child: SizedBox(
+            height: 64,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _navItem(0, Icons.home_outlined, Icons.home_rounded, l.navHome),
+                _navItem(1, Icons.history_outlined, Icons.history_rounded, l.navHistory),
+                _navItem(2, Icons.settings_outlined, Icons.settings_rounded, l.navSettings),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
 
-  Widget _navItem(int index, IconData icon, IconData activeIcon) {
+  Widget _navItem(int index, IconData icon, IconData activeIcon, String label) {
     final isSelected = _currentIndex == index;
-    return GestureDetector(
-      onTap: () => setState(() => _currentIndex = index),
-      behavior: HitTestBehavior.opaque,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-        decoration: BoxDecoration(
-          color: isSelected ? _gold.withOpacity(0.25) : Colors.transparent,
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Icon(
-          isSelected ? activeIcon : icon,
-          color: isSelected ? _gold : Colors.white.withOpacity(0.65),
-          size: 24,
+    final color = isSelected ? _gold : Colors.white.withOpacity(0.65);
+    return Expanded(
+      child: GestureDetector(
+        onTap: () {
+          setState(() => _currentIndex = index);
+          if (index == 1) {
+            HistoryScreen.globalKey.currentState?.refresh();
+          }
+        },
+        behavior: HitTestBehavior.opaque,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(isSelected ? activeIcon : icon, color: color, size: 22),
+            const SizedBox(height: 3),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                color: color,
+              ),
+            ),
+          ],
         ),
       ),
     );

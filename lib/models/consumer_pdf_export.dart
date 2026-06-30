@@ -2,27 +2,43 @@ import 'dart:typed_data';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
-import '../models/loan_model.dart';
 
-class PdfExport {
-  // ─── Dùng cho nút "Lưu vào máy" cũ ─────────────────────────────────────
-  static Future<void> exportSchedule(
-      LoanModel loan, List<LoanPayment> schedule) async {
+class ConsumerPdfExport {
+  // ─── Lưu vào máy ────────────────────────────────────────────────────────
+  static Future<void> exportSchedule({
+    required double loanAmount,
+    required double annualRate,
+    required int termMonths,
+    required double monthlyPayment,
+    required double totalInterest,
+    required double totalAmount,
+    required List<Map<String, double>> schedule,
+  }) async {
     await Printing.layoutPdf(
-      onLayout: (_) async => buildBytes(loan, schedule),
-      name: 'LoanBuddy_LichTraNo.pdf',
+      onLayout: (_) async => buildBytes(
+        loanAmount: loanAmount,
+        annualRate: annualRate,
+        termMonths: termMonths,
+        monthlyPayment: monthlyPayment,
+        totalInterest: totalInterest,
+        totalAmount: totalAmount,
+        schedule: schedule,
+      ),
+      name: 'LoanBuddy_TinChap_LichTraNo.pdf',
     );
   }
 
-  // ─── Dùng cho Share: trả về Uint8List để ghi file tạm ───────────────────
-  static Future<Uint8List> buildBytes(
-      LoanModel loan, List<LoanPayment> schedule) async {
+  // ─── Trả bytes để share ──────────────────────────────────────────────────
+  static Future<Uint8List> buildBytes({
+    required double loanAmount,
+    required double annualRate,
+    required int termMonths,
+    required double monthlyPayment,
+    required double totalInterest,
+    required double totalAmount,
+    required List<Map<String, double>> schedule,
+  }) async {
     final pdf = pw.Document();
-
-    final totalPrincipal = schedule.fold(0.0, (s, r) => s + r.principal);
-    final totalInterest  = schedule.fold(0.0, (s, r) => s + r.interest);
-    final totalPayment   = schedule.fold(0.0, (s, r) => s + r.payment);
-
     final font     = await PdfGoogleFonts.notoSansRegular();
     final fontBold = await PdfGoogleFonts.notoSansBold();
 
@@ -50,32 +66,48 @@ class PdfExport {
             pw.Row(
               mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
               children: [
-                pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [
-                  pw.Text('LoanBuddy',
-                      style: pw.TextStyle(font: fontBold, fontSize: 20, color: goldColor)),
-                  pw.Text('Lịch Trả Nợ',
-                      style: pw.TextStyle(font: fontBold, fontSize: 14, color: darkColor)),
-                ]),
-                pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.end, children: [
-                  pw.Text('Ngày xuất: ${_fmtDate(DateTime.now())}',
-                      style: pw.TextStyle(font: font, fontSize: 10, color: greyColor)),
-                  pw.Text(
-                      'Phương thức: ${loan.method == "ep" ? "Gốc chia đều" : loan.method == "io" ? "Chỉ trả lãi" : "Trả góp đều"}',
-                      style: pw.TextStyle(font: font, fontSize: 10, color: greyColor)),
-                ]),
+                pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.start,
+                  children: [
+                    pw.Text('LoanBuddy',
+                        style: pw.TextStyle(
+                            font: fontBold, fontSize: 20, color: goldColor)),
+                    pw.Text('Lịch Trả Nợ — Vay Tín Chấp',
+                        style: pw.TextStyle(
+                            font: fontBold, fontSize: 13, color: darkColor)),
+                  ],
+                ),
+                pw.Column(
+                  crossAxisAlignment: pw.CrossAxisAlignment.end,
+                  children: [
+                    pw.Text('Ngày xuất: ${_fmtDate(DateTime.now())}',
+                        style: pw.TextStyle(
+                            font: font, fontSize: 10, color: greyColor)),
+                    pw.Text(
+                        'Lãi suất: ${annualRate.toStringAsFixed(1)}%/năm',
+                        style: pw.TextStyle(
+                            font: font, fontSize: 10, color: greyColor)),
+                  ],
+                ),
               ],
             ),
             pw.SizedBox(height: 8),
             pw.Container(
               padding: const pw.EdgeInsets.all(12),
-              decoration: pw.BoxDecoration(color: bgColor, borderRadius: pw.BorderRadius.circular(8)),
+              decoration: pw.BoxDecoration(
+                  color: bgColor,
+                  borderRadius: pw.BorderRadius.circular(8)),
               child: pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
                 children: [
-                  _summaryItem(font, fontBold, greyColor, darkColor, 'Số tiền vay', _fmtFull(loan.amount)),
-                  _summaryItem(font, fontBold, greyColor, goldColor, 'Tổng lãi', _fmtFull(totalInterest)),
-                  _summaryItem(font, fontBold, greyColor, darkColor, 'Tổng thanh toán', _fmtFull(totalPayment)),
-                  _summaryItem(font, fontBold, greyColor, darkColor, 'Thời hạn', '${loan.termMonths} tháng'),
+                  _summaryItem(font, fontBold, greyColor, darkColor,
+                      'Số tiền vay', _fmtFull(loanAmount)),
+                  _summaryItem(font, fontBold, greyColor, goldColor,
+                      'Tổng lãi', _fmtFull(totalInterest)),
+                  _summaryItem(font, fontBold, greyColor, darkColor,
+                      'Tổng thanh toán', _fmtFull(totalAmount)),
+                  _summaryItem(font, fontBold, greyColor, darkColor,
+                      'Trả hàng tháng', _fmtFull(monthlyPayment)),
                 ],
               ),
             ),
@@ -102,20 +134,22 @@ class PdfExport {
             columnWidths: colWidths,
             children: [
               ...schedule.expand((r) {
-                final isWm = r.period % 8 == 0;
+                final period = r['period']!.round();
+                final isWm = period % 8 == 0;
                 final rows = <pw.TableRow>[];
                 rows.add(pw.TableRow(
-                  decoration: pw.BoxDecoration(
-                    color: r.isRateChange ? PdfColor.fromHex('FFF3CD') : null,
-                    border: const pw.TableBorder(
-                        bottom: pw.BorderSide(color: PdfColors.grey200, width: 0.5)),
+                  decoration: const pw.BoxDecoration(
+                    border: pw.TableBorder(
+                        bottom: pw.BorderSide(
+                            color: PdfColors.grey200, width: 0.5)),
                   ),
                   children: [
-                    _td(font, r.period.toString(), center: true),
-                    _td(font, _fmtFull(r.payment), bold: true, fontBold: fontBold),
-                    _td(font, _fmtFull(r.principal)),
-                    _td(font, _fmtFull(r.interest)),
-                    _td(font, _fmtFull(r.balanceEnd)),
+                    _td(font, period.toString(), center: true),
+                    _td(font, _fmtFull(r['payment']!),
+                        bold: true, fontBold: fontBold),
+                    _td(font, _fmtFull(r['principal']!)),
+                    _td(font, _fmtFull(r['interest']!)),
+                    _td(font, _fmtFull(r['balance']!)),
                   ],
                 ));
                 if (isWm) {
@@ -132,14 +166,20 @@ class PdfExport {
               pw.TableRow(
                 decoration: pw.BoxDecoration(
                   color: PdfColor.fromHex('FFF3E0'),
-                  border: pw.TableBorder(top: pw.BorderSide(color: goldColor, width: 1.5)),
+                  border: pw.TableBorder(
+                      top: pw.BorderSide(color: goldColor, width: 1.5)),
                 ),
                 children: [
-                  _td(fontBold, 'Tổng', center: true, bold: true, fontBold: fontBold, color: darkColor),
-                  _td(fontBold, _fmtFull(totalPayment),   bold: true, fontBold: fontBold, color: goldColor),
-                  _td(fontBold, _fmtFull(totalPrincipal), bold: true, fontBold: fontBold, color: darkColor),
-                  _td(fontBold, _fmtFull(totalInterest),  bold: true, fontBold: fontBold, color: goldColor),
-                  _td(fontBold, '0',                      bold: true, fontBold: fontBold, color: darkColor),
+                  _td(fontBold, 'Tổng',
+                      center: true, bold: true, fontBold: fontBold, color: darkColor),
+                  _td(fontBold, _fmtFull(totalAmount),
+                      bold: true, fontBold: fontBold, color: goldColor),
+                  _td(fontBold, _fmtFull(loanAmount),
+                      bold: true, fontBold: fontBold, color: darkColor),
+                  _td(fontBold, _fmtFull(totalInterest),
+                      bold: true, fontBold: fontBold, color: goldColor),
+                  _td(fontBold, '0',
+                      bold: true, fontBold: fontBold, color: darkColor),
                 ],
               ),
             ],
@@ -162,22 +202,28 @@ class PdfExport {
 
   // ─── Helpers ─────────────────────────────────────────────────────────────
   static pw.Widget _summaryItem(pw.Font font, pw.Font fontBold,
-      PdfColor labelColor, PdfColor valueColor, String label, String value) =>
+          PdfColor labelColor, PdfColor valueColor, String label, String value) =>
       pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.center, children: [
-        pw.Text(label, style: pw.TextStyle(font: font, fontSize: 9, color: labelColor)),
+        pw.Text(label,
+            style: pw.TextStyle(font: font, fontSize: 9, color: labelColor)),
         pw.SizedBox(height: 2),
-        pw.Text(value, style: pw.TextStyle(font: fontBold, fontSize: 11, color: valueColor)),
+        pw.Text(value,
+            style: pw.TextStyle(font: fontBold, fontSize: 11, color: valueColor)),
       ]);
 
   static pw.Widget _th(pw.Font fontBold, String text) => pw.Padding(
         padding: const pw.EdgeInsets.symmetric(vertical: 8, horizontal: 4),
         child: pw.Text(text,
             textAlign: pw.TextAlign.center,
-            style: pw.TextStyle(font: fontBold, fontSize: 10, color: PdfColor.fromHex('1A1A1A'))),
+            style: pw.TextStyle(
+                font: fontBold,
+                fontSize: 10,
+                color: PdfColor.fromHex('1A1A1A'))),
       );
 
   static pw.Widget _td(pw.Font font, String text, {
-    bool center = false, bool bold = false, pw.Font? fontBold, PdfColor? color,
+    bool center = false, bool bold = false,
+    pw.Font? fontBold, PdfColor? color,
   }) =>
       pw.Padding(
         padding: const pw.EdgeInsets.symmetric(vertical: 5, horizontal: 4),
@@ -189,7 +235,8 @@ class PdfExport {
                 color: color ?? PdfColor.fromHex('444444'))),
       );
 
-  static pw.Widget _tdWm(pw.Font font, String text, PdfColor color) => pw.Padding(
+  static pw.Widget _tdWm(pw.Font font, String text, PdfColor color) =>
+      pw.Padding(
         padding: const pw.EdgeInsets.symmetric(vertical: 2, horizontal: 4),
         child: pw.Text(text,
             textAlign: pw.TextAlign.center,

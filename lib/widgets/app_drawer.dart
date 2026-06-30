@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../l10n/app_localizations.dart';
 import '../screens/history_screen.dart';
 import '../screens/settings_screen.dart';
 import '../screens/feedback_screen.dart';
@@ -12,13 +13,13 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Drawer(
       backgroundColor: Colors.white,
       child: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // App branding
             GestureDetector(
               onTap: () {
                 Navigator.pop(context);
@@ -31,7 +32,6 @@ class AppDrawer extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // Logo
                     Container(
                       width: 52,
                       height: 52,
@@ -50,7 +50,6 @@ class AppDrawer extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 14),
-                    // Tên + slogan
                     Flexible(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,9 +73,9 @@ class AppDrawer extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 3),
-                          const Text(
-                            'Vay thông minh, Tương lai vững vàng',
-                            style: TextStyle(
+                          Text(
+                            l.drawerSlogan,
+                            style: const TextStyle(
                               fontSize: 11,
                               color: Color(0xFF888888),
                             ),
@@ -93,20 +92,18 @@ class AppDrawer extends StatelessWidget {
             Divider(height: 1, color: Colors.grey.shade100),
             const SizedBox(height: 8),
 
-            // Trang chủ
             _menuItem(context,
                 icon: Icons.home_outlined,
-                label: 'Trang chủ',
+                label: l.drawerHome,
                 index: 0,
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.of(context).popUntil((route) => route.isFirst);
                 }),
 
-            // Lịch sử
             _menuItem(context,
                 icon: Icons.history_outlined,
-                label: 'Lịch sử tra cứu',
+                label: l.drawerHistory,
                 index: 1,
                 onTap: () {
                   Navigator.pop(context);
@@ -116,10 +113,9 @@ class AppDrawer extends StatelessWidget {
                           builder: (_) => const HistoryScreen()));
                 }),
 
-            // Cài đặt
             _menuItem(context,
                 icon: Icons.settings_outlined,
-                label: 'Cài đặt',
+                label: l.drawerSettings,
                 index: 2,
                 onTap: () {
                   Navigator.pop(context);
@@ -129,10 +125,9 @@ class AppDrawer extends StatelessWidget {
                           builder: (_) => const SettingsScreen()));
                 }),
 
-            // Góp ý
             _menuItem(context,
                 icon: Icons.feedback_outlined,
-                label: 'Góp ý',
+                label: l.drawerFeedback,
                 index: 3,
                 onTap: () {
                   Navigator.pop(context);
@@ -146,10 +141,9 @@ class AppDrawer extends StatelessWidget {
             Divider(height: 1, color: Colors.grey.shade100),
             const SizedBox(height: 4),
 
-            // Chính sách bảo mật
             _menuItem(context,
                 icon: Icons.privacy_tip_outlined,
-                label: 'Chính sách bảo mật',
+                label: l.drawerPrivacyPolicy,
                 index: 99,
                 onTap: () async {
                   Navigator.pop(context);
@@ -160,10 +154,9 @@ class AppDrawer extends StatelessWidget {
                   }
                 }),
 
-            // Điều khoản sử dụng
             _menuItem(context,
                 icon: Icons.description_outlined,
-                label: 'Điều khoản sử dụng',
+                label: l.drawerTermsOfUse,
                 index: 100,
                 onTap: () async {
                   Navigator.pop(context);
@@ -178,7 +171,7 @@ class AppDrawer extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
               child: Text(
-                'LoanBuddy v1.0.0',
+                l.appVersion,
                 style: TextStyle(fontSize: 11, color: Colors.grey.shade400),
               ),
             ),

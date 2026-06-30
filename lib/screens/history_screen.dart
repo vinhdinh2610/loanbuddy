@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
 import '../models/database_helper.dart';
 import '../models/loan_model.dart';
 import 'schedule_screen.dart';
@@ -6,11 +7,15 @@ import 'consumer_schedule_screen.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});
+
+  static final GlobalKey<HistoryScreenState> globalKey =
+      GlobalKey<HistoryScreenState>();
+
   @override
-  State<HistoryScreen> createState() => _HistoryScreenState();
+  State<HistoryScreen> createState() => HistoryScreenState();
 }
 
-class _HistoryScreenState extends State<HistoryScreen> {
+class HistoryScreenState extends State<HistoryScreen> {
   static const _gold = Color(0xFFE8A020);
   static const _bg = Color(0xFFF5F0E8);
 
@@ -28,31 +33,36 @@ class _HistoryScreenState extends State<HistoryScreen> {
     setState(() { _entries = entries; _loading = false; });
   }
 
+  void refresh() {
+    _load();
+  }
+
   Future<void> _delete(int id) async {
     await DatabaseHelper.instance.delete(id);
     _load();
   }
 
   Future<void> _deleteAll() async {
+    final l = AppLocalizations.of(context)!;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text('Xóa toàn bộ lịch sử?',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
-        content: const Text('Hành động này không thể hoàn tác.',
-            style: TextStyle(fontSize: 13, color: Color(0xFF888888))),
+        title: Text(l.historyDeleteAllConfirm,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+        content: Text(l.historyDeleteAllMessage,
+            style: const TextStyle(fontSize: 13, color: Color(0xFF888888))),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Hủy',
-                style: TextStyle(color: Color(0xFF888888))),
+            child: Text(l.cancel,
+                style: const TextStyle(color: Color(0xFF888888))),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Xóa tất cả',
-                style: TextStyle(
+            child: Text(l.historyDeleteAllButton,
+                style: const TextStyle(
                     color: Colors.red, fontWeight: FontWeight.w700)),
           ),
         ],
@@ -79,8 +89,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       Navigator.push(context,
           MaterialPageRoute(builder: (_) => ScheduleScreen(loan: loan)));
     } else {
-      // consumer
-      final r = e.floatRate; // annual rate stored as decimal
+      final r = e.floatRate;
       final n = e.termMonths;
       final monthlyRate = r / 12;
       final monthlyPayment = monthlyRate == 0
@@ -128,21 +137,21 @@ class _HistoryScreenState extends State<HistoryScreen> {
     return '${buf.toString()} đ';
   }
 
-  String _fmtDate(DateTime dt) {
+  String _fmtDate(DateTime dt, AppLocalizations l) {
     final now = DateTime.now();
     final diff = now.difference(dt);
-    if (diff.inMinutes < 1) return 'Vừa xong';
-    if (diff.inHours < 1) return '${diff.inMinutes} phút trước';
-    if (diff.inDays < 1) return '${diff.inHours} giờ trước';
-    if (diff.inDays == 1) return 'Hôm qua';
+    if (diff.inMinutes < 1) return l.historyJustNow;
+    if (diff.inHours < 1) return l.historyMinutesAgo(diff.inMinutes);
+    if (diff.inDays < 1) return l.historyHoursAgo(diff.inHours);
+    if (diff.inDays == 1) return l.historyYesterday;
     return '${dt.day}/${dt.month}/${dt.year}';
   }
 
-  String _methodLabel(String method) {
+  String _methodLabel(String method, AppLocalizations l) {
     switch (method) {
-      case 'ep': return 'Gốc giảm dần';
-      case 'ann': return 'Trả góp đều';
-      default: return 'Tín chấp';
+      case 'ep': return l.historyMethodDeclining;
+      case 'ann': return l.historyMethodEqual;
+      default: return l.historyMethodConsumer;
     }
   }
 
@@ -153,11 +162,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
       ? Icons.home_outlined
       : Icons.account_balance_wallet_outlined;
 
-  String _typeLabel(String type) =>
-      type == 'mortgage' ? 'Vay thế chấp' : 'Vay tín chấp';
+  String _typeLabel(String type, AppLocalizations l) =>
+      type == 'mortgage' ? l.historyTypeMortgage : l.historyTypeConsumer;
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: _bg,
       appBar: AppBar(
@@ -169,8 +179,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
               onPressed: _deleteAll,
               icon: const Icon(Icons.delete_outline_rounded,
                   color: Colors.red, size: 18),
-              label: const Text('Xóa tất cả',
-                  style: TextStyle(
+              label: Text(l.historyDeleteAll,
+                  style: const TextStyle(
                       color: Colors.red,
                       fontSize: 13,
                       fontWeight: FontWeight.w600)),
@@ -180,43 +190,43 @@ class _HistoryScreenState extends State<HistoryScreen> {
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _entries.isEmpty
-              ? _buildEmpty()
-              : _buildList(),
+              ? _buildEmpty(l)
+              : _buildList(l),
     );
   }
 
-  Widget _buildEmpty() => Center(
+  Widget _buildEmpty(AppLocalizations l) => Center(
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Icon(Icons.history_rounded, size: 64, color: Colors.grey.shade300),
           const SizedBox(height: 16),
-          Text('Chưa có lịch sử tra cứu',
+          Text(l.historyEmpty,
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: Colors.grey.shade400)),
           const SizedBox(height: 6),
-          Text('Tính lịch trả nợ để lưu vào đây',
+          Text(l.historyEmptyHint,
               style: TextStyle(fontSize: 13, color: Colors.grey.shade400)),
         ]),
       );
 
-  Widget _buildList() => ListView(
+  Widget _buildList(AppLocalizations l) => ListView(
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
         children: [
-          const Text('Lịch Sử',
-              style: TextStyle(
+          Text(l.historyTitle,
+              style: const TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.w800,
                   color: Color(0xFF1A1A1A))),
           const SizedBox(height: 4),
-          Text('${_entries.length} bảng tính đã lưu',
+          Text(l.historyCount(_entries.length),
               style: const TextStyle(fontSize: 14, color: Color(0xFF888888))),
           const SizedBox(height: 16),
-          ..._entries.map((e) => _buildCard(e)),
+          ..._entries.map((e) => _buildCard(e, l)),
         ],
       );
 
-  Widget _buildCard(HistoryEntry e) {
+  Widget _buildCard(HistoryEntry e, AppLocalizations l) {
     final color = _typeColor(e.type);
     final icon = _typeIcon(e.type);
 
@@ -243,7 +253,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
           child: Padding(
             padding: const EdgeInsets.all(14),
             child: Row(children: [
-              // Icon
               Container(
                   width: 44,
                   height: 44,
@@ -253,7 +262,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   child: Icon(icon, color: color, size: 22)),
               const SizedBox(width: 12),
 
-              // Info
               Expanded(
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -261,14 +269,14 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                      Text(_typeLabel(e.type),
+                      Flexible(child: Text(_typeLabel(e.type, l),
                           style: const TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w700,
-                              color: Color(0xFF1A1A1A))),
-                      Text(_fmtDate(e.createdAt),
+                              color: Color(0xFF1A1A1A)))),
+                      Flexible(child: Text(_fmtDate(e.createdAt, l),
                           style: const TextStyle(
-                              fontSize: 11, color: Color(0xFF888888))),
+                              fontSize: 11, color: Color(0xFF888888)))),
                     ]),
                     const SizedBox(height: 4),
                     Text(_fmtFull(e.amount),
@@ -286,18 +294,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         const SizedBox(width: 6),
                       ] else ...[
                         _chip(
-                            '${(e.floatRate * 100).toStringAsFixed(1)}%/năm'),
+                            '${(e.floatRate * 100).toStringAsFixed(1)}${l.historyPerYear}'),
                         const SizedBox(width: 6),
                       ],
-                      _chip(_methodLabel(e.method)),
+                      _chip(_methodLabel(e.method, l)),
                     ]),
                     const SizedBox(height: 4),
-                    Text('Tổng lãi: ${_fmtShort(e.totalInterest)}',
+                    Text(l.historyTotalInterest(_fmtShort(e.totalInterest)),
                         style: const TextStyle(
                             fontSize: 11, color: Color(0xFF888888))),
                   ])),
 
-              // Arrow
               const SizedBox(width: 8),
               Row(children: [
                 GestureDetector(

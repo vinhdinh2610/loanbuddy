@@ -58,7 +58,6 @@ class DatabaseHelper {
   DatabaseHelper._init();
 
   static const _key = 'loan_history';
-  static int _nextId = 0;
 
   Future<List<HistoryEntry>> getAll() async {
     final prefs = await SharedPreferences.getInstance();
@@ -70,12 +69,24 @@ class DatabaseHelper {
     return entries;
   }
 
+  Future<int> _getNextId() async {
+    final prefs = await SharedPreferences.getInstance();
+    final raw = prefs.getStringList(_key) ?? [];
+    int maxId = 0;
+    for (final s in raw) {
+      final m = jsonDecode(s);
+      final id = m['id'] as int? ?? 0;
+      if (id > maxId) maxId = id;
+    }
+    return maxId + 1;
+  }
+
   Future<void> insert(HistoryEntry entry) async {
     final prefs = await SharedPreferences.getInstance();
     final raw = prefs.getStringList(_key) ?? [];
-    _nextId++;
+    final nextId = await _getNextId();
     final newEntry = HistoryEntry(
-      id: _nextId,
+      id: nextId,
       type: entry.type,
       amount: entry.amount,
       fixedRate: entry.fixedRate,

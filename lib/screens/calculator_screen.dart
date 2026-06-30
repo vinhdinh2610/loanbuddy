@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../l10n/app_localizations.dart';
 import '../models/loan_model.dart';
 import '../models/database_helper.dart';
 import '../widgets/app_drawer.dart';
+import '../widgets/responsive_helper.dart';
 import 'schedule_screen.dart';
 
 class CalculatorScreen extends StatefulWidget {
@@ -102,6 +104,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: _bg,
       appBar: AppBar(
@@ -109,14 +112,14 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         elevation: 0,
         centerTitle: true,
         title: RichText(
-  text: const TextSpan(
-    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
-    children: [
-      TextSpan(text: 'Loan', style: TextStyle(color: Color(0xFF1B4332))),
-      TextSpan(text: 'Buddy', style: TextStyle(color: Color(0xFFE8A020))),
-    ],
-  ),
-),
+          text: const TextSpan(
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+            children: [
+              TextSpan(text: 'Loan', style: TextStyle(color: Color(0xFF1B4332))),
+              TextSpan(text: 'Buddy', style: TextStyle(color: Color(0xFFE8A020))),
+            ],
+          ),
+        ),
         leading: Navigator.canPop(context)
           ? IconButton(
               icon: const Icon(Icons.arrow_back_ios_new_rounded,
@@ -139,73 +142,73 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       drawer: AppDrawer(currentIndex: 0),
       body: Form(
         key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
-          children: [
-            const Text('Vay Thế Chấp',
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.w800,
-                color: Color(0xFF1A1A1A))),
-            const SizedBox(height: 16),
-            _sectionTitle('Thông tin khoản vay'),
-            _infoCard(children: [
-              _inputRowWide(Icons.account_balance_wallet_outlined,
-                  'Số tiền vay', _amountField()),
-              _divider(),
-              _inputRow(Icons.access_time_outlined,
-                'Thời gian vay (tháng)', _intField(_termCtrl, suffix: 'tháng')),
-              _divider(),
-              _inputRow(Icons.percent_outlined,
-                'Lãi suất cố định (%/năm)', _decField(_fixedRateCtrl, suffix: '%')),
-              _divider(),
-              _inputRow(Icons.calendar_today_outlined,
-                'Thời gian lãi suất cố định (tháng)', _intField(_fixedPeriodCtrl, suffix: 'tháng')),
-              _divider(),
-              _inputRow(Icons.show_chart_outlined,
-                'Lãi suất thả nổi (%/năm)', _decField(_floatRateCtrl, suffix: '%')),
-              _divider(),
-              _inputRow(Icons.lock_clock_outlined,
-                'Thời gian ân hạn gốc (tháng)', _intField(_graceCtrl, suffix: 'tháng')),
-            ]),
+        child: ResponsiveFormWidth(
+          maxWidth: 480,
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 100),
+            children: [
+              Text(l.calcMortgageTitle,
+                style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w800,
+                  color: Color(0xFF1A1A1A))),
+              const SizedBox(height: 16),
+              _sectionTitle(l.calcLoanInfo),
+              _infoCard(children: [
+                _inputRowWide(Icons.account_balance_wallet_outlined,
+                    l.calcLoanAmount, _amountField(l)),
+                _divider(),
+                _inputRow(Icons.access_time_outlined,
+                  l.calcTermMonths, _intField(_termCtrl, l, suffix: 'tháng')),
+                _divider(),
+                _inputRow(Icons.percent_outlined,
+                  l.calcFixedRate, _decField(_fixedRateCtrl, l, suffix: '%')),
+                _divider(),
+                _inputRow(Icons.calendar_today_outlined,
+                  l.calcFixedPeriod, _intField(_fixedPeriodCtrl, l, suffix: 'tháng')),
+                _divider(),
+                _inputRow(Icons.show_chart_outlined,
+                  l.calcFloatingRate, _decField(_floatRateCtrl, l, suffix: '%')),
+                _divider(),
+                _inputRow(Icons.lock_clock_outlined,
+                  l.calcGracePeriod, _intField(_graceCtrl, l, suffix: 'tháng')),
+              ]),
 
-            const SizedBox(height: 16),
-            _sectionTitle('Phương thức thanh toán'),
-            _infoCard(children: [
-              _methodRow('ep', 'Gốc chia đều, lãi giảm dần',
-                'Gốc cố định hàng tháng, lãi giảm dần'),
-              _divider(),
-              _methodRow('ann', 'Trả góp đều hàng tháng',
-                'Tổng tiền thanh toán hàng tháng bằng nhau'),
-              _divider(),
-              _methodRow('io', 'Chỉ trả lãi',
-                'Chỉ trả lãi mỗi tháng, hoàn trả toàn bộ gốc vào tháng cuối'),
-            ]),
+              const SizedBox(height: 16),
+              _sectionTitle(l.calcPaymentMethod),
+              _infoCard(children: [
+                _methodRow('ep', l.calcMethodDeclining, l.calcMethodDecliningDesc),
+                _divider(),
+                _methodRow('ann', l.calcMethodEqual, l.calcMethodEqualDesc),
+                _divider(),
+                _methodRow('io', l.calcMethodInterestOnly, l.calcMethodInterestOnlyDesc),
+              ]),
 
-            const SizedBox(height: 28),
-            ElevatedButton(
-              onPressed: _calculate,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: _gold,
-                foregroundColor: const Color(0xFF1B4332),
-                padding: const EdgeInsets.symmetric(vertical: 18),
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50)),
+              const SizedBox(height: 28),
+              ElevatedButton(
+                onPressed: _calculate,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _gold,
+                  foregroundColor: const Color(0xFF1B4332),
+                  padding: const EdgeInsets.symmetric(vertical: 18),
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50)),
+                ),
+                child: Text(l.calcScheduleButton,
+                  style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800,
+                    letterSpacing: 0.3)),
               ),
-              child: const Text('Tính lịch trả nợ',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800,
-                  letterSpacing: 0.3)),
-            ),
-            const SizedBox(height: 12),
-            const Text(
-              '* Kết quả mang tính tham khảo. Để có quyết định tối ưu, hãy tham khảo thêm chuyên gia tài chính.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 11,
-                color: Color(0xFF888888),
-                fontStyle: FontStyle.italic,
+              const SizedBox(height: 12),
+              Text(
+                l.resultDisclaimerShort,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 11,
+                  color: Color(0xFF888888),
+                  fontStyle: FontStyle.italic,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -298,26 +301,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     );
   }
 
-  Widget _prepayRow(String l1, TextEditingController c1,
-      String l2, TextEditingController c2) =>
-    Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      child: Row(children: [
-        Expanded(child: Row(children: [
-          Text(l1, style: const TextStyle(fontSize: 13, color: Color(0xFF444444))),
-          const SizedBox(width: 8),
-          Expanded(child: _decField(c1, suffix: '%')),
-        ])),
-        const SizedBox(width: 16),
-        Expanded(child: Row(children: [
-          Text(l2, style: const TextStyle(fontSize: 13, color: Color(0xFF444444))),
-          const SizedBox(width: 8),
-          Expanded(child: _decField(c2, suffix: '%')),
-        ])),
-      ]),
-    );
-
-  Widget _amountField() => TextFormField(
+  Widget _amountField(AppLocalizations l) => TextFormField(
     controller: _amountCtrl,
     textAlign: TextAlign.right,
     decoration: InputDecoration(
@@ -334,15 +318,15 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[\d,]'))],
     onChanged: _onAmountChanged,
     validator: (v) {
-      if (v == null || v.isEmpty) return 'Nhập số tiền';
+      if (v == null || v.isEmpty) return l.calcValidatorAmount;
       final clean = v.replaceAll(',', '');
-      if (int.tryParse(clean) == null) return 'Không hợp lệ';
+      if (int.tryParse(clean) == null) return l.calcValidatorInvalid;
       return null;
     },
     style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
   );
 
-  Widget _intField(TextEditingController ctrl, {String suffix = ''}) =>
+  Widget _intField(TextEditingController ctrl, AppLocalizations l, {String suffix = ''}) =>
     TextFormField(
       controller: ctrl,
       textAlign: TextAlign.right,
@@ -358,11 +342,11 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       ),
       keyboardType: TextInputType.number,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-      validator: (v) => (v == null || v.isEmpty) ? 'Nhập giá trị' : null,
+      validator: (v) => (v == null || v.isEmpty) ? l.calcValidatorValue : null,
       style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
     );
 
-  Widget _decField(TextEditingController ctrl, {String suffix = ''}) =>
+  Widget _decField(TextEditingController ctrl, AppLocalizations l, {String suffix = ''}) =>
     TextFormField(
       controller: ctrl,
       textAlign: TextAlign.right,
@@ -378,7 +362,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       ),
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[\d.]'))],
-      validator: (v) => (v == null || v.isEmpty) ? 'Nhập giá trị' : null,
+      validator: (v) => (v == null || v.isEmpty) ? l.calcValidatorValue : null,
       style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
     );
 }

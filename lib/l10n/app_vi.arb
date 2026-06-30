@@ -1,0 +1,475 @@
+{
+  "@@locale": "vi",
+
+  "appTitle": "LoanBuddy",
+  "appSlogan": "Vay thông minh, Tương lai vững vàng",
+  "appVersion": "LoanBuddy v1.0.0",
+  "appVersionShort": "Phiên bản 1.0.0",
+  "resultDisclaimer": "* Kết quả mang tính tham khảo, không đại diện cho lời khuyên đầu tư hay tài chính.",
+  "resultDisclaimerShort": "* Kết quả mang tính tham khảo.",
+  "fillCompletely": "Nhập đầy đủ để tính chính xác",
+  "cancel": "Hủy",
+  "close": "Đóng",
+  "delete": "Xóa",
+  "send": "Gửi",
+  "calculate": "Tính",
+  "export": "Xuất file",
+  "share": "Chia sẻ",
+  "save": "Lưu",
+  "featureComingSoon": "Chức năng đang trong quá trình hoàn thiện",
+
+  "navHome": "Trang chủ",
+  "navHistory": "Lịch sử",
+  "navSettings": "Cài đặt",
+
+  "splashSlogan": "Vay thông minh,\nTương lai vững vàng",
+
+  "homeGreeting": "Xin chào 👋",
+  "homeQuestion": "Bạn muốn tính gì\nhôm nay?",
+  "homeSectionLoan": "Vay & Tính toán",
+  "homeMortgage": "Vay thế chấp",
+  "homeConsumer": "Vay tín chấp",
+  "homeComparison": "So sánh",
+  "homeSectionManage": "Quản lý khoản vay",
+  "homeEarlySettlement": "Tất toán\ntrước hạn",
+  "homeEarlySettlementFull": "Tất toán trước hạn",
+  "homeDebtRefinance": "Phân tích\nchuyển nợ",
+  "homeDebtRefinanceFull": "Phân tích chuyển nợ",
+  "homeSectionPersonal": "Tài chính cá nhân",
+  "homeFinancialHealth": "Sức khỏe\ntài chính",
+  "homeFinancialHealthFull": "Sức khỏe tài chính",
+  "homeRateChecker": "Kiểm tra\nlãi suất",
+  "homeRateCheckerFull": "Kiểm tra lãi suất",
+  "homeExplore": "Khám phá LoanBuddy",
+  "homeRecentLoans": "Khoản vay gần đây",
+  "homeReview": "Xem lại",
+  "homeBannerMortgageTitle": "Tính lãi vay thế chấp",
+  "homeBannerMortgageSubtitle": "Lên kế hoạch mua nhà với lịch trả nợ chi tiết",
+  "homeBannerConsumerTitle": "Tính lãi vay tín chấp",
+  "homeBannerConsumerSubtitle": "Ước tính khoản vay tiêu dùng nhanh chóng",
+  "homeBannerHealthTitle": "Kiểm tra sức khỏe tài chính",
+  "homeBannerHealthSubtitle": "Xem mức vay phù hợp với thu nhập của bạn",
+  "homePerYear": "%/năm",
+  "homeMonths": "{months} tháng",
+  "@homeMonths": {
+    "placeholders": {
+      "months": { "type": "int" }
+    }
+  },
+  "homeLoanTypeMortgage": "Vay thế chấp",
+  "homeLoanTypeConsumer": "Vay tín chấp",
+  "homeMethodDeclining": "Gốc giảm dần",
+  "homeMethodInterestOnly": "Chỉ trả lãi",
+  "homeMethodEqual": "Trả góp đều",
+
+  "historyTitle": "Lịch Sử",
+  "historyDeleteAll": "Xóa tất cả",
+  "historyDeleteAllConfirm": "Xóa toàn bộ lịch sử?",
+  "historyDeleteAllMessage": "Hành động này không thể hoàn tác.",
+  "historyDeleteAllButton": "Xóa tất cả",
+  "historyEmpty": "Chưa có lịch sử tra cứu",
+  "historyEmptyHint": "Tính lịch trả nợ để lưu vào đây",
+  "historyCount": "{count} bảng tính đã lưu",
+  "@historyCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "historyJustNow": "Vừa xong",
+  "historyMinutesAgo": "{minutes} phút trước",
+  "@historyMinutesAgo": {
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
+  "historyHoursAgo": "{hours} giờ trước",
+  "@historyHoursAgo": {
+    "placeholders": {
+      "hours": { "type": "int" }
+    }
+  },
+  "historyYesterday": "Hôm qua",
+  "historyMethodDeclining": "Gốc giảm dần",
+  "historyMethodEqual": "Trả góp đều",
+  "historyMethodConsumer": "Tín chấp",
+  "historyTypeMortgage": "Vay thế chấp",
+  "historyTypeConsumer": "Vay tín chấp",
+  "historyTotalInterest": "Tổng lãi: {amount}",
+  "@historyTotalInterest": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+  "historyPerYear": "%/năm",
+
+  "settingsTitle": "Cài Đặt",
+  "settingsLanguage": "Ngôn ngữ",
+  "settingsSupport": "Hỗ trợ",
+  "settingsFeedback": "Góp ý",
+  "settingsAbout": "Giới thiệu ứng dụng",
+  "settingsLegal": "Pháp lý",
+  "settingsPrivacyPolicy": "Chính sách bảo mật",
+  "settingsTermsOfUse": "Điều khoản sử dụng",
+  "settingsChooseLanguage": "Chọn ngôn ngữ",
+  "settingsLangVietnamese": "Tiếng Việt",
+  "settingsLangEnglish": "English",
+  "aboutVersion": "Phiên bản 1.0.0",
+  "aboutDescription": "LoanBuddy giúp bạn tính toán lịch trả nợ, so sánh các khoản vay và đánh giá sức khỏe tài chính một cách thông minh và trực quan.\n\nỨng dụng được thiết kế dành riêng cho thị trường Việt Nam, hỗ trợ cả vay thế chấp lẫn vay tín chấp với đầy đủ các tính năng chuyên nghiệp.",
+  "aboutFeature1": "Tính lãi vay thế chấp",
+  "aboutFeature2": "Tính lãi vay tín chấp",
+  "aboutFeature3": "So sánh khoản vay",
+  "aboutFeature4": "Đánh giá sức khỏe tài chính",
+  "aboutFeature5": "Lưu lịch sử tra cứu",
+
+  "calcMortgageTitle": "Vay Thế Chấp",
+  "calcLoanInfo": "Thông tin khoản vay",
+  "calcLoanAmount": "Số tiền vay",
+  "calcTermMonths": "Thời gian vay (tháng)",
+  "calcFixedRate": "Lãi suất cố định (%/năm)",
+  "calcFixedPeriod": "Thời gian lãi suất cố định (tháng)",
+  "calcFloatingRate": "Lãi suất thả nổi (%/năm)",
+  "calcGracePeriod": "Thời gian ân hạn gốc (tháng)",
+  "calcPaymentMethod": "Phương thức thanh toán",
+  "calcMethodDeclining": "Gốc chia đều, lãi giảm dần",
+  "calcMethodDecliningDesc": "Gốc cố định hàng tháng, lãi giảm dần",
+  "calcMethodEqual": "Trả góp đều hàng tháng",
+  "calcMethodEqualDesc": "Tổng tiền thanh toán hàng tháng bằng nhau",
+  "calcMethodInterestOnly": "Chỉ trả lãi",
+  "calcMethodInterestOnlyDesc": "Chỉ trả lãi mỗi tháng, hoàn trả toàn bộ gốc vào tháng cuối",
+  "calcScheduleButton": "Tính lịch trả nợ",
+  "calcValidatorAmount": "Nhập số tiền",
+  "calcValidatorInvalid": "Không hợp lệ",
+  "calcValidatorValue": "Nhập giá trị",
+
+  "comparisonTitle": "So Sánh Khoản Vay",
+  "comparisonAddOption": "Thêm phương án",
+  "comparisonCompareButton": "So sánh ngay",
+  "comparisonPrincipal": "Tiền gốc (VNĐ)",
+  "comparisonFixedRate": "Lãi suất cố định (%/năm)",
+  "comparisonFixedPeriod": "Thời gian cố định (tháng)",
+  "comparisonFloatingRate": "Lãi suất thả nổi (%/năm)",
+  "comparisonTerm": "Thời hạn vay (tháng)",
+  "comparisonGrace": "Ân hạn gốc (tháng)",
+  "comparisonMethodDeclining": "Dư nợ giảm dần",
+  "comparisonMethodEqual": "Trả góp đều",
+  "comparisonOptionLabel": "Phương án {index}",
+  "@comparisonOptionLabel": {
+    "placeholders": {
+      "index": { "type": "int" }
+    }
+  },
+  "comparisonResultLabel": "Phương Án {index}",
+  "@comparisonResultLabel": {
+    "placeholders": {
+      "index": { "type": "int" }
+    }
+  },
+  "comparisonTotalPrincipal": "Tổng gốc",
+  "comparisonTotalInterest": "Tổng lãi",
+  "comparisonHighestMonthly": "Mức cao nhất/tháng",
+  "comparisonLowestMonthly": "Mức thấp nhất/tháng",
+  "comparisonTotalPayment": "Tổng gốc và lãi",
+  "comparisonAllEqual": "Các phương án tiết kiệm bằng nhau",
+  "comparisonBestOption": "Phương án {index} tiết kiệm nhất",
+  "@comparisonBestOption": {
+    "placeholders": {
+      "index": { "type": "int" }
+    }
+  },
+  "comparisonSavingDiff": "Mức chênh lệch: {amount}đ",
+  "@comparisonSavingDiff": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+
+  "consumerTitle": "Vay Tín Chấp",
+  "consumerLoanAmount": "Số tiền vay",
+  "consumerTotalInterest": "Tổng lãi",
+  "consumerMonthlyPayment": "Trả hàng tháng",
+  "consumerTotalPayment": "Tổng thanh toán",
+  "consumerAnnualRate": "Lãi suất hàng năm",
+  "consumerTermMonths": "Thời gian vay",
+  "consumerScheduleButton": "Tính lịch trả nợ",
+
+  "estimatorTitle": "Sức Khỏe Tài Chính",
+  "estimatorSubtitle": "Đánh giá khoản vay có phù hợp với bạn không",
+  "estimatorSectionTitle": "Đánh giá sức khỏe tài chính",
+  "estimatorHint": "Nhập thông tin để đánh giá sức khỏe tài chính",
+  "estimatorIncome": "Thu nhập thực nhận mỗi tháng của bạn (VNĐ)",
+  "estimatorExpenses": "Mỗi tháng bạn chi tiêu khoảng bao nhiêu (VNĐ)",
+  "estimatorExistingDebt": "Hiện tại bạn đang trả góp các khoản vay bao nhiêu mỗi tháng? (VNĐ)",
+  "estimatorLoanAmount": "Số tiền muốn vay (VNĐ)",
+  "estimatorTermMonths": "Thời hạn vay (tháng)",
+  "estimatorRateNote": "Lãi suất ước tính 12%/năm · Phương thức trả góp đều hàng tháng",
+  "estimatorButton": "Đánh giá",
+  "estimatorValidation": "Vui lòng nhập đầy đủ thu nhập, số tiền vay và thời hạn vay (phải lớn hơn 0)",
+  "estimatorResultTitle": "Khoản vay này có phù hợp với bạn không?",
+  "estimatorExpectedPayment": "Khoản trả dự kiến là",
+  "estimatorPressureLevel": "Mức áp lực tài chính là",
+  "estimatorRemainingAfter": "Sau khi trả khoản vay, bạn còn lại là",
+  "estimatorLevelVerySafeLabel": "Rất an toàn",
+  "estimatorLevelVerySafeMsg": "Khoản vay này hoàn toàn phù hợp với thu nhập của bạn. Bạn có thể thoải mái trả khoản vay này mà không ảnh hưởng nhiều đến cuộc sống hàng ngày.",
+  "estimatorLevelSafeLabel": "An toàn",
+  "estimatorLevelSafeMsg": "Khoản vay này nằm trong vùng tài chính an toàn. Bạn vẫn còn đủ dư địa để xử lý các chi phí phát sinh hàng tháng.",
+  "estimatorLevelConsiderLabel": "Cần cân nhắc",
+  "estimatorLevelConsiderMsg": "Khoản vay này tạo ra một chút áp lực trong những tháng có chi phí phát sinh. Bạn vẫn có thể vay nhưng nên có quỹ dự phòng ít nhất 3 tháng chi tiêu trước khi quyết định.",
+  "estimatorLevelHighPressureLabel": "Áp lực cao",
+  "estimatorLevelHighPressureMsg": "Sau khi trả khoản vay, số tiền còn lại chưa đến nửa tháng chi tiêu. Một khoản phát sinh nhỏ cũng có thể gây khó khăn. Nên cân nhắc giảm số tiền vay hoặc kéo dài thời hạn.",
+  "estimatorLevelImbalancedLabel": "Mất cân đối tài chính",
+  "estimatorLevelImbalancedMsg": "Thu nhập của bạn không đủ để trang trải chi tiêu và khoản vay này. Bạn nên giảm số tiền vay, kéo dài thời hạn, hoặc tăng thu nhập trước khi vay.",
+  "estimatorLevelCantBorrowLabel": "Không thể vay",
+  "estimatorLevelCantBorrowMsg": "Bạn không thể vay trong thời điểm này. Khoản trả vượt quá toàn bộ thu nhập của bạn.",
+
+  "scheduleTitle": "Kết Quả",
+  "scheduleTotalInterest": "Tổng tiền lãi phải trả",
+  "scheduleTotalPayment": "Tổng phải thanh toán",
+  "scheduleHighestPayment": "Mức thanh toán cao nhất",
+  "scheduleLowestPayment": "Mức thanh toán thấp nhất",
+  "scheduleIncludesPrincipalInterest": "Bao gồm gốc và lãi",
+  "schedulePeriod": "Kỳ thứ {period}",
+  "@schedulePeriod": {
+    "placeholders": {
+      "period": { "type": "int" }
+    }
+  },
+  "scheduleRateChangeWarning": "Sau thời gian ưu đãi (kỳ {period}):",
+  "@scheduleRateChangeWarning": {
+    "placeholders": {
+      "period": { "type": "int" }
+    }
+  },
+  "schedulePaymentChange": "Khoản thanh toán {direction}{amount}/tháng",
+  "@schedulePaymentChange": {
+    "placeholders": {
+      "direction": { "type": "String" },
+      "amount": { "type": "String" }
+    }
+  },
+  "scheduleChangeRate": "Đổi lãi suất",
+  "scheduleExportFile": "Xuất file",
+  "scheduleExportTitle": "Xuất lịch trả nợ",
+  "scheduleChooseFormat": "Chọn định dạng file",
+  "scheduleExportPDF": "Xuất PDF",
+  "scheduleExportPDFDesc": "Định dạng đẹp, dễ chia sẻ và in ấn",
+  "scheduleExportCSV": "Xuất CSV",
+  "scheduleExportCSVDesc": "Mở được bằng Excel, Google Sheets",
+  "scheduleFileReady": "File {type} đã tạo xong",
+  "@scheduleFileReady": {
+    "placeholders": {
+      "type": { "type": "String" }
+    }
+  },
+  "scheduleShareAction": "Bạn muốn làm gì với file này?",
+  "scheduleShareFile": "Chia sẻ {type} ngay",
+  "@scheduleShareFile": {
+    "placeholders": {
+      "type": { "type": "String" }
+    }
+  },
+  "scheduleSaveFile": "Lưu {type} vào máy",
+  "@scheduleSaveFile": {
+    "placeholders": {
+      "type": { "type": "String" }
+    }
+  },
+  "scheduleShareError": "Lỗi chia sẻ: {error}",
+  "@scheduleShareError": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "tableColPeriod": "Kỳ",
+  "tableColTotal": "Tổng trả",
+  "tableColPrincipal": "Gốc",
+  "tableColInterest": "Lãi",
+  "tableColBalance": "Dư nợ còn lại",
+
+  "consumerScheduleTitle": "Kết Quả",
+  "consumerScheduleMonthly": "Trả hàng tháng",
+  "consumerScheduleTotalPayment": "Tổng thanh toán",
+  "consumerScheduleTotalInterest": "Tổng lãi phải trả",
+  "consumerScheduleTerm": "Kỳ hạn vay",
+  "consumerScheduleFixed": "Cố định mỗi kỳ",
+  "consumerScheduleIncludesPrincipal": "Bao gồm gốc và lãi",
+  "consumerSchedulePercentOfTotal": "Chiếm {percent}% gốc và lãi",
+  "@consumerSchedulePercentOfTotal": {
+    "placeholders": {
+      "percent": { "type": "String" }
+    }
+  },
+  "consumerScheduleYears": "Tương đương {years} năm",
+  "@consumerScheduleYears": {
+    "placeholders": {
+      "years": { "type": "String" }
+    }
+  },
+
+  "rateCheckerTitle": "Kiểm tra lãi suất vay",
+  "rateCheckerSubtitle": "Ước tính lãi suất vay hiện tại của khoản vay đang trả",
+  "rateCheckerSectionTitle": "Ước tính lãi suất hiện tại",
+  "rateCheckerHint": "Nhập thông tin khoản vay đang trả để ước tính",
+  "rateCheckerOriginalAmount": "Số tiền vay gốc ban đầu",
+  "rateCheckerStartDate": "Ngày bắt đầu vay",
+  "rateCheckerTotalTerm": "Tổng thời gian vay",
+  "rateCheckerLastPayment": "Số tiền thanh toán kỳ gần nhất",
+  "rateCheckerMethod": "Phương thức tính lãi",
+  "rateCheckerMethodDeclining": "Gốc giảm dần",
+  "rateCheckerMethodEqual": "Trả góp đều",
+  "rateCheckerMethodInterestOnly": "Chỉ trả lãi",
+  "rateCheckerButton": "Ước tính lãi suất",
+  "rateCheckerValidation": "Vui lòng kiểm tra lại thông tin đã nhập",
+  "rateCheckerNoResult": "Không thể ước tính với thông tin đã nhập. Vui lòng kiểm tra lại số tiền thanh toán hoặc phương thức tính lãi.",
+  "rateCheckerResultHeader": "— Kết quả —",
+  "rateCheckerResultTitle": "Lãi suất ước tính hiện tại",
+  "rateCheckerResultNote": "Dựa trên dư nợ còn lại và số tiền đang thanh toán mỗi kỳ",
+  "rateCheckerResultDisclaimer": "* Đây là số liệu ước tính, không phải lãi suất chính thức từ ngân hàng.",
+  "rateCheckerInfoBox": "Kết quả là ước tính dựa trên số liệu bạn nhập, có thể chênh lệch nhẹ so với lãi suất chính thức ngân hàng áp dụng.",
+
+  "fullPayoffTitle": "Tất Toán Toàn Phần",
+  "fullPayoffSubtitle": "Tính chi phí khi trả hết khoản vay trước hạn",
+  "fullPayoffSectionTitle": "Thông tin khoản vay",
+  "fullPayoffOriginalAmount": "Số tiền vay gốc ban đầu",
+  "fullPayoffStartDate": "Ngày bắt đầu vay",
+  "fullPayoffTotalTerm": "Tổng thời gian vay",
+  "fullPayoffMethod": "Phương thức tính lãi",
+  "fullPayoffMethodDeclining": "Gốc giảm dần",
+  "fullPayoffMethodEqual": "Trả góp đều",
+  "fullPayoffGracePeriod": "Thời gian ân hạn gốc ban đầu (nếu có)",
+  "fullPayoffFixedRate": "Lãi suất cố định",
+  "fullPayoffFixedPeriod": "Thời gian ưu đãi",
+  "fullPayoffFloatingRate": "Lãi suất thả nổi (sau ưu đãi)",
+  "fullPayoffTargetDate": "Ngày dự kiến tất toán",
+  "fullPayoffPenaltyRate": "Phí phạt trả trước",
+  "fullPayoffButton": "Tính chi phí tất toán",
+  "fullPayoffValidation": "Vui lòng kiểm tra lại thông tin đã nhập",
+  "fullPayoffNoResult": "Không thể tính với thông tin đã nhập. Vui lòng kiểm tra lại ngày tất toán, thời gian vay và thời gian ân hạn.",
+  "fullPayoffResultHeader": "— Kết quả —",
+  "fullPayoffTotalNeeded": "Tổng số tiền cần chuẩn bị để tất toán",
+  "fullPayoffRemainingBalance": "Dư nợ gốc còn lại",
+  "fullPayoffPenaltyFee": "Phí phạt trả trước hạn",
+  "fullPayoffInterestSaved": "Lãi tiết kiệm được (so với trả hết theo lịch cũ)",
+  "fullPayoffEarlyMonths": "Thoát nợ sớm hơn {months} tháng ({years} năm)",
+  "@fullPayoffEarlyMonths": {
+    "placeholders": {
+      "months": { "type": "int" },
+      "years": { "type": "String" }
+    }
+  },
+  "fullPayoffResultDisclaimer": "* Số liệu ước tính, chưa bao gồm các phí khác (nếu có) theo quy định ngân hàng.",
+  "fullPayoffInfoBox": "Phí phạt thực tế tùy theo hợp đồng và năm tất toán. Vui lòng kiểm tra với ngân hàng để có số liệu chính xác.",
+
+  "partialTitle": "Tất Toán Từng Phần",
+  "partialSubtitle": "Tính lại lịch trả nợ khi trả thêm một phần gốc",
+  "partialSectionTitle": "Thông tin khoản vay",
+  "partialExtraDate": "Ngày trả thêm",
+  "partialPenaltyRate": "Phí phạt trả trước",
+  "partialExtraAmount": "Số tiền muốn trả thêm vào gốc",
+  "partialPriority": "Bạn muốn ưu tiên điều gì?",
+  "partialPriorityGrace": "Ân hạn gốc",
+  "partialPriorityReducePayment": "Giảm số tiền trả hàng tháng",
+  "partialPriorityShortenTerm": "Rút ngắn thời hạn vay",
+  "partialButton": "Tính lại lịch trả nợ",
+  "partialValidation": "Vui lòng kiểm tra lại thông tin đã nhập",
+  "partialNoResult": "Không thể tính với thông tin đã nhập. Vui lòng kiểm tra lại số tiền trả thêm, thời gian ân hạn và ngày áp dụng.",
+  "partialResultHeader": "— Kết quả —",
+  "partialRemainingBalance": "Dư nợ còn lại sau khi trả thêm",
+  "partialPenaltyFee": "Phí phạt trả trước hạn",
+  "partialNewTerm": "Thời hạn vay mới",
+  "partialTermReduced": "Giảm {months} tháng",
+  "@partialTermReduced": {
+    "placeholders": {
+      "months": { "type": "int" }
+    }
+  },
+  "partialMonthlyPayment": "Khoản trả hàng tháng",
+  "partialNoChange": "Không đổi",
+  "partialGracePeriods": "Số kỳ được ân hạn gốc",
+  "partialGraceNote": "Chỉ trả lãi trong giai đoạn này",
+  "partialGracePayment": "Khoản trả trong giai đoạn ân hạn",
+  "partialTermLabel": "Thời hạn vay",
+  "partialInterestSaved": "Lãi tiết kiệm được",
+  "partialResultDisclaimer": "* Số liệu ước tính. Vui lòng tham khảo chuyên gia tài chính trước khi quyết định.",
+  "partialGraceInfoTitle": "Ân hạn gốc là gì?",
+  "partialGraceInfoBody": "Số tiền bạn trả thêm sẽ được dùng để giảm dư nợ ngay lập tức. Sau đó, LoanBuddy tự tính ra một số kỳ tiếp theo bạn được tạm ngưng trả gốc — trong khoảng thời gian này bạn chỉ cần trả lãi trên dư nợ đã giảm. Sau khi hết thời gian ân hạn, bạn quay lại trả gốc và lãi như bình thường, và khoản vay vẫn kết thúc đúng vào thời hạn ban đầu.",
+  "partialGraceInfoNote": "Phù hợp khi bạn muốn giảm áp lực tài chính trong một giai đoạn ngắn sắp tới.",
+  "partialReduceInfoTitle": "Giảm số tiền trả hàng tháng là gì?",
+  "partialReduceInfoBody": "Số tiền bạn trả thêm sẽ giảm dư nợ gốc ngay lập tức. Thời hạn vay giữ nguyên không đổi. Vì dư nợ còn lại sẽ được chia đều cho thời gian còn lại, phần gốc phải trả mỗi tháng sẽ thấp hơn — dẫn đến số tiền trả hàng tháng giảm.",
+  "partialReduceInfoNote": "Phù hợp khi bạn muốn giảm gánh nặng chi tiêu hàng tháng lâu dài.",
+  "partialShortenInfoTitle": "Rút ngắn thời hạn vay là gì?",
+  "partialShortenInfoBody": "Số tiền bạn trả thêm sẽ giảm dư nợ gốc ngay lập tức. Khoản trả hàng tháng giữ nguyên không đổi, nhưng vì dư nợ thấp hơn, bạn sẽ trả hết khoản vay sớm hơn so với lịch ban đầu.",
+  "partialShortenInfoNote": "Phù hợp khi bạn muốn tiết kiệm lãi nhiều nhất và thoát nợ sớm nhất.",
+
+  "earlySelectTitle": "Kịch Bản Tất Toán",
+  "earlySelectSubtitle": "Chọn loại kịch bản bạn muốn tính",
+  "earlySelectFullTitle": "Tất toán toàn phần",
+  "earlySelectFullDesc": "Trả hết toàn bộ dư nợ để chấm dứt khoản vay tại một thời điểm",
+  "earlySelectPartialTitle": "Tất toán từng phần",
+  "earlySelectPartialDesc": "Trả thêm một khoản vào gốc, giảm dư nợ hoặc rút ngắn thời hạn",
+  "earlySelectNote": "Chỉ áp dụng cho khoản vay thế chấp. Kết quả mang tính tham khảo.",
+
+  "refinanceTitle": "Phân Tích Chuyển Nợ",
+  "refinanceSubtitle": "So sánh khoản vay hiện tại với khoản vay mới để quyết định có nên chuyển",
+  "refinanceCurrentLoan": "Khoản vay hiện tại",
+  "refinanceCurrentLoanInfo": "Thông tin từ ngân hàng đang vay",
+  "refinanceRemainingBalance": "Dư nợ còn lại (VNĐ)",
+  "refinanceRemainingTerm": "Thời hạn còn lại",
+  "refinanceCurrentRate": "Lãi suất hiện tại",
+  "refinancePrepaymentFee": "Phí trả nợ trước hạn",
+  "refinancePaymentMethod": "Phương thức thanh toán",
+  "refinanceMethodDeclining": "Gốc chia đều",
+  "refinanceMethodEqual": "Trả góp đều",
+  "refinanceNewLoan": "Khoản vay mới dự kiến",
+  "refinanceNewLoanInfo": "Ngân hàng bạn muốn chuyển sang",
+  "refinanceNewAmount": "Số tiền vay mới",
+  "refinanceNewTerm": "Thời gian vay mới",
+  "refinanceFixedRate": "Lãi suất cố định",
+  "refinancePromoTerm": "Thời gian ưu đãi",
+  "refinanceFloatingRate": "Lãi suất thả nổi",
+  "refinanceProcessingFee": "Chi phí làm hồ sơ",
+  "refinanceButton": "Phân tích chuyển nợ",
+  "refinanceValidation": "Vui lòng nhập đầy đủ thông tin bắt buộc ở cả 2 khoản vay (phải lớn hơn 0)",
+  "refinanceResultHeader": "— Kết quả —",
+  "refinanceTotalCost": "Tổng chi phí chuyển nợ",
+  "refinanceBreakevenMonths": "Số tháng hòa vốn",
+  "refinanceBreakevenValue": "{months} tháng",
+  "@refinanceBreakevenValue": {
+    "placeholders": {
+      "months": { "type": "int" }
+    }
+  },
+  "refinanceNoBreakeven": "Không hòa vốn",
+  "refinanceInterestSavedPromo": "Lãi tiết kiệm trong thời gian ưu đãi",
+  "refinanceInterestSavedTotal": "Lãi tiết kiệm suốt thời gian vay",
+  "refinanceInterestSavedMonthly": "Lãi tiết kiệm trung bình mỗi tháng",
+  "refinanceNoResult": "Không thể phân tích với thông tin đã nhập. Vui lòng kiểm tra lại các trường bắt buộc.",
+  "refinanceResultDisclaimer": "* Lãi tiết kiệm suốt thời gian vay tính trên toàn bộ thời hạn vay mới. Số liệu ước tính.",
+
+  "feedbackTitle": "Góp Ý",
+  "feedbackSubtitle": "Ý kiến của bạn giúp LoanBuddy tốt hơn",
+  "feedbackEmailHint": "Email (không bắt buộc)",
+  "feedbackContentHint": "Nội dung góp ý...",
+  "feedbackButton": "Gửi",
+  "feedbackFooter": "Bạn cũng có thể gửi email cho chúng tôi:\nvinhdinh2610@gmail.com",
+  "feedbackValidation": "Vui lòng nhập nội dung góp ý",
+  "feedbackSuccess": "Cảm ơn bạn đã góp ý!",
+  "feedbackNoEmail": "Không tìm thấy ứng dụng email",
+  "feedbackError": "Có lỗi xảy ra, vui lòng thử lại",
+
+  "drawerSlogan": "Vay thông minh, Tương lai vững vàng",
+  "drawerHome": "Trang chủ",
+  "drawerHistory": "Lịch sử tra cứu",
+  "drawerSettings": "Cài đặt",
+  "drawerFeedback": "Góp ý",
+  "drawerPrivacyPolicy": "Chính sách bảo mật",
+  "drawerTermsOfUse": "Điều khoản sử dụng",
+
+  "unitMonths": "tháng",
+  "partialInfoBox": "Phí phạt thực tế tùy theo hợp đồng và năm trả thêm. Vui lòng kiểm tra với ngân hàng.",
+  "partialPaymentReduced": "Giảm {amount}/tháng",
+  "@partialPaymentReduced": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  }
+}

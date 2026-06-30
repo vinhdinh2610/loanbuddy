@@ -1,9 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import '../l10n/app_localizations.dart';
+import '../widgets/responsive_helper.dart';
 import 'calculator_screen.dart';
 import 'consumer_loan_screen.dart';
 import 'comparison_screen.dart';
 import 'loan_estimator_screen.dart';
+import 'rate_checker_screen.dart';
+import 'early_settlement_select_screen.dart';
+import 'debt_refinance_screen.dart';
+import '../models/database_helper.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,42 +23,33 @@ class _HomeScreenState extends State<HomeScreen> {
   static const _bg = Color(0xFFF5F0E8);
   static const _darkGreen = Color(0xFF1B4332);
 
-  // ── Banner slider ──────────────────────────────────────────────
   final PageController _bannerController = PageController();
   int _currentBanner = 0;
   Timer? _bannerTimer;
 
-  final List<_BannerData> _banners = [
-    _BannerData(
-      gradient: const [Color(0xFF1B4332), Color(0xFF2D6A4F)],
-      icon: Icons.trending_up_rounded,
-      title: 'Lãi suất đang có xu hướng tăng',
-      subtitle: 'Cân nhắc cố định lãi suất sớm để tiết kiệm',
-    ),
-    _BannerData(
-      gradient: const [Color(0xFF1565C0), Color(0xFF1E88E5)],
-      icon: Icons.savings_outlined,
-      title: 'Tính toán khoản vay ngay hôm nay',
-      subtitle: 'Lên kế hoạch tài chính thông minh hơn',
-    ),
-    _BannerData(
-      gradient: const [Color(0xFF6A1B9A), Color(0xFF9C27B0)],
-      icon: Icons.health_and_safety_outlined,
-      title: 'Kiểm tra sức khỏe tài chính',
-      subtitle: 'Xem mức vay phù hợp với thu nhập của bạn',
-    ),
-  ];
+  List<HistoryEntry> _recentHistory = [];
+  bool _loadingHistory = true;
 
   @override
   void initState() {
     super.initState();
     _startAutoScroll();
+    _loadRecentHistory();
+  }
+
+  Future<void> _loadRecentHistory() async {
+    final all = await DatabaseHelper.instance.getAll();
+    if (!mounted) return;
+    setState(() {
+      _recentHistory = all.take(2).toList();
+      _loadingHistory = false;
+    });
   }
 
   void _startAutoScroll() {
     _bannerTimer = Timer.periodic(const Duration(seconds: 4), (_) {
       if (!mounted || !_bannerController.hasClients) return;
-      final next = (_currentBanner + 1) % _banners.length;
+      final next = (_currentBanner + 1) % 3;
       _bannerController.animateToPage(
         next,
         duration: const Duration(milliseconds: 450),
@@ -68,21 +65,56 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  void _showComingSoon() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: const Text('Chức năng đang trong quá trình hoàn thiện'),
-        backgroundColor: _darkGreen,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        duration: const Duration(seconds: 2),
-      ),
-    );
+  String _fmtFull(double n) {
+    final s = n.round().toString();
+    final buf = StringBuffer();
+    for (int i = 0; i < s.length; i++) {
+      if (i > 0 && (s.length - i) % 3 == 0) buf.write(',');
+      buf.write(s[i]);
+    }
+    return buf.toString();
   }
 
-  // ── Build ──────────────────────────────────────────────────────
+  String _fmtDate(DateTime dt) =>
+      '${dt.day.toString().padLeft(2, '0')}/${dt.month.toString().padLeft(2, '0')}/${dt.year}';
+
+  String _typeLabel(String type, AppLocalizations l) =>
+      type == 'mortgage' ? l.homeLoanTypeMortgage : l.homeLoanTypeConsumer;
+
+  String _methodLabel(String method, AppLocalizations l) {
+    switch (method) {
+      case 'ep': return l.homeMethodDeclining;
+      case 'io': return l.homeMethodInterestOnly;
+      case 'ann':
+      case 'consumer': return l.homeMethodEqual;
+      default: return method;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    final banners = [
+      _DiscoverBanner(
+        color: const Color(0xFF1B4332),
+        icon: Icons.home_outlined,
+        title: l.homeBannerMortgageTitle,
+        subtitle: l.homeBannerMortgageSubtitle,
+      ),
+      _DiscoverBanner(
+        color: const Color(0xFF1565C0),
+        icon: Icons.account_balance_wallet_outlined,
+        title: l.homeBannerConsumerTitle,
+        subtitle: l.homeBannerConsumerSubtitle,
+      ),
+      _DiscoverBanner(
+        color: const Color(0xFF9C27B0),
+        icon: Icons.favorite_outline_rounded,
+        title: l.homeBannerHealthTitle,
+        subtitle: l.homeBannerHealthSubtitle,
+      ),
+    ];
+
     return Scaffold(
       backgroundColor: _bg,
       appBar: AppBar(
@@ -93,30 +125,23 @@ class _HomeScreenState extends State<HomeScreen> {
           text: const TextSpan(
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
             children: [
-              TextSpan(
-                text: 'Loan',
-                style: TextStyle(color: _darkGreen),
-              ),
-              TextSpan(
-                text: 'Buddy',
-                style: TextStyle(color: _gold),
-              ),
+              TextSpan(text: 'Loan', style: TextStyle(color: _darkGreen)),
+              TextSpan(text: 'Buddy', style: TextStyle(color: _gold)),
             ],
           ),
         ),
       ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
         children: [
-          // Greeting
-          const Text(
-            'Xin chào 👋',
-            style: TextStyle(fontSize: 16, color: Color(0xFF1B4332)),
+          Text(
+            l.homeGreeting,
+            style: const TextStyle(fontSize: 16, color: Color(0xFF1B4332)),
           ),
           const SizedBox(height: 4),
-          const Text(
-            'Bạn muốn tính gì\nhôm nay?',
-            style: TextStyle(
+          Text(
+            l.homeQuestion,
+            style: const TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.w800,
               color: Color(0xFF1A1A1A),
@@ -125,102 +150,297 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const SizedBox(height: 20),
 
-          // Banner Slider
-          _buildBannerSlider(),
-          const SizedBox(height: 24),
-
-          // Công cụ tài chính
-          _sectionLabel('Công cụ tài chính'),
+          _sectionLabel(l.homeSectionLoan),
           const SizedBox(height: 10),
           Row(children: [
             Expanded(
-              child: _featureCard(
-                gradient: const [Color(0xFFE8A020), Color(0xFFFFD060)],
+              child: _toolCard(
+                iconBg: const Color(0xFFFFF8E1),
+                iconColor: const Color(0xFFF57F17),
                 icon: Icons.home_outlined,
-                title: 'Vay thế chấp',
+                title: l.homeMortgage,
                 onTap: () => Navigator.push(context,
                     MaterialPageRoute(builder: (_) => const CalculatorScreen())),
               ),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 8),
             Expanded(
-              child: _featureCard(
-                gradient: const [Color(0xFF1E88E5), Color(0xFF64B5F6)],
-                icon: Icons.account_balance_wallet_outlined,
-                title: 'Vay tín chấp',
+              child: _toolCard(
+                iconBg: const Color(0xFFE3F2FD),
+                iconColor: const Color(0xFF1565C0),
+                icon: Icons.credit_card_outlined,
+                title: l.homeConsumer,
                 onTap: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => ConsumerLoanScreen())),
+                    MaterialPageRoute(builder: (_) => const ConsumerLoanScreen())),
               ),
             ),
-          ]),
-          const SizedBox(height: 24),
-
-          // Tối ưu khoản vay
-          _sectionLabel('Tối ưu khoản vay'),
-          const SizedBox(height: 10),
-          GridView.count(
-            crossAxisCount: 2,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            childAspectRatio: 1.15,
-            children: [
-              _featureCard(
-                gradient: const [Color(0xFF4CAF50), Color(0xFFA5D6A7)],
-                icon: Icons.compare_arrows_rounded,
-                title: 'So sánh khoản vay',
+            const SizedBox(width: 8),
+            Expanded(
+              child: _toolCard(
+                iconBg: const Color(0xFFE8F5E9),
+                iconColor: _darkGreen,
+                icon: Icons.swap_horiz_rounded,
+                title: l.homeComparison,
                 onTap: () => Navigator.push(context,
                     MaterialPageRoute(builder: (_) => const ComparisonScreen())),
               ),
-              _featureCard(
-                gradient: const [Color(0xFF9C27B0), Color(0xFFCE93D8)],
-                icon: Icons.calculate_outlined,
-                title: 'Sức khỏe tài chính',
+            ),
+          ]),
+          const SizedBox(height: 22),
+
+          _sectionLabel(l.homeSectionManage),
+          const SizedBox(height: 10),
+          Row(children: [
+            Expanded(
+              child: _mgmtCard(
+                iconBg: const Color(0xFFFFF8E1),
+                iconColor: const Color(0xFFF57F17),
+                icon: Icons.calendar_month_outlined,
+                title: isTablet(context) ? l.homeEarlySettlementFull : l.homeEarlySettlement,
+                onTap: () => Navigator.push(context,
+                    MaterialPageRoute(
+                        builder: (_) => const EarlySettlementSelectScreen())),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: _mgmtCard(
+                iconBg: const Color(0xFFE0F2F1),
+                iconColor: const Color(0xFF00695C),
+                icon: Icons.trending_down_rounded,
+                title: isTablet(context) ? l.homeDebtRefinanceFull : l.homeDebtRefinance,
+                onTap: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const DebtRefinanceScreen())),
+              ),
+            ),
+          ]),
+          const SizedBox(height: 22),
+
+          _sectionLabel(l.homeSectionPersonal),
+          const SizedBox(height: 10),
+          Row(children: [
+            Expanded(
+              child: _mgmtCard(
+                iconBg: const Color(0xFFFFEBEE),
+                iconColor: const Color(0xFFC62828),
+                icon: Icons.favorite_outline_rounded,
+                title: isTablet(context) ? l.homeFinancialHealthFull : l.homeFinancialHealth,
                 onTap: () => Navigator.push(context,
                     MaterialPageRoute(builder: (_) => const LoanEstimatorScreen())),
               ),
-              _featureCard(
-                gradient: const [Color(0xFFE53935), Color(0xFFEF9A9A)],
-                icon: Icons.show_chart_rounded,
-                title: 'Kiểm tra lãi suất',
-                comingSoon: true,
-                onTap: _showComingSoon,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: _mgmtCard(
+                iconBg: const Color(0xFFE3F2FD),
+                iconColor: const Color(0xFF1565C0),
+                icon: Icons.bar_chart_rounded,
+                title: isTablet(context) ? l.homeRateCheckerFull : l.homeRateChecker,
+                onTap: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const RateCheckerScreen())),
               ),
-              _featureCard(
-                gradient: const [Color(0xFF00ACC1), Color(0xFF80DEEA)],
-                icon: Icons.swap_horiz_rounded,
-                title: 'Phân tích chuyển nợ',
-                comingSoon: true,
-                onTap: _showComingSoon,
-              ),
-            ],
-          ),
+            ),
+          ]),
+          const SizedBox(height: 22),
+
+          _sectionLabel(l.homeExplore),
+          const SizedBox(height: 10),
+          _buildDiscoverBanner(banners),
+          const SizedBox(height: 22),
+
+          if (!_loadingHistory && _recentHistory.isNotEmpty) ...[
+            _sectionLabel(l.homeRecentLoans),
+            const SizedBox(height: 10),
+            _buildHistoryCard(l),
+          ],
         ],
       ),
     );
   }
 
-  // ── Banner Slider ──────────────────────────────────────────────
-  Widget _buildBannerSlider() {
+  Widget _toolCard({
+    required Color iconBg,
+    required Color iconColor,
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: const Color(0xFFE8E4DA), width: 0.5),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: iconBg,
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Icon(icon, color: iconColor, size: 24),
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              height: 28,
+              child: Center(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF1A1A1A),
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _mgmtCard({
+    required Color iconBg,
+    required Color iconColor,
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+    bool comingSoon = false,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: const Color(0xFFE8E4DA), width: 0.5),
+        ),
+        child: Row(
+          children: [
+            Stack(clipBehavior: Clip.none, children: [
+              Container(
+                width: 38,
+                height: 38,
+                decoration: BoxDecoration(
+                  color: iconBg,
+                  borderRadius: BorderRadius.circular(11),
+                ),
+                child: Icon(icon, color: iconColor, size: 19),
+              ),
+              if (comingSoon)
+                Positioned(
+                  top: -4,
+                  right: -8,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 4, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF888888),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: const Text('Soon',
+                        style: TextStyle(
+                            fontSize: 7,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700)),
+                  ),
+                ),
+            ]),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  height: 1.25,
+                  color: comingSoon
+                      ? const Color(0xFFAAAAAA)
+                      : const Color(0xFF1A1A1A),
+                ),
+                maxLines: 2,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDiscoverBanner(List<_DiscoverBanner> banners) {
     return Column(
       children: [
         SizedBox(
-          height: 110,
+          height: 84,
           child: PageView.builder(
             controller: _bannerController,
             onPageChanged: (i) => setState(() => _currentBanner = i),
-            itemCount: _banners.length,
+            itemCount: banners.length,
             itemBuilder: (_, i) {
-              final b = _banners[i];
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 2),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: b.imagePath != null
-                      ? Image.asset(b.imagePath!, fit: BoxFit.cover,
-                          width: double.infinity)
-                      : _bannerPlaceholder(b),
+              final b = banners[i];
+              return GestureDetector(
+                onTap: () => _handleBannerTap(i),
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 2),
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: b.color,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Row(children: [
+                    Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(13),
+                      ),
+                      child: Icon(b.icon, color: Colors.white, size: 22),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(b.title,
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white)),
+                          const SizedBox(height: 3),
+                          Text(b.subtitle,
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.white.withOpacity(0.8),
+                                  height: 1.3),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: 26,
+                      height: 26,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.15),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.arrow_forward_ios_rounded,
+                          color: Colors.white, size: 12),
+                    ),
+                  ]),
                 ),
               );
             },
@@ -229,15 +449,15 @@ class _HomeScreenState extends State<HomeScreen> {
         const SizedBox(height: 8),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(_banners.length, (i) {
+          children: List.generate(banners.length, (i) {
             final active = i == _currentBanner;
             return AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               margin: const EdgeInsets.symmetric(horizontal: 3),
-              width: active ? 20 : 6,
-              height: 6,
+              width: active ? 18 : 5,
+              height: 5,
               decoration: BoxDecoration(
-                color: active ? _gold : _gold.withOpacity(0.25),
+                color: active ? _gold : _gold.withOpacity(0.3),
                 borderRadius: BorderRadius.circular(3),
               ),
             );
@@ -247,127 +467,126 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _bannerPlaceholder(_BannerData b) {
+  void _handleBannerTap(int index) {
+    switch (index) {
+      case 0:
+        Navigator.push(context,
+            MaterialPageRoute(builder: (_) => const CalculatorScreen()));
+        break;
+      case 1:
+        Navigator.push(context,
+            MaterialPageRoute(builder: (_) => const ConsumerLoanScreen()));
+        break;
+      case 2:
+        Navigator.push(context,
+            MaterialPageRoute(builder: (_) => const LoanEstimatorScreen()));
+        break;
+    }
+  }
+
+  Widget _buildHistoryCard(AppLocalizations l) {
     return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: b.gradient,
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-        ),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFE8E4DA), width: 0.5),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-      child: Row(children: [
-        Container(
-          width: 44,
-          height: 44,
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Icon(b.icon, color: Colors.white, size: 24),
-        ),
-        const SizedBox(width: 14),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
+      child: Column(
+        children: List.generate(_recentHistory.length, (i) {
+          final h = _recentHistory[i];
+          final isMortgage = h.type == 'mortgage';
+          return Column(
             children: [
-              Text(b.title,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                  )),
-              const SizedBox(height: 4),
-              Text(b.subtitle,
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: Colors.white.withOpacity(0.8),
-                  )),
-            ],
-          ),
-        ),
-        const Icon(Icons.arrow_forward_ios_rounded,
-            color: Colors.white70, size: 14),
-      ]),
-    );
-  }
-
-  // ── Feature Card ──────────────────────────────────────────────
-  Widget _featureCard({
-    required List<Color> gradient,
-    required IconData icon,
-    required String title,
-    required VoidCallback onTap,
-    bool comingSoon = false,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Stack(
-              children: [
-                Container(
-                  width: 52,
-                  height: 52,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: gradient,
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: Icon(icon, color: Colors.white, size: 26),
-                ),
-                if (comingSoon)
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 4, vertical: 2),
+              if (i > 0)
+                Divider(height: 1, thickness: 0.5, color: Colors.grey.shade100),
+              InkWell(
+                onTap: () {
+                  if (isMortgage) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => const CalculatorScreen()));
+                  } else {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => const ConsumerLoanScreen()));
+                  }
+                },
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  child: Row(children: [
+                    Container(
+                      width: 38,
+                      height: 38,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF888888),
-                        borderRadius: BorderRadius.circular(6),
+                        color: isMortgage
+                            ? const Color(0xFFFFF8E1)
+                            : const Color(0xFFE3F2FD),
+                        borderRadius: BorderRadius.circular(11),
                       ),
-                      child: const Text('Soon',
-                          style: TextStyle(
-                              fontSize: 8,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600)),
+                      child: Icon(
+                        isMortgage
+                            ? Icons.home_outlined
+                            : Icons.credit_card_outlined,
+                        color: isMortgage
+                            ? const Color(0xFFF57F17)
+                            : const Color(0xFF1565C0),
+                        size: 19,
+                      ),
                     ),
-                  ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w700,
-                color: comingSoon
-                    ? const Color(0xFFAAAAAA)
-                    : const Color(0xFF1A1A1A),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${_typeLabel(h.type, l)} · ${_methodLabel(h.method, l)}',
+                            style: const TextStyle(
+                                fontSize: 9, color: Color(0xFF888888)),
+                          ),
+                          const SizedBox(height: 1),
+                          Text(
+                            '${_fmtFull(h.amount)}đ',
+                            style: const TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w800,
+                                color: Color(0xFF1A1A1A)),
+                          ),
+                          const SizedBox(height: 1),
+                          Text(
+                            '${((h.floatRate > 0 ? h.floatRate : h.fixedRate) * 100).toStringAsFixed(1)}${l.homePerYear} · ${l.homeMonths(h.termMonths)} · ${_fmtDate(h.createdAt)}',
+                            style: const TextStyle(
+                                fontSize: 8, color: Color(0xFFAAAAAA)),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFE8F5E9),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(mainAxisSize: MainAxisSize.min, children: [
+                        Text(l.homeReview,
+                            style: const TextStyle(
+                                fontSize: 9,
+                                fontWeight: FontWeight.w700,
+                                color: _darkGreen)),
+                        const SizedBox(width: 2),
+                        const Icon(Icons.chevron_right_rounded,
+                            size: 12, color: _darkGreen),
+                      ]),
+                    ),
+                  ]),
+                ),
               ),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-            ),
-          ],
-        ),
+            ],
+          );
+        }),
       ),
     );
   }
 
-  // ── Helpers ───────────────────────────────────────────────────
   Widget _sectionLabel(String text) => Text(
         text,
         style: const TextStyle(
@@ -378,19 +597,16 @@ class _HomeScreenState extends State<HomeScreen> {
       );
 }
 
-// ── Banner Data Model ──────────────────────────────────────────
-class _BannerData {
-  final List<Color> gradient;
+class _DiscoverBanner {
+  final Color color;
   final IconData icon;
   final String title;
   final String subtitle;
-  final String? imagePath;
 
-  const _BannerData({
-    required this.gradient,
+  _DiscoverBanner({
+    required this.color,
     required this.icon,
     required this.title,
     required this.subtitle,
-    this.imagePath,
   });
 }

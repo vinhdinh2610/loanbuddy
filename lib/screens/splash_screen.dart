@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../main.dart';
+import '../l10n/app_localizations.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -164,10 +165,10 @@ class _SplashScreenState extends State<SplashScreen>
                     const SizedBox(height: 12),
 
                     // Slogan
-                    const Text(
-                      'Vay thông minh,\nTương lai vững vàng',
+                    Text(
+                      AppLocalizations.of(context)!.splashSlogan,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         color: Colors.white70,
                         height: 1.6,

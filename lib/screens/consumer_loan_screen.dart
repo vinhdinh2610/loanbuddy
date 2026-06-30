@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../l10n/app_localizations.dart';
 import '../models/database_helper.dart';
 import 'consumer_schedule_screen.dart';
 import 'dart:math' as math;
+import '../widgets/responsive_helper.dart';
 
 class ConsumerLoanScreen extends StatefulWidget {
   const ConsumerLoanScreen({super.key});
@@ -130,6 +132,7 @@ class _ConsumerLoanScreenState extends State<ConsumerLoanScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     final loanPct = _totalAmount > 0 ? _loanAmount / _totalAmount : 1.0;
     final interestPct = _totalAmount > 0 ? _totalInterest / _totalAmount : 0.0;
 
@@ -139,259 +142,263 @@ class _ConsumerLoanScreenState extends State<ConsumerLoanScreen> {
         backgroundColor: const Color(0xFFF8F8F8),
         elevation: 0,
         centerTitle: true,
-title: RichText(
-  text: const TextSpan(
-    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
-    children: [
-      TextSpan(text: 'Loan', style: TextStyle(color: Color(0xFF1B4332))),
-      TextSpan(text: 'Buddy', style: TextStyle(color: Color(0xFFE8A020))),
-    ],
-  ),
-),
+        title: RichText(
+          text: const TextSpan(
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+            children: [
+              TextSpan(text: 'Loan', style: TextStyle(color: Color(0xFF1B4332))),
+              TextSpan(text: 'Buddy', style: TextStyle(color: Color(0xFFE8A020))),
+            ],
+          ),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded,
               color: Color(0xFF1A1A1A)),
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
-        children: [
-          const Text('Vay Tín Chấp',
-              style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xFF1A1A1A))),
-          const SizedBox(height: 16),
+      body: ResponsiveFormWidth(
+        maxWidth: 480,
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
+          children: [
+            Text(l.consumerTitle,
+                style: const TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.w800,
+                    color: Color(0xFF1A1A1A))),
+            const SizedBox(height: 16),
 
-          // Pie chart card
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 10, offset: const Offset(0, 2))],
-            ),
-            child: Column(children: [
-              Row(children: [
-                SizedBox(
-                  width: 150, height: 150,
-                  child: CustomPaint(
-                    painter: _PieChartPainter(
-                      loanPct: loanPct,
-                      interestPct: interestPct,
-                      goldColor: _gold,
-                      navyColor: _navy,
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10, offset: const Offset(0, 2))],
+              ),
+              child: Column(children: [
+                Row(children: [
+                  SizedBox(
+                    width: 150, height: 150,
+                    child: CustomPaint(
+                      painter: _PieChartPainter(
+                        loanPct: loanPct,
+                        interestPct: interestPct,
+                        goldColor: _gold,
+                        navyColor: _navy,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 20),
-                Expanded(child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                  _legendItem(_gold, 'Số tiền vay', _fmtFull(_loanAmount)),
-                  const SizedBox(height: 16),
-                  _legendItem(_navy, 'Tổng lãi', _fmtFull(_totalInterest)),
-                ])),
+                  const SizedBox(width: 20),
+                  Expanded(child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                    _legendItem(_gold, l.consumerLoanAmount, _fmtFull(_loanAmount)),
+                    const SizedBox(height: 16),
+                    _legendItem(_navy, l.consumerTotalInterest, _fmtFull(_totalInterest)),
+                  ])),
+                ]),
+                const SizedBox(height: 16),
+                Divider(color: Colors.grey.shade100),
+                const SizedBox(height: 12),
+                Row(children: [
+                  Expanded(child: Column(children: [
+                    Text(l.consumerMonthlyPayment,
+                        style: const TextStyle(
+                            fontSize: 12, color: Color(0xFF888888))),
+                    const SizedBox(height: 4),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerLeft,
+                      child: Text(_fmtFull(_monthlyPayment),
+                          style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w800,
+                              color: Color(0xFF1A1A1A))),
+                    ),
+                  ])),
+                  Container(
+                      width: 1, height: 40, color: Colors.grey.shade200),
+                  Expanded(child: Column(children: [
+                    Text(l.consumerTotalPayment,
+                        style: const TextStyle(
+                            fontSize: 12, color: Color(0xFF888888))),
+                    const SizedBox(height: 4),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerLeft,
+                      child: Text(_fmtFull(_totalAmount),
+                          style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w800,
+                              color: Color(0xFF1A1A1A))),
+                    ),
+                  ])),
+                ]),
               ]),
-              const SizedBox(height: 16),
-              Divider(color: Colors.grey.shade100),
-              const SizedBox(height: 12),
-              Row(children: [
-                Expanded(child: Column(children: [
-                  const Text('Trả hàng tháng',
-                      style: TextStyle(
-                          fontSize: 12, color: Color(0xFF888888))),
-                  const SizedBox(height: 4),
-                  Text(_fmtFull(_monthlyPayment),
-                      style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xFF1A1A1A))),
-                ])),
-                Container(
-                    width: 1, height: 40, color: Colors.grey.shade200),
-                Expanded(child: Column(children: [
-                  const Text('Tổng thanh toán',
-                      style: TextStyle(
-                          fontSize: 12, color: Color(0xFF888888))),
-                  const SizedBox(height: 4),
-                  Text(_fmtFull(_totalAmount),
-                      style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xFF1A1A1A))),
-                ])),
-              ]),
-            ]),
-          ),
-          const SizedBox(height: 16),
-
-          // Input card
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 10, offset: const Offset(0, 2))],
             ),
-            child: Column(children: [
-              // Số tiền vay — giữ nguyên với slider
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                  const Text('Số tiền vay',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFF1A1A1A))),
-                  SizedBox(
-                    width: 150,
-                    child: TextField(
-                      controller: _amountController,
-                      textAlign: TextAlign.right,
-                      keyboardType: TextInputType.number,
-                      style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFF1A1A1A)),
-                      decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 6),
-                        filled: true,
-                        fillColor: const Color(0xFFF5F5F5),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide.none),
+            const SizedBox(height: 16),
+
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10, offset: const Offset(0, 2))],
+              ),
+              child: Column(children: [
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                    Expanded(child: Text(l.consumerLoanAmount,
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF1A1A1A)))),
+                    Expanded(child: TextField(
+                        controller: _amountController,
+                        textAlign: TextAlign.right,
+                        keyboardType: TextInputType.number,
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF1A1A1A)),
+                        decoration: InputDecoration(
+                          isDense: true,
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 6),
+                          filled: true,
+                          fillColor: const Color(0xFFF5F5F5),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide.none),
+                        ),
+                        onChanged: (v) {
+                          final clean = v.replaceAll(',', '');
+                          final n = double.tryParse(clean);
+                          if (n != null && n >= 5000000 && n <= 2000000000) {
+                            setState(() => _loanAmount = n);
+                            final formatted = _fmtFull(n);
+                            _amountController.value = TextEditingValue(
+                              text: formatted,
+                              selection: TextSelection.collapsed(
+                                  offset: formatted.length),
+                            );
+                          }
+                        },
                       ),
+                    ),
+                  ]),
+                  SliderTheme(
+                    data: _sliderTheme(context),
+                    child: Slider(
+                      value: _loanAmount,
+                      min: 5000000,
+                      max: 2000000000,
+                      divisions: 1995,
                       onChanged: (v) {
-                        final clean = v.replaceAll(',', '');
-                        final n = double.tryParse(clean);
-                        if (n != null && n >= 5000000 && n <= 2000000000) {
-                          setState(() => _loanAmount = n);
-                          final formatted = _fmtFull(n);
-                          _amountController.value = TextEditingValue(
-                            text: formatted,
-                            selection: TextSelection.collapsed(
-                                offset: formatted.length),
-                          );
-                        }
+                        setState(() => _loanAmount = v);
+                        _amountController.text = _fmtFull(v);
                       },
                     ),
                   ),
                 ]),
-                SliderTheme(
-                  data: _sliderTheme(context),
-                  child: Slider(
-                    value: _loanAmount,
-                    min: 5000000,
-                    max: 2000000000,
-                    divisions: 1995,
-                    onChanged: (v) {
-                      setState(() => _loanAmount = v);
-                      _amountController.text = _fmtFull(v);
-                    },
-                  ),
-                ),
-              ]),
 
-              const SizedBox(height: 12),
+                const SizedBox(height: 12),
 
-              // Lãi suất — input tay + slider
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                  const Text('Lãi suất hàng năm',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFF1A1A1A))),
-                  _inputBox(_rateController, '%', isDecimal: true,
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                    Expanded(child: Text(l.consumerAnnualRate,
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF1A1A1A)))),
+                    _inputBox(_rateController, '%', isDecimal: true,
+                        onChanged: (v) {
+                      final n = double.tryParse(v);
+                      if (n != null && n >= 6 && n <= 45) {
+                        setState(() => _annualRate = n);
+                      }
+                    }),
+                  ]),
+                  SliderTheme(
+                    data: _sliderTheme(context),
+                    child: Slider(
+                      value: _annualRate.clamp(6, 45),
+                      min: 6, max: 45, divisions: 78,
                       onChanged: (v) {
-                    final n = double.tryParse(v);
-                    if (n != null && n >= 6 && n <= 45) {
-                      setState(() => _annualRate = n);
-                    }
-                  }),
-                ]),
-                SliderTheme(
-                  data: _sliderTheme(context),
-                  child: Slider(
-                    value: _annualRate.clamp(6, 45),
-                    min: 6, max: 45, divisions: 78,
-                    onChanged: (v) {
-                      setState(() => _annualRate = v);
-                      _rateController.text = v.toStringAsFixed(1);
-                    },
+                        setState(() => _annualRate = v);
+                        _rateController.text = v.toStringAsFixed(1);
+                      },
+                    ),
                   ),
-                ),
-              ]),
+                ]),
 
-              const SizedBox(height: 12),
+                const SizedBox(height: 12),
 
-              // Thời gian vay — input tay + slider
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                  const Text('Thời gian vay',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFF1A1A1A))),
-                  _inputBox(_termController, 'tháng',
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                    Expanded(child: Text(l.consumerTermMonths,
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF1A1A1A)))),
+                    _inputBox(_termController, 'tháng',
+                        onChanged: (v) {
+                      final n = int.tryParse(v);
+                      if (n != null && n >= 3 && n <= 84) {
+                        setState(() => _termMonths = n.toDouble());
+                      }
+                    }),
+                  ]),
+                  SliderTheme(
+                    data: _sliderTheme(context),
+                    child: Slider(
+                      value: _termMonths.clamp(3, 84),
+                      min: 3, max: 84, divisions: 81,
                       onChanged: (v) {
-                    final n = int.tryParse(v);
-                    if (n != null && n >= 3 && n <= 84) {
-                      setState(() => _termMonths = n.toDouble());
-                    }
-                  }),
-                ]),
-                SliderTheme(
-                  data: _sliderTheme(context),
-                  child: Slider(
-                    value: _termMonths.clamp(3, 84),
-                    min: 3, max: 84, divisions: 81,
-                    onChanged: (v) {
-                      setState(() => _termMonths = v);
-                      _termController.text = v.round().toString();
-                    },
+                        setState(() => _termMonths = v);
+                        _termController.text = v.round().toString();
+                      },
+                    ),
                   ),
-                ),
+                ]),
               ]),
-            ]),
-          ),
-          const SizedBox(height: 20),
+            ),
+            const SizedBox(height: 20),
 
-          ElevatedButton(
-            onPressed: _calculate,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: _gold,
-              foregroundColor: const Color(0xFF1B4332),
-              padding: const EdgeInsets.symmetric(vertical: 18),
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50)),
+            ElevatedButton(
+              onPressed: _calculate,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: _gold,
+                foregroundColor: const Color(0xFF1B4332),
+                padding: const EdgeInsets.symmetric(vertical: 18),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50)),
+              ),
+              child: Text(l.consumerScheduleButton,
+                  style: const TextStyle(
+                      fontSize: 17, fontWeight: FontWeight.w800)),
             ),
-            child: const Text('Tính lịch trả nợ',
-                style: TextStyle(
-                    fontSize: 17, fontWeight: FontWeight.w800)),
-          ),
-          const SizedBox(height: 12),
-          const Text(
-            '* Kết quả mang tính tham khảo. Để có quyết định tối ưu, hãy tham khảo thêm chuyên gia tài chính.',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 11,
-              color: Color(0xFF888888),
-              fontStyle: FontStyle.italic,
+            const SizedBox(height: 12),
+            Text(
+              l.resultDisclaimerShort,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 11,
+                color: Color(0xFF888888),
+                fontStyle: FontStyle.italic,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -421,7 +428,7 @@ title: RichText(
 
   SliderThemeData _sliderTheme(BuildContext context) =>
       SliderTheme.of(context).copyWith(
-        activeTrackColor: Color(0xFF1B4332),
+        activeTrackColor: const Color(0xFF1B4332),
         inactiveTrackColor: Colors.grey.shade200,
         thumbColor: _gold,
         overlayColor: _gold.withOpacity(0.1),

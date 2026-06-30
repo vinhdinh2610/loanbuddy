@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../l10n/app_localizations.dart';
 import '../models/loan_model.dart';
 
 class ComparisonScreen extends StatefulWidget {
@@ -77,22 +78,23 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: _bg,
       appBar: AppBar(
-  backgroundColor: const Color(0xFFF8F8F8),
-  elevation: 0,
-  centerTitle: true,
-  title: RichText(
-    text: const TextSpan(
-      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
-      children: [
-        TextSpan(text: 'Loan', style: TextStyle(color: Color(0xFF1B4332))),
-        TextSpan(text: 'Buddy', style: TextStyle(color: Color(0xFFE8A020))),
-      ],
-    ),
-  ),
-  leading: IconButton(
+        backgroundColor: const Color(0xFFF8F8F8),
+        elevation: 0,
+        centerTitle: true,
+        title: RichText(
+          text: const TextSpan(
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+            children: [
+              TextSpan(text: 'Loan', style: TextStyle(color: Color(0xFF1B4332))),
+              TextSpan(text: 'Buddy', style: TextStyle(color: Color(0xFFE8A020))),
+            ],
+          ),
+        ),
+        leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded,
             color: Color(0xFF1A1A1A)),
           onPressed: () => Navigator.pop(context),
@@ -101,25 +103,23 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
         children: [
-          const Text('So Sánh Khoản Vay',
-            style: TextStyle(fontSize: 32, fontWeight: FontWeight.w800,
+          Text(l.comparisonTitle,
+            style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w800,
               color: Color(0xFF1A1A1A))),
           const SizedBox(height: 20),
 
-          // Panels dọc
           ..._options.asMap().entries.map((e) =>
             Padding(
               padding: const EdgeInsets.only(bottom: 12),
-              child: _buildOptionPanel(e.value, e.key),
+              child: _buildOptionPanel(e.value, e.key, l),
             )),
 
-          // Nút thêm phương án
           if (_options.length < 3) ...[
             OutlinedButton.icon(
               onPressed: _addOption,
               icon: const Icon(Icons.add_rounded, color: _gold),
-              label: const Text('Thêm phương án',
-                style: TextStyle(color: _gold, fontWeight: FontWeight.w600)),
+              label: Text(l.comparisonAddOption,
+                style: const TextStyle(color: _gold, fontWeight: FontWeight.w600)),
               style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 minimumSize: const Size(double.infinity, 0),
@@ -130,7 +130,6 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
             const SizedBox(height: 12),
           ],
 
-          // Nút so sánh
           ElevatedButton(
             onPressed: _compare,
             style: ElevatedButton.styleFrom(
@@ -141,14 +140,14 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50)),
             ),
-            child: const Text('So sánh ngay',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
+            child: Text(l.comparisonCompareButton,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
           ),
           const SizedBox(height: 12),
-          const Text(
-            '* Kết quả mang tính tham khảo. Để có quyết định tối ưu, hãy tham khảo thêm chuyên gia tài chính.',
+          Text(
+            l.resultDisclaimerShort,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 11,
               color: Color(0xFF888888),
               fontStyle: FontStyle.italic,
@@ -157,34 +156,33 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
 
           if (_compared && _results.isNotEmpty) ...[
             const SizedBox(height: 24),
-            _buildResults(),
+            _buildResults(l),
           ],
         ],
       ),
     );
   }
 
-  Widget _buildOptionPanel(_LoanOption opt, int idx) => Container(
+  Widget _buildOptionPanel(_LoanOption opt, int idx, AppLocalizations l) => Container(
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(16),
       border: Border(left: BorderSide(color: opt.color, width: 4)),
     ),
     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      // Header
       Padding(
         padding: const EdgeInsets.fromLTRB(14, 14, 12, 0),
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-          Row(children: [
+          Expanded(child: Row(children: [
             Container(width: 10, height: 10,
               decoration: BoxDecoration(color: opt.color,
                 shape: BoxShape.circle)),
             const SizedBox(width: 8),
-            Text('Phương án ${opt.index}',
+            Text(l.comparisonOptionLabel(opt.index),
               style: const TextStyle(fontSize: 15,
                 fontWeight: FontWeight.w700, color: Color(0xFF1A1A1A))),
-          ]),
+          ])),
           if (_options.length > 2)
             GestureDetector(
               onTap: () => _removeOption(idx),
@@ -192,11 +190,10 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
                 color: Color(0xFFCCCCCC), size: 20)),
         ])),
 
-      // Fields
       Padding(
         padding: const EdgeInsets.fromLTRB(12, 10, 12, 14),
         child: Column(children: [
-          _field(opt.amountCtrl, 'Tiền gốc (VNĐ)', isAmount: true,
+          _field(opt.amountCtrl, l.comparisonPrincipal, isAmount: true,
             onChanged: (v) {
               final n = double.tryParse(v.replaceAll(',', ''));
               if (n != null) {
@@ -209,85 +206,85 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
             }),
           const SizedBox(height: 10),
           Row(children: [
-            Expanded(child: _field(opt.fixedRateCtrl, 'Lãi suất cố định (%/năm)',
+            Expanded(child: _field(opt.fixedRateCtrl, l.comparisonFixedRate,
               onChanged: (v) => setState(() =>
                 opt.fixedRate = double.tryParse(v) ?? opt.fixedRate))),
             const SizedBox(width: 10),
-            Expanded(child: _field(opt.fixedPeriodCtrl, 'Thời gian cố định (tháng)',
+            Expanded(child: _field(opt.fixedPeriodCtrl, l.comparisonFixedPeriod,
               isInt: true,
               onChanged: (v) => setState(() =>
                 opt.fixedPeriod = int.tryParse(v) ?? opt.fixedPeriod))),
           ]),
           const SizedBox(height: 10),
           Row(children: [
-            Expanded(child: _field(opt.floatRateCtrl, 'Lãi suất thả nổi (%/năm)',
+            Expanded(child: _field(opt.floatRateCtrl, l.comparisonFloatingRate,
               onChanged: (v) => setState(() =>
                 opt.floatRate = double.tryParse(v) ?? opt.floatRate))),
             const SizedBox(width: 10),
-            Expanded(child: _field(opt.termCtrl, 'Thời hạn vay (tháng)',
+            Expanded(child: _field(opt.termCtrl, l.comparisonTerm,
               isInt: true,
               onChanged: (v) => setState(() =>
                 opt.term = int.tryParse(v) ?? opt.term))),
           ]),
           const SizedBox(height: 10),
-          _field(opt.graceCtrl, 'Ân hạn gốc (tháng)', isInt: true,
+          _field(opt.graceCtrl, l.comparisonGrace, isInt: true,
             onChanged: (v) => setState(() =>
               opt.grace = int.tryParse(v) ?? opt.grace)),
           const SizedBox(height: 12),
           Row(children: [
-            Expanded(child: _methodBtn(opt, 'ep', 'Dư nợ giảm dần')),
+            Expanded(child: _methodBtn(opt, 'ep', l.comparisonMethodDeclining)),
             const SizedBox(width: 10),
-            Expanded(child: _methodBtn(opt, 'ann', 'Trả góp đều')),
+            Expanded(child: _methodBtn(opt, 'ann', l.comparisonMethodEqual)),
           ]),
         ]),
       ),
     ]),
   );
 
- Widget _field(TextEditingController ctrl, String label, {
-  bool isInt = false, bool isAmount = false,
-  Function(String)? onChanged}) =>
-  Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        label,
-        style: const TextStyle(
-          fontSize: 11,
-          fontWeight: FontWeight.w600,
-          color: Color(0xFF888888),
-        ),
-      ),
-      const SizedBox(height: 4),
-      TextField(
-        controller: ctrl,
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: const Color(0xFFF5F0E8),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide.none,
+  Widget _field(TextEditingController ctrl, String label, {
+    bool isInt = false, bool isAmount = false,
+    Function(String)? onChanged}) =>
+    Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF888888),
           ),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 12, vertical: 12),
         ),
-        style: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
-          color: Color(0xFF1A1A1A),
+        const SizedBox(height: 4),
+        TextField(
+          controller: ctrl,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: const Color(0xFFF5F0E8),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide.none,
+            ),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 12, vertical: 12),
+          ),
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: Color(0xFF1A1A1A),
+          ),
+          keyboardType: isInt
+            ? TextInputType.number
+            : const TextInputType.numberWithOptions(decimal: true),
+          inputFormatters: isAmount
+            ? [FilteringTextInputFormatter.allow(RegExp(r'[\d,]'))]
+            : isInt
+              ? [FilteringTextInputFormatter.digitsOnly]
+              : [FilteringTextInputFormatter.allow(RegExp(r'[\d.]'))],
+          onChanged: onChanged,
         ),
-        keyboardType: isInt
-          ? TextInputType.number
-          : const TextInputType.numberWithOptions(decimal: true),
-        inputFormatters: isAmount
-          ? [FilteringTextInputFormatter.allow(RegExp(r'[\d,]'))]
-          : isInt
-            ? [FilteringTextInputFormatter.digitsOnly]
-            : [FilteringTextInputFormatter.allow(RegExp(r'[\d.]'))],
-        onChanged: onChanged,
-      ),
-    ],
-  );
+      ],
+    );
 
   Widget _methodBtn(_LoanOption opt, String val, String label) {
     final selected = opt.method == val;
@@ -310,7 +307,7 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
     );
   }
 
-  Widget _buildResults() {
+  Widget _buildResults(AppLocalizations l) {
     final minTotal = _results
       .map((r) => r.totalAmount)
       .reduce((a, b) => a < b ? a : b);
@@ -319,12 +316,21 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
     final allEqual = bestList.length == _results.length;
 
     final rows = [
-      {'label': 'Tổng gốc', 'key': 'principal'},
-      {'label': 'Tổng lãi', 'key': 'interest'},
-      {'label': 'Mức cao nhất/tháng', 'key': 'maxPay'},
-      {'label': 'Mức thấp nhất/tháng', 'key': 'minPay'},
-      {'label': 'Tổng gốc và lãi', 'key': 'total'},
+      {'label': l.comparisonTotalPrincipal, 'key': 'principal'},
+      {'label': l.comparisonTotalInterest, 'key': 'interest'},
+      {'label': l.comparisonHighestMonthly, 'key': 'maxPay'},
+      {'label': l.comparisonLowestMonthly, 'key': 'minPay'},
+      {'label': l.comparisonTotalPayment, 'key': 'total'},
     ];
+
+    String winnerText;
+    if (allEqual) {
+      winnerText = l.comparisonAllEqual;
+    } else if (bestList.length == 1) {
+      winnerText = l.comparisonBestOption(bestList.first.index);
+    } else {
+      winnerText = l.comparisonAllEqual;
+    }
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Container(
@@ -332,7 +338,6 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(16)),
         child: Column(children: [
-          // Header vàng
           Container(
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             decoration: const BoxDecoration(
@@ -342,7 +347,7 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
               const Expanded(flex: 3,
                 child: Text('', style: TextStyle(fontSize: 12))),
               ..._results.map((r) => Expanded(flex: 2,
-                child: Text('Phương Án ${r.index}',
+                child: Text(l.comparisonResultLabel(r.index),
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 12,
                     fontWeight: FontWeight.w700,
@@ -350,7 +355,6 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
             ]),
           ),
 
-          // Data rows
           ...rows.map((row) => Container(
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             decoration: BoxDecoration(
@@ -388,7 +392,6 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
 
       const SizedBox(height: 12),
 
-      // Winner banner
       Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
@@ -419,11 +422,7 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
           Expanded(child: Column(
             crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(
-              allEqual
-                ? 'Các phương án tiết kiệm bằng nhau'
-                : bestList.length > 1
-                  ? 'Phương án ${bestList.map((r) => r.index).join(" và ")} tiết kiệm bằng nhau'
-                  : 'Phương án ${bestList.first.index} tiết kiệm nhất',
+              winnerText,
               style: TextStyle(fontSize: 14,
                 fontWeight: FontWeight.w700,
                 color: allEqual
@@ -431,7 +430,7 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
                   : bestList.first.color)),
             if (!allEqual)
               Text(
-                'Mức chênh lệch: ${_fmtFull(_results.map((r) => r.totalAmount).reduce((a, b) => a > b ? a : b) - minTotal)} đ',
+                l.comparisonSavingDiff(_fmtFull(_results.map((r) => r.totalAmount).reduce((a, b) => a > b ? a : b) - minTotal)),
                 style: const TextStyle(fontSize: 12,
                   color: Color(0xFF555555))),
           ])),

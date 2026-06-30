@@ -1,16 +1,31 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import '../models/loan_model.dart';
 import 'csv_downloader.dart'
     if (dart.library.html) 'csv_downloader_web.dart'
     if (dart.library.io) 'csv_downloader_mobile.dart';
 
 class CsvExport {
+  // ─── Dùng cho nút "Lưu vào máy" cũ ─────────────────────────────────────
   static Future<void> exportSchedule(
       LoanModel loan, List<LoanPayment> schedule) async {
+    final bytes = await buildBytes(loan, schedule);
+    final filename =
+        'LoanBuddy_LichTraNo_${DateTime.now().millisecondsSinceEpoch}.csv';
+    await CsvDownloader.download(bytes, filename);
+  }
+
+  // ─── Dùng cho Share: trả về raw bytes để ghi file tạm ───────────────────
+  static Future<List<int>> buildBytes(
+      LoanModel loan, List<LoanPayment> schedule) async {
     final totalPrincipal = schedule.fold(0.0, (s, r) => s + r.principal);
-    final totalInterest = schedule.fold(0.0, (s, r) => s + r.interest);
-    final totalPayment = schedule.fold(0.0, (s, r) => s + r.payment);
+    final totalInterest  = schedule.fold(0.0, (s, r) => s + r.interest);
+    final totalPayment   = schedule.fold(0.0, (s, r) => s + r.payment);
+
+    final methodLabel = loan.method == 'ep'
+        ? 'Gốc giảm dần'
+        : loan.method == 'io'
+            ? 'Chỉ trả lãi'
+            : 'Trả góp đều';
 
     final rows = <List<String>>[];
     rows.add(['LOANBUDDY - LỊCH TRẢ NỢ']);
@@ -19,7 +34,7 @@ class CsvExport {
     rows.add(['Thời hạn', '${loan.termMonths} tháng']);
     rows.add(['Lãi suất cố định', '${(loan.fixedRate * 100).toStringAsFixed(2)}%/năm']);
     rows.add(['Lãi suất thả nổi', '${(loan.floatRate * 100).toStringAsFixed(2)}%/năm']);
-    rows.add(['Phương thức', loan.method == 'ep' ? 'Gốc giảm dần' : 'Trả góp đều']);
+    rows.add(['Phương thức', methodLabel]);
     rows.add(['Ngày xuất', _fmtDate(DateTime.now())]);
     rows.add([]);
     rows.add(['Kỳ', 'Tổng trả (đ)', 'Gốc (đ)', 'Lãi (đ)', 'Dư nợ còn lại (đ)']);
@@ -33,19 +48,22 @@ class CsvExport {
       ]);
     }
     rows.add([]);
-    rows.add(['TỔNG CỘNG', totalPayment.round().toString(),
-      totalPrincipal.round().toString(), totalInterest.round().toString(), '0']);
+    rows.add([
+      'TỔNG CỘNG',
+      totalPayment.round().toString(),
+      totalPrincipal.round().toString(),
+      totalInterest.round().toString(),
+      '0',
+    ]);
 
     final csv = rows.map((row) => row.map((cell) {
-      if (cell.contains(',') || cell.contains('\n') || cell.contains('"')) {
-        return '"${cell.replaceAll('"', '""')}"';
-      }
-      return cell;
-    }).join(',')).join('\n');
+          if (cell.contains(',') || cell.contains('\n') || cell.contains('"')) {
+            return '"${cell.replaceAll('"', '""')}"';
+          }
+          return cell;
+        }).join(',')).join('\n');
 
-    final bytes = utf8.encode('\uFEFF$csv');
-    final filename = 'LoanBuddy_LichTraNo_${DateTime.now().millisecondsSinceEpoch}.csv';
-    await CsvDownloader.download(bytes, filename);
+    return utf8.encode('\uFEFF$csv');
   }
 
   static String _fmtFull(double n) {

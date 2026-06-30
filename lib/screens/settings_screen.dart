@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../l10n/app_localizations.dart';
+import '../main.dart';
 import 'feedback_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -13,12 +15,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   static const _bg = Color(0xFFF5F0E8);
   static const _darkGreen = Color(0xFF1B4332);
 
-  String _language = 'vi';
-
-  void _showComingSoon() {
+  void _showComingSoon(AppLocalizations l) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Chức năng đang trong quá trình hoàn thiện'),
+        content: Text(l.featureComingSoon),
         backgroundColor: const Color(0xFF1A1A1A),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -27,7 +27,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  void _showLanguagePicker() {
+  void _showLanguagePicker(AppLocalizations l) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
@@ -42,27 +42,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   color: Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(2))),
           const SizedBox(height: 20),
-          const Text('Chọn ngôn ngữ',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+          Text(l.settingsChooseLanguage,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
           const SizedBox(height: 16),
-          _langOption('vi', '🇻🇳', 'Tiếng Việt'),
-          const SizedBox(height: 10),
-          _langOption('en', '🇬🇧', 'English'),
+          _langOption('vi', '🇻🇳', l.settingsLangVietnamese),
+          const SizedBox(height: 8),
+          _langOption('en', '🇬🇧', l.settingsLangEnglish),
         ]),
       ),
     );
   }
 
   Widget _langOption(String code, String flag, String label) {
-    final selected = _language == code;
+    final currentCode = Localizations.localeOf(context).languageCode;
+    final selected = currentCode == code;
     return GestureDetector(
       onTap: () {
         Navigator.pop(context);
-        if (code != 'vi') {
-          _showComingSoon();
-        } else {
-          setState(() => _language = code);
-        }
+        MortgageApp.of(context)?.setLocale(Locale(code));
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -91,6 +88,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    final currentCode = Localizations.localeOf(context).languageCode;
     return Scaffold(
       backgroundColor: _bg,
       appBar: AppBar(
@@ -100,21 +99,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
         children: [
-          const Text('Cài Đặt',
-              style: TextStyle(
+          Text(l.settingsTitle,
+              style: const TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.w800,
                   color: Color(0xFF1A1A1A))),
           const SizedBox(height: 24),
 
-          // Ngôn ngữ
-          _sectionLabel('Ngôn ngữ'),
+          _sectionLabel(l.settingsLanguage),
           _settingCard(children: [
             _settingRow(
               icon: Icons.language_outlined,
-              label: 'Ngôn ngữ',
+              label: l.settingsLanguage,
               trailing: Row(mainAxisSize: MainAxisSize.min, children: [
-                Text(_language == 'vi' ? 'Tiếng Việt' : 'English',
+                Text(currentCode == 'vi' ? l.settingsLangVietnamese : l.settingsLangEnglish,
                     style: const TextStyle(
                         fontSize: 13,
                         color: _gold,
@@ -122,34 +120,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const SizedBox(width: 4),
                 const Icon(Icons.unfold_more_rounded, color: _gold, size: 16),
               ]),
-              onTap: _showLanguagePicker,
+              onTap: () => _showLanguagePicker(l),
             ),
           ]),
 
           const SizedBox(height: 20),
 
-          // Hỗ trợ
-          _sectionLabel('Hỗ trợ'),
+          _sectionLabel(l.settingsSupport),
           _settingCard(children: [
-            _settingRow(
-              icon: Icons.workspace_premium_outlined,
-              iconColor: _gold,
-              label: 'Nâng cấp Pro',
-              labelColor: _gold,
-              onTap: _showComingSoon,
-            ),
-            _divider(),
             _settingRow(
               icon: Icons.feedback_outlined,
               iconColor: _darkGreen,
-              label: 'Góp ý',
+              label: l.settingsFeedback,
               onTap: () => Navigator.push(context,
                   MaterialPageRoute(builder: (_) => const FeedbackScreen())),
             ),
             _divider(),
             _settingRow(
               icon: Icons.info_outline_rounded,
-              label: 'Giới thiệu ứng dụng',
+              label: l.settingsAbout,
               onTap: () => Navigator.push(context,
                   MaterialPageRoute(builder: (_) => const _AboutScreen())),
             ),
@@ -157,13 +146,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           const SizedBox(height: 20),
 
-          // Pháp lý
-          _sectionLabel('Pháp lý'),
+          _sectionLabel(l.settingsLegal),
           _settingCard(children: [
             _settingRow(
               icon: Icons.privacy_tip_outlined,
               iconColor: _darkGreen,
-              label: 'Chính sách bảo mật',
+              label: l.settingsPrivacyPolicy,
               onTap: () async {
                 final uri = Uri.parse(
                     'https://loanbuddy-privacy.tiiny.site');
@@ -176,7 +164,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             _settingRow(
               icon: Icons.description_outlined,
               iconColor: _darkGreen,
-              label: 'Điều khoản sử dụng',
+              label: l.settingsTermsOfUse,
               onTap: () async {
                 final uri = Uri.parse(
                     'https://doc-hosting.flycricket.io/loanbuddy-terms-of-use/e443fea3-5a2c-4500-a68b-fe19a0aa13f2/terms');
@@ -189,9 +177,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           const SizedBox(height: 20),
 
-          // Phiên bản
           Center(
-            child: Text('LoanBuddy v1.0.0',
+            child: Text(l.appVersion,
                 style: TextStyle(fontSize: 12, color: Colors.grey.shade400)),
           ),
         ],
@@ -267,6 +254,7 @@ class _AboutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: _bg,
       appBar: AppBar(
@@ -316,7 +304,7 @@ class _AboutScreen extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Center(
-            child: Text('Phiên bản 1.0.0',
+            child: Text(l.aboutVersion,
                 style: TextStyle(fontSize: 13, color: Colors.grey.shade500)),
           ),
           const SizedBox(height: 24),
@@ -324,9 +312,9 @@ class _AboutScreen extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(16)),
-            child: const Text(
-              'LoanBuddy giúp bạn tính toán lịch trả nợ, so sánh các khoản vay và đánh giá sức khỏe tài chính một cách thông minh và trực quan.\n\nỨng dụng được thiết kế dành riêng cho thị trường Việt Nam, hỗ trợ cả vay thế chấp lẫn vay tín chấp với đầy đủ các tính năng chuyên nghiệp.',
-              style: TextStyle(
+            child: Text(
+              l.aboutDescription,
+              style: const TextStyle(
                   fontSize: 14, color: Color(0xFF555555), height: 1.6),
             ),
           ),
@@ -336,13 +324,11 @@ class _AboutScreen extends StatelessWidget {
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(16)),
             child: Column(children: [
-              _feature(Icons.home_outlined, 'Tính lãi vay thế chấp'),
-              _feature(Icons.account_balance_wallet_outlined,
-                  'Tính lãi vay tín chấp'),
-              _feature(Icons.compare_arrows_rounded, 'So sánh khoản vay'),
-              _feature(Icons.favorite_outline_rounded,
-                  'Đánh giá sức khỏe tài chính'),
-              _feature(Icons.history_rounded, 'Lưu lịch sử tra cứu'),
+              _feature(context, Icons.home_outlined, l.aboutFeature1),
+              _feature(context, Icons.account_balance_wallet_outlined, l.aboutFeature2),
+              _feature(context, Icons.compare_arrows_rounded, l.aboutFeature3),
+              _feature(context, Icons.favorite_outline_rounded, l.aboutFeature4),
+              _feature(context, Icons.history_rounded, l.aboutFeature5),
             ]),
           ),
         ],
@@ -350,7 +336,7 @@ class _AboutScreen extends StatelessWidget {
     );
   }
 
-  Widget _feature(IconData icon, String label) => Padding(
+  Widget _feature(BuildContext context, IconData icon, String label) => Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Row(children: [
           Container(

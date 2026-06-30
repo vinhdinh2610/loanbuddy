@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../l10n/app_localizations.dart';
 
 class FeedbackScreen extends StatefulWidget {
   const FeedbackScreen({super.key});
@@ -23,10 +24,11 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   }
 
   Future<void> _send() async {
+    final l = AppLocalizations.of(context)!;
     if (_messageCtrl.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Vui lòng nhập nội dung góp ý'),
+          content: Text(l.feedbackValidation),
           backgroundColor: const Color(0xFF1A1A1A),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
@@ -54,9 +56,10 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
         if (mounted) {
           _emailCtrl.clear();
           _messageCtrl.clear();
+          final lm = AppLocalizations.of(context)!;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: const Text('Cảm ơn bạn đã góp ý!'),
+              content: Text(lm.feedbackSuccess),
               backgroundColor: const Color(0xFF4CAF50),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
@@ -67,9 +70,10 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
         }
       } else {
         if (mounted) {
+          final lm = AppLocalizations.of(context)!;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: const Text('Không tìm thấy ứng dụng email'),
+              content: Text(lm.feedbackNoEmail),
               backgroundColor: Colors.red,
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
@@ -81,9 +85,10 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       }
     } catch (e) {
       if (mounted) {
+        final lm = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('Có lỗi xảy ra, vui lòng thử lại'),
+            content: Text(lm.feedbackError),
             backgroundColor: Colors.red,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
@@ -99,6 +104,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: _bg,
       appBar: AppBar(
@@ -115,17 +121,16 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
           children: [
-            const Text('Góp Ý',
-                style: TextStyle(
+            Text(l.feedbackTitle,
+                style: const TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w800,
                     color: Color(0xFF1A1A1A))),
             const SizedBox(height: 4),
-            const Text('Ý kiến của bạn giúp LoanBuddy tốt hơn',
-                style: TextStyle(fontSize: 14, color: Color(0xFF888888))),
+            Text(l.feedbackSubtitle,
+                style: const TextStyle(fontSize: 14, color: Color(0xFF888888))),
             const SizedBox(height: 24),
 
-            // Email field
             Container(
               decoration: BoxDecoration(
                   color: Colors.white,
@@ -133,7 +138,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
               child: TextField(
                 controller: _emailCtrl,
                 decoration: InputDecoration(
-                  hintText: 'Email (không bắt buộc)',
+                  hintText: l.feedbackEmailHint,
                   hintStyle: TextStyle(
                       color: Colors.grey.shade400, fontSize: 14),
                   border: OutlineInputBorder(
@@ -148,7 +153,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             ),
             const SizedBox(height: 10),
 
-            // Message field
             Container(
               decoration: BoxDecoration(
                   color: Colors.white,
@@ -156,7 +160,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
               child: TextField(
                 controller: _messageCtrl,
                 decoration: InputDecoration(
-                  hintText: 'Nội dung góp ý...',
+                  hintText: l.feedbackContentHint,
                   hintStyle: TextStyle(
                       color: Colors.grey.shade400, fontSize: 14),
                   border: OutlineInputBorder(
@@ -171,7 +175,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             ),
             const SizedBox(height: 16),
 
-            // Nút Gửi
             ElevatedButton(
               onPressed: _sending ? null : _send,
               style: ElevatedButton.styleFrom(
@@ -189,16 +192,15 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                       child: CircularProgressIndicator(
                           strokeWidth: 2,
                           color: Color(0xFF1A1A1A)))
-                  : const Text('Gửi',
-                      style: TextStyle(
+                  : Text(l.feedbackButton,
+                      style: const TextStyle(
                           fontSize: 16, fontWeight: FontWeight.w800)),
             ),
             const SizedBox(height: 14),
 
-            // Email hint
             Center(
               child: Text(
-                'Bạn cũng có thể gửi email cho chúng tôi:\nvinhdinh2610@gmail.com',
+                l.feedbackFooter,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 12, color: Colors.grey.shade400),

@@ -1,0 +1,475 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "LoanBuddy",
+  "appSlogan": "Borrow Smart, Build a Strong Future",
+  "appVersion": "LoanBuddy v1.0.0",
+  "appVersionShort": "Version 1.0.0",
+  "resultDisclaimer": "* Results are for reference only and do not constitute investment or financial advice.",
+  "resultDisclaimerShort": "* Results are for reference only.",
+  "fillCompletely": "Enter all fields for accurate results",
+  "cancel": "Cancel",
+  "close": "Close",
+  "delete": "Delete",
+  "send": "Send",
+  "calculate": "Calculate",
+  "export": "Export",
+  "share": "Share",
+  "save": "Save",
+  "featureComingSoon": "This feature is coming soon",
+
+  "navHome": "Home",
+  "navHistory": "History",
+  "navSettings": "Settings",
+
+  "splashSlogan": "Borrow Smart,\nBuild a Strong Future",
+
+  "homeGreeting": "Hello 👋",
+  "homeQuestion": "What would you like\nto calculate today?",
+  "homeSectionLoan": "Loans & Calculations",
+  "homeMortgage": "Mortgage",
+  "homeConsumer": "Personal Loan",
+  "homeComparison": "Compare",
+  "homeSectionManage": "Loan Management",
+  "homeEarlySettlement": "Early\nSettlement",
+  "homeEarlySettlementFull": "Early Settlement",
+  "homeDebtRefinance": "Debt\nRefinancing",
+  "homeDebtRefinanceFull": "Debt Refinancing",
+  "homeSectionPersonal": "Personal Finance",
+  "homeFinancialHealth": "Financial\nHealth",
+  "homeFinancialHealthFull": "Financial Health",
+  "homeRateChecker": "Rate\nChecker",
+  "homeRateCheckerFull": "Rate Checker",
+  "homeExplore": "Explore LoanBuddy",
+  "homeRecentLoans": "Recent Loans",
+  "homeReview": "Review",
+  "homeBannerMortgageTitle": "Mortgage Calculator",
+  "homeBannerMortgageSubtitle": "Plan your home purchase with a detailed repayment schedule",
+  "homeBannerConsumerTitle": "Personal Loan Calculator",
+  "homeBannerConsumerSubtitle": "Quickly estimate your consumer loan payments",
+  "homeBannerHealthTitle": "Financial Health Check",
+  "homeBannerHealthSubtitle": "See how much you can afford to borrow",
+  "homePerYear": "%/yr",
+  "homeMonths": "{months} months",
+  "@homeMonths": {
+    "placeholders": {
+      "months": { "type": "int" }
+    }
+  },
+  "homeLoanTypeMortgage": "Mortgage",
+  "homeLoanTypeConsumer": "Personal Loan",
+  "homeMethodDeclining": "Declining Balance",
+  "homeMethodInterestOnly": "Interest Only",
+  "homeMethodEqual": "Equal Installment",
+
+  "historyTitle": "History",
+  "historyDeleteAll": "Delete All",
+  "historyDeleteAllConfirm": "Delete all history?",
+  "historyDeleteAllMessage": "This action cannot be undone.",
+  "historyDeleteAllButton": "Delete All",
+  "historyEmpty": "No history yet",
+  "historyEmptyHint": "Calculate a loan schedule to save it here",
+  "historyCount": "{count} saved calculations",
+  "@historyCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "historyJustNow": "Just now",
+  "historyMinutesAgo": "{minutes} minutes ago",
+  "@historyMinutesAgo": {
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
+  "historyHoursAgo": "{hours} hours ago",
+  "@historyHoursAgo": {
+    "placeholders": {
+      "hours": { "type": "int" }
+    }
+  },
+  "historyYesterday": "Yesterday",
+  "historyMethodDeclining": "Declining Balance",
+  "historyMethodEqual": "Equal Installment",
+  "historyMethodConsumer": "Personal",
+  "historyTypeMortgage": "Mortgage",
+  "historyTypeConsumer": "Personal Loan",
+  "historyTotalInterest": "Total interest: {amount}",
+  "@historyTotalInterest": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+  "historyPerYear": "%/yr",
+
+  "settingsTitle": "Settings",
+  "settingsLanguage": "Language",
+  "settingsSupport": "Support",
+  "settingsFeedback": "Feedback",
+  "settingsAbout": "About App",
+  "settingsLegal": "Legal",
+  "settingsPrivacyPolicy": "Privacy Policy",
+  "settingsTermsOfUse": "Terms of Use",
+  "settingsChooseLanguage": "Choose Language",
+  "settingsLangVietnamese": "Tiếng Việt",
+  "settingsLangEnglish": "English",
+  "aboutVersion": "Version 1.0.0",
+  "aboutDescription": "LoanBuddy helps you calculate repayment schedules, compare loans, and assess your financial health in a smart and intuitive way.\n\nDesigned specifically for the Vietnamese market, supporting both mortgage and personal loans with a full suite of professional features.",
+  "aboutFeature1": "Mortgage loan calculator",
+  "aboutFeature2": "Personal loan calculator",
+  "aboutFeature3": "Loan comparison",
+  "aboutFeature4": "Financial health assessment",
+  "aboutFeature5": "Save search history",
+
+  "calcMortgageTitle": "Mortgage Loan",
+  "calcLoanInfo": "Loan Information",
+  "calcLoanAmount": "Loan Amount",
+  "calcTermMonths": "Loan Term (months)",
+  "calcFixedRate": "Fixed Interest Rate (%/yr)",
+  "calcFixedPeriod": "Fixed Rate Period (months)",
+  "calcFloatingRate": "Floating Interest Rate (%/yr)",
+  "calcGracePeriod": "Principal Grace Period (months)",
+  "calcPaymentMethod": "Payment Method",
+  "calcMethodDeclining": "Equal Principal, Decreasing Interest",
+  "calcMethodDecliningDesc": "Fixed principal each month, interest decreases",
+  "calcMethodEqual": "Equal Monthly Installments",
+  "calcMethodEqualDesc": "Total monthly payment remains constant",
+  "calcMethodInterestOnly": "Interest Only",
+  "calcMethodInterestOnlyDesc": "Pay interest only each month, repay full principal at end",
+  "calcScheduleButton": "Calculate Schedule",
+  "calcValidatorAmount": "Enter amount",
+  "calcValidatorInvalid": "Invalid",
+  "calcValidatorValue": "Enter value",
+
+  "comparisonTitle": "Loan Comparison",
+  "comparisonAddOption": "Add Option",
+  "comparisonCompareButton": "Compare Now",
+  "comparisonPrincipal": "Principal (VND)",
+  "comparisonFixedRate": "Fixed Rate (%/yr)",
+  "comparisonFixedPeriod": "Fixed Period (months)",
+  "comparisonFloatingRate": "Floating Rate (%/yr)",
+  "comparisonTerm": "Loan Term (months)",
+  "comparisonGrace": "Grace Period (months)",
+  "comparisonMethodDeclining": "Declining Balance",
+  "comparisonMethodEqual": "Equal Installment",
+  "comparisonOptionLabel": "Option {index}",
+  "@comparisonOptionLabel": {
+    "placeholders": {
+      "index": { "type": "int" }
+    }
+  },
+  "comparisonResultLabel": "Option {index}",
+  "@comparisonResultLabel": {
+    "placeholders": {
+      "index": { "type": "int" }
+    }
+  },
+  "comparisonTotalPrincipal": "Total Principal",
+  "comparisonTotalInterest": "Total Interest",
+  "comparisonHighestMonthly": "Highest Monthly",
+  "comparisonLowestMonthly": "Lowest Monthly",
+  "comparisonTotalPayment": "Total Payment",
+  "comparisonAllEqual": "All options save the same",
+  "comparisonBestOption": "Option {index} saves the most",
+  "@comparisonBestOption": {
+    "placeholders": {
+      "index": { "type": "int" }
+    }
+  },
+  "comparisonSavingDiff": "Difference: {amount}đ",
+  "@comparisonSavingDiff": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  },
+
+  "consumerTitle": "Personal Loan",
+  "consumerLoanAmount": "Loan Amount",
+  "consumerTotalInterest": "Total Interest",
+  "consumerMonthlyPayment": "Monthly Payment",
+  "consumerTotalPayment": "Total Payment",
+  "consumerAnnualRate": "Annual Interest Rate",
+  "consumerTermMonths": "Loan Term",
+  "consumerScheduleButton": "Calculate Schedule",
+
+  "estimatorTitle": "Financial Health",
+  "estimatorSubtitle": "Evaluate whether this loan suits you",
+  "estimatorSectionTitle": "Financial health assessment",
+  "estimatorHint": "Enter your information to assess financial health",
+  "estimatorIncome": "Your actual monthly income (VND)",
+  "estimatorExpenses": "Your approximate monthly expenses (VND)",
+  "estimatorExistingDebt": "How much do you currently pay on existing loans per month? (VND)",
+  "estimatorLoanAmount": "Desired loan amount (VND)",
+  "estimatorTermMonths": "Loan term (months)",
+  "estimatorRateNote": "Estimated rate 12%/yr · Equal monthly installments",
+  "estimatorButton": "Assess",
+  "estimatorValidation": "Please enter your income, loan amount, and term (must be greater than 0)",
+  "estimatorResultTitle": "Is this loan suitable for you?",
+  "estimatorExpectedPayment": "Estimated monthly payment",
+  "estimatorPressureLevel": "Financial pressure level",
+  "estimatorRemainingAfter": "After loan payment, you will have left",
+  "estimatorLevelVerySafeLabel": "Very Safe",
+  "estimatorLevelVerySafeMsg": "This loan is completely suitable for your income. You can comfortably repay this loan without significantly affecting your daily life.",
+  "estimatorLevelSafeLabel": "Safe",
+  "estimatorLevelSafeMsg": "This loan is within a safe financial zone. You still have enough room to handle monthly unexpected expenses.",
+  "estimatorLevelConsiderLabel": "Consider Carefully",
+  "estimatorLevelConsiderMsg": "This loan creates some pressure in months with unexpected expenses. You can still borrow but should have an emergency fund of at least 3 months of expenses before deciding.",
+  "estimatorLevelHighPressureLabel": "High Pressure",
+  "estimatorLevelHighPressureMsg": "After the loan payment, the remaining amount is less than half a month of expenses. A small unexpected cost could cause difficulties. Consider reducing the loan amount or extending the term.",
+  "estimatorLevelImbalancedLabel": "Financial Imbalance",
+  "estimatorLevelImbalancedMsg": "Your income is not enough to cover your expenses and this loan. You should reduce the loan amount, extend the term, or increase your income before borrowing.",
+  "estimatorLevelCantBorrowLabel": "Cannot Borrow",
+  "estimatorLevelCantBorrowMsg": "You cannot borrow at this time. The repayment exceeds your entire income.",
+
+  "scheduleTitle": "Results",
+  "scheduleTotalInterest": "Total Interest",
+  "scheduleTotalPayment": "Total Payment",
+  "scheduleHighestPayment": "Highest Payment",
+  "scheduleLowestPayment": "Lowest Payment",
+  "scheduleIncludesPrincipalInterest": "Includes principal and interest",
+  "schedulePeriod": "Period {period}",
+  "@schedulePeriod": {
+    "placeholders": {
+      "period": { "type": "int" }
+    }
+  },
+  "scheduleRateChangeWarning": "After promotional period (period {period}):",
+  "@scheduleRateChangeWarning": {
+    "placeholders": {
+      "period": { "type": "int" }
+    }
+  },
+  "schedulePaymentChange": "Payment {direction}{amount}/month",
+  "@schedulePaymentChange": {
+    "placeholders": {
+      "direction": { "type": "String" },
+      "amount": { "type": "String" }
+    }
+  },
+  "scheduleChangeRate": "Rate change",
+  "scheduleExportFile": "Export",
+  "scheduleExportTitle": "Export schedule",
+  "scheduleChooseFormat": "Choose file format",
+  "scheduleExportPDF": "Export PDF",
+  "scheduleExportPDFDesc": "Beautiful format, easy to share and print",
+  "scheduleExportCSV": "Export CSV",
+  "scheduleExportCSVDesc": "Open with Excel, Google Sheets",
+  "scheduleFileReady": "{type} file ready",
+  "@scheduleFileReady": {
+    "placeholders": {
+      "type": { "type": "String" }
+    }
+  },
+  "scheduleShareAction": "What would you like to do with this file?",
+  "scheduleShareFile": "Share {type} now",
+  "@scheduleShareFile": {
+    "placeholders": {
+      "type": { "type": "String" }
+    }
+  },
+  "scheduleSaveFile": "Save {type} to device",
+  "@scheduleSaveFile": {
+    "placeholders": {
+      "type": { "type": "String" }
+    }
+  },
+  "scheduleShareError": "Share error: {error}",
+  "@scheduleShareError": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "tableColPeriod": "Period",
+  "tableColTotal": "Total",
+  "tableColPrincipal": "Principal",
+  "tableColInterest": "Interest",
+  "tableColBalance": "Balance",
+
+  "consumerScheduleTitle": "Results",
+  "consumerScheduleMonthly": "Monthly Payment",
+  "consumerScheduleTotalPayment": "Total Payment",
+  "consumerScheduleTotalInterest": "Total Interest",
+  "consumerScheduleTerm": "Loan Term",
+  "consumerScheduleFixed": "Fixed each period",
+  "consumerScheduleIncludesPrincipal": "Includes principal and interest",
+  "consumerSchedulePercentOfTotal": "{percent}% of total",
+  "@consumerSchedulePercentOfTotal": {
+    "placeholders": {
+      "percent": { "type": "String" }
+    }
+  },
+  "consumerScheduleYears": "Equivalent to {years} years",
+  "@consumerScheduleYears": {
+    "placeholders": {
+      "years": { "type": "String" }
+    }
+  },
+
+  "rateCheckerTitle": "Loan Rate Checker",
+  "rateCheckerSubtitle": "Estimate the current interest rate on your existing loan",
+  "rateCheckerSectionTitle": "Estimate current rate",
+  "rateCheckerHint": "Enter your current loan details to estimate",
+  "rateCheckerOriginalAmount": "Original loan amount",
+  "rateCheckerStartDate": "Loan start date",
+  "rateCheckerTotalTerm": "Total loan term",
+  "rateCheckerLastPayment": "Most recent payment amount",
+  "rateCheckerMethod": "Interest calculation method",
+  "rateCheckerMethodDeclining": "Declining balance",
+  "rateCheckerMethodEqual": "Equal installment",
+  "rateCheckerMethodInterestOnly": "Interest only",
+  "rateCheckerButton": "Estimate Rate",
+  "rateCheckerValidation": "Please check your input and try again",
+  "rateCheckerNoResult": "Cannot estimate with the provided information. Please check the payment amount or interest method.",
+  "rateCheckerResultHeader": "— Results —",
+  "rateCheckerResultTitle": "Estimated current rate",
+  "rateCheckerResultNote": "Based on remaining balance and current payment amount",
+  "rateCheckerResultDisclaimer": "* This is an estimate, not the official rate from your bank.",
+  "rateCheckerInfoBox": "Results are estimated based on your input and may differ slightly from the official rate applied by your bank.",
+
+  "fullPayoffTitle": "Full Payoff",
+  "fullPayoffSubtitle": "Calculate the cost of paying off your loan early",
+  "fullPayoffSectionTitle": "Loan Information",
+  "fullPayoffOriginalAmount": "Original loan amount",
+  "fullPayoffStartDate": "Loan start date",
+  "fullPayoffTotalTerm": "Total loan term",
+  "fullPayoffMethod": "Interest calculation method",
+  "fullPayoffMethodDeclining": "Declining balance",
+  "fullPayoffMethodEqual": "Equal installment",
+  "fullPayoffGracePeriod": "Initial grace period (if any)",
+  "fullPayoffFixedRate": "Fixed interest rate",
+  "fullPayoffFixedPeriod": "Promotional period",
+  "fullPayoffFloatingRate": "Floating rate (after promotional)",
+  "fullPayoffTargetDate": "Expected payoff date",
+  "fullPayoffPenaltyRate": "Early repayment penalty",
+  "fullPayoffButton": "Calculate Payoff Cost",
+  "fullPayoffValidation": "Please check your input and try again",
+  "fullPayoffNoResult": "Cannot calculate with the provided information. Please check the payoff date, loan term, and grace period.",
+  "fullPayoffResultHeader": "— Results —",
+  "fullPayoffTotalNeeded": "Total amount needed for payoff",
+  "fullPayoffRemainingBalance": "Remaining principal balance",
+  "fullPayoffPenaltyFee": "Early repayment penalty fee",
+  "fullPayoffInterestSaved": "Interest saved (vs. original schedule)",
+  "fullPayoffEarlyMonths": "Debt-free {months} months ({years} years) earlier",
+  "@fullPayoffEarlyMonths": {
+    "placeholders": {
+      "months": { "type": "int" },
+      "years": { "type": "String" }
+    }
+  },
+  "fullPayoffResultDisclaimer": "* Estimated figures, excluding other fees (if any) per bank policy.",
+  "fullPayoffInfoBox": "Actual penalty depends on your contract and payoff year. Please confirm with your bank for accurate figures.",
+
+  "partialTitle": "Partial Prepayment",
+  "partialSubtitle": "Recalculate your schedule when making an extra principal payment",
+  "partialSectionTitle": "Loan Information",
+  "partialExtraDate": "Extra payment date",
+  "partialPenaltyRate": "Early repayment penalty",
+  "partialExtraAmount": "Extra principal payment amount",
+  "partialPriority": "What would you like to prioritize?",
+  "partialPriorityGrace": "Grace period on principal",
+  "partialPriorityReducePayment": "Reduce monthly payment",
+  "partialPriorityShortenTerm": "Shorten loan term",
+  "partialButton": "Recalculate Schedule",
+  "partialValidation": "Please check your input and try again",
+  "partialNoResult": "Cannot calculate with the provided information. Please check extra amount, grace period, and application date.",
+  "partialResultHeader": "— Results —",
+  "partialRemainingBalance": "Balance after extra payment",
+  "partialPenaltyFee": "Early repayment penalty",
+  "partialNewTerm": "New loan term",
+  "partialTermReduced": "Reduced by {months} months",
+  "@partialTermReduced": {
+    "placeholders": {
+      "months": { "type": "int" }
+    }
+  },
+  "partialMonthlyPayment": "Monthly payment",
+  "partialNoChange": "Unchanged",
+  "partialGracePeriods": "Grace periods granted",
+  "partialGraceNote": "Interest only during this period",
+  "partialGracePayment": "Payment during grace period",
+  "partialTermLabel": "Loan term",
+  "partialInterestSaved": "Interest saved",
+  "partialResultDisclaimer": "* Estimated figures. Please consult a financial advisor before deciding.",
+  "partialGraceInfoTitle": "What is a grace period on principal?",
+  "partialGraceInfoBody": "Your extra payment immediately reduces your outstanding balance. LoanBuddy then calculates a number of upcoming periods where you are temporarily exempt from paying principal — during this time you only pay interest on the reduced balance. After the grace period ends, you resume normal principal and interest payments, and the loan still ends on the original schedule.",
+  "partialGraceInfoNote": "Suitable when you want to reduce financial pressure in the short term.",
+  "partialReduceInfoTitle": "What does reducing monthly payment mean?",
+  "partialReduceInfoBody": "Your extra payment immediately reduces your principal balance. The loan term remains unchanged. Since the remaining balance is spread evenly over the remaining term, the principal portion per month will be lower — resulting in a reduced monthly payment.",
+  "partialReduceInfoNote": "Suitable when you want to reduce your ongoing monthly financial burden.",
+  "partialShortenInfoTitle": "What does shortening the loan term mean?",
+  "partialShortenInfoBody": "Your extra payment immediately reduces your principal balance. The monthly payment stays the same, but since the balance is lower, you will pay off the loan sooner than originally scheduled.",
+  "partialShortenInfoNote": "Suitable when you want to save the most interest and become debt-free as soon as possible.",
+
+  "earlySelectTitle": "Settlement Scenarios",
+  "earlySelectSubtitle": "Choose the scenario you want to calculate",
+  "earlySelectFullTitle": "Full payoff",
+  "earlySelectFullDesc": "Pay off the entire remaining balance to end the loan at a specific date",
+  "earlySelectPartialTitle": "Partial prepayment",
+  "earlySelectPartialDesc": "Pay extra on the principal to reduce balance or shorten the term",
+  "earlySelectNote": "Applies to mortgage loans only. Results are for reference.",
+
+  "refinanceTitle": "Debt Refinancing",
+  "refinanceSubtitle": "Compare your current loan with a new loan to decide whether to refinance",
+  "refinanceCurrentLoan": "Current loan",
+  "refinanceCurrentLoanInfo": "Information from your current bank",
+  "refinanceRemainingBalance": "Remaining balance (VND)",
+  "refinanceRemainingTerm": "Remaining term",
+  "refinanceCurrentRate": "Current rate",
+  "refinancePrepaymentFee": "Early repayment fee",
+  "refinancePaymentMethod": "Payment method",
+  "refinanceMethodDeclining": "Equal principal",
+  "refinanceMethodEqual": "Equal installment",
+  "refinanceNewLoan": "Planned new loan",
+  "refinanceNewLoanInfo": "Bank you want to refinance with",
+  "refinanceNewAmount": "New loan amount",
+  "refinanceNewTerm": "New loan term",
+  "refinanceFixedRate": "Fixed interest rate",
+  "refinancePromoTerm": "Promotional period",
+  "refinanceFloatingRate": "Floating rate",
+  "refinanceProcessingFee": "Processing fee",
+  "refinanceButton": "Analyze Refinancing",
+  "refinanceValidation": "Please enter all required fields for both loans (must be greater than 0)",
+  "refinanceResultHeader": "— Results —",
+  "refinanceTotalCost": "Total refinancing cost",
+  "refinanceBreakevenMonths": "Breakeven period",
+  "refinanceBreakevenValue": "{months} months",
+  "@refinanceBreakevenValue": {
+    "placeholders": {
+      "months": { "type": "int" }
+    }
+  },
+  "refinanceNoBreakeven": "No breakeven",
+  "refinanceInterestSavedPromo": "Interest saved during promotional period",
+  "refinanceInterestSavedTotal": "Interest saved over loan term",
+  "refinanceInterestSavedMonthly": "Average monthly interest savings",
+  "refinanceNoResult": "Cannot analyze with the provided information. Please check all required fields.",
+  "refinanceResultDisclaimer": "* Savings over loan term calculated over the full new loan term. Estimated figures.",
+
+  "feedbackTitle": "Feedback",
+  "feedbackSubtitle": "Your feedback helps improve LoanBuddy",
+  "feedbackEmailHint": "Email (optional)",
+  "feedbackContentHint": "Your feedback...",
+  "feedbackButton": "Send",
+  "feedbackFooter": "You can also email us at:\nvinhdinh2610@gmail.com",
+  "feedbackValidation": "Please enter your feedback",
+  "feedbackSuccess": "Thank you for your feedback!",
+  "feedbackNoEmail": "No email app found",
+  "feedbackError": "An error occurred, please try again",
+
+  "drawerSlogan": "Borrow Smart, Build a Strong Future",
+  "drawerHome": "Home",
+  "drawerHistory": "Search History",
+  "drawerSettings": "Settings",
+  "drawerFeedback": "Feedback",
+  "drawerPrivacyPolicy": "Privacy Policy",
+  "drawerTermsOfUse": "Terms of Use",
+
+  "unitMonths": "months",
+  "partialInfoBox": "Actual penalty depends on your contract and year of prepayment. Please confirm with your bank.",
+  "partialPaymentReduced": "Reduced by {amount}/month",
+  "@partialPaymentReduced": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  }
+}
