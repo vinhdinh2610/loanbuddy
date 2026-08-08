@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/responsive_helper.dart';
+import '../widgets/ad_banner_widget.dart';
 
 class RateCheckerScreen extends StatefulWidget {
   const RateCheckerScreen({super.key});
@@ -432,6 +433,8 @@ class _RateCheckerScreenState extends State<RateCheckerScreen> {
           style: const TextStyle(
               fontSize: 10, color: Color(0xFFAAAAAA))),
       const SizedBox(height: 10),
+      const Center(child: AdBannerWidget()),
+      const SizedBox(height: 16),
       Container(
         width: double.infinity,
         padding: const EdgeInsets.all(18),

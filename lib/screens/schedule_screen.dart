@@ -4,6 +4,8 @@ import '../models/loan_model.dart';
 import '../models/pdf_export.dart';
 import '../models/csv_export.dart';
 import '../models/share_export.dart';
+import '../models/ad_service.dart';
+import '../widgets/ad_banner_widget.dart';
 
 class ScheduleScreen extends StatefulWidget {
   final LoanModel loan;
@@ -18,10 +20,14 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   static const _green = Color(0xFF1B4332);
   static const _bg = Color(0xFFF5F0E8);
 
+  static const int _freeScheduleLimit = 36;
+  bool _scheduleUnlocked = true;
+
   @override
   void initState() {
     super.initState();
     _schedule = widget.loan.buildSchedule();
+    _scheduleUnlocked = _schedule.length <= _freeScheduleLimit;
   }
 
   String _fmt(double n) {
@@ -76,7 +82,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 sub: lc.scheduleExportPDFDesc,
                 onTap: () {
                   Navigator.pop(context);
-                  _handleExport(isPdf: true);
+                  _showWatchAdToExport(isPdf: true);
                 },
               ),
               const SizedBox(height: 10),
@@ -88,13 +94,170 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 sub: lc.scheduleExportCSVDesc,
                 onTap: () {
                   Navigator.pop(context);
-                  _handleExport(isPdf: false);
+                  _showWatchAdToExport(isPdf: false);
                 },
               ),
             ]),
           ),
         );
       },
+    );
+  }
+
+  void _showWatchAdToExport({required bool isPdf}) {
+    final typeName = isPdf ? 'PDF' : 'CSV';
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+      builder: (ctx) {
+        final lc = AppLocalizations.of(ctx)!;
+        return SafeArea(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.fromLTRB(
+              16, 12, 16, 16 + MediaQuery.of(ctx).viewInsets.bottom),
+            child: Column(mainAxisSize: MainAxisSize.min, children: [
+              Container(
+                  width: 40, height: 4,
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(2))),
+              const SizedBox(height: 20),
+              Container(
+                width: 56, height: 56,
+                decoration: BoxDecoration(
+                    color: _gold.withOpacity(0.12), shape: BoxShape.circle),
+                child: const Icon(Icons.play_circle_outline_rounded,
+                    color: _gold, size: 28),
+              ),
+              const SizedBox(height: 16),
+              Text(lc.adExportTitle(typeName),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w700)),
+              const SizedBox(height: 6),
+              Text(lc.adExportHint,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontSize: 12, color: Color(0xFF888888))),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    _watchAdThenExport(isPdf: isPdf);
+                  },
+                  icon: const Icon(Icons.play_arrow_rounded, size: 18),
+                  label: Text(lc.adExportButton,
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w700)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: _gold,
+                    foregroundColor: _green,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14)),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton(
+                  onPressed: () => Navigator.pop(context),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    side: const BorderSide(color: Color(0xFFE0E0E0)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14)),
+                  ),
+                  child: Text(lc.cancel,
+                      style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF888888))),
+                ),
+              ),
+            ]),
+          ),
+        );
+      },
+    );
+  }
+
+  void _watchAdThenExport({required bool isPdf}) {
+    AdService.showRewarded(
+      context: context,
+      onRewarded: () => _handleExport(isPdf: isPdf),
+      onFailed: () {
+        if (!mounted) return;
+        final l = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(l.adLoadFailed)));
+      },
+    );
+  }
+
+  void _watchAdToUnlockSchedule() {
+    AdService.showRewarded(
+      context: context,
+      onRewarded: () {
+        if (mounted) setState(() => _scheduleUnlocked = true);
+      },
+      onFailed: () {
+        if (!mounted) return;
+        final l = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(l.adLoadFailed)));
+      },
+    );
+  }
+
+  Widget _buildScheduleLock(AppLocalizations l) {
+    final remaining = _schedule.length - _freeScheduleLimit;
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 20),
+      decoration: BoxDecoration(
+        border: Border(top: BorderSide(color: Colors.grey.shade100, width: 1)),
+      ),
+      child: Column(children: [
+        Container(
+          width: 56, height: 56,
+          decoration: BoxDecoration(
+              color: _gold.withOpacity(0.12), shape: BoxShape.circle),
+          child: const Icon(Icons.lock_outline_rounded,
+              color: _gold, size: 28),
+        ),
+        const SizedBox(height: 12),
+        Text(l.adScheduleLockRemaining(remaining),
+            style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                color: Color(0xFF1A1A1A))),
+        const SizedBox(height: 4),
+        Text(l.adScheduleLockHint,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 12, color: Color(0xFF888888))),
+        const SizedBox(height: 16),
+        ElevatedButton.icon(
+          onPressed: _watchAdToUnlockSchedule,
+          icon: const Icon(Icons.play_circle_outline_rounded, size: 18),
+          label: Text(l.adScheduleLockButton,
+              style: const TextStyle(
+                  fontSize: 13, fontWeight: FontWeight.w700)),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: _gold,
+            foregroundColor: _green,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            elevation: 0,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+          ),
+        ),
+      ]),
     );
   }
 
@@ -485,6 +648,8 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               ]),
             ),
           const SizedBox(height: 12),
+          const Center(child: AdBannerWidget()),
+          const SizedBox(height: 16),
 
           Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -520,8 +685,19 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: _schedule.length,
-                itemBuilder: (_, i) => _tableRow(_schedule[i]),
+                itemCount: _scheduleUnlocked
+                    ? _schedule.length
+                    : (_schedule.length > _freeScheduleLimit
+                        ? _freeScheduleLimit + 1
+                        : _schedule.length),
+                itemBuilder: (_, i) {
+                  if (!_scheduleUnlocked &&
+                      _schedule.length > _freeScheduleLimit &&
+                      i == _freeScheduleLimit) {
+                    return _buildScheduleLock(l);
+                  }
+                  return _tableRow(_schedule[i]);
+                },
               ),
             ]),
           ),

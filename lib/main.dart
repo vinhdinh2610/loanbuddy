@@ -7,8 +7,16 @@ import 'screens/splash_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/history_screen.dart';
 import 'screens/settings_screen.dart';
+import 'screens/onboarding/onboarding_flow.dart';
+import 'models/ad_service.dart';
+
+const _onboardingCompleteKey = 'onboarding_complete';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Không await: khởi tạo AdMob chạy song song trong lúc splash hiện lên,
+  // không trì hoãn khung hình đầu tiên của app.
+  AdService.initialize();
   runApp(
     DevicePreview(
       enabled: false,
@@ -72,8 +80,54 @@ class MortgageAppState extends State<MortgageApp> {
         scaffoldBackgroundColor: const Color(0xFFF5F0E8),
         useMaterial3: true,
       ),
-      home: const SplashScreen(),
+      home: const AppRoot(),
     );
+  }
+}
+
+/// Quyết định hiện Onboarding (lần đầu mở app) hay vào luồng bình thường
+/// (SplashScreen -> MainScreen) nếu user đã xem onboarding rồi.
+class AppRoot extends StatefulWidget {
+  const AppRoot({super.key});
+
+  @override
+  State<AppRoot> createState() => _AppRootState();
+}
+
+class _AppRootState extends State<AppRoot> {
+  bool? _onboardingComplete;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkOnboardingStatus();
+  }
+
+  Future<void> _checkOnboardingStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _onboardingComplete = prefs.getBool(_onboardingCompleteKey) ?? false;
+    });
+  }
+
+  Future<void> _completeOnboarding() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_onboardingCompleteKey, true);
+    if (!mounted) return;
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (_) => const SplashScreen()),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_onboardingComplete == null) {
+      return const Scaffold(body: SizedBox.shrink());
+    }
+    if (_onboardingComplete == false) {
+      return OnboardingFlow(onFinished: _completeOnboarding);
+    }
+    return const SplashScreen();
   }
 }
 

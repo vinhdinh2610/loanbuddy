@@ -180,70 +180,7 @@ class _SplashScreenState extends State<SplashScreen>
               ),
             ),
           ),
-
-          // Loading dot phía dưới
-          Positioned(
-            bottom: 60,
-            left: 0,
-            right: 0,
-            child: FadeTransition(
-              opacity: _fadeAnim,
-              child: const Column(
-                children: [
-                  _PulsingDot(),
-                ],
-              ),
-            ),
-          ),
         ],
-      ),
-    );
-  }
-}
-
-// Loading dot nhỏ nhấp nháy
-class _PulsingDot extends StatefulWidget {
-  const _PulsingDot();
-
-  @override
-  State<_PulsingDot> createState() => _PulsingDotState();
-}
-
-class _PulsingDotState extends State<_PulsingDot>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _ctrl;
-  late Animation<double> _anim;
-
-  @override
-  void initState() {
-    super.initState();
-    _ctrl = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 900),
-    )..repeat(reverse: true);
-    _anim = Tween<double>(begin: 0.3, end: 1.0).animate(
-      CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut),
-    );
-  }
-
-  @override
-  void dispose() {
-    _ctrl.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _anim,
-      child: Container(
-        width: 8,
-        height: 8,
-        margin: const EdgeInsets.symmetric(horizontal: 3),
-        decoration: const BoxDecoration(
-          color: Color(0xFFE8A020),
-          shape: BoxShape.circle,
-        ),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../l10n/app_localizations.dart';
 import '../models/loan_model.dart';
+import '../widgets/ad_banner_widget.dart';
 
 class ComparisonScreen extends StatefulWidget {
   const ComparisonScreen({super.key});
@@ -156,6 +157,8 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
 
           if (_compared && _results.isNotEmpty) ...[
             const SizedBox(height: 24),
+            const Center(child: AdBannerWidget()),
+            const SizedBox(height: 16),
             _buildResults(l),
           ],
         ],

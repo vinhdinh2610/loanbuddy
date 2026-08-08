@@ -1220,6 +1220,48 @@ abstract class AppLocalizations {
   /// **'Lỗi chia sẻ: {error}'**
   String scheduleShareError(String error);
 
+  /// No description provided for @adLoadFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tải được quảng cáo, vui lòng thử lại sau.'**
+  String get adLoadFailed;
+
+  /// No description provided for @adScheduleLockRemaining.
+  ///
+  /// In vi, this message translates to:
+  /// **'Còn {count} kỳ trả nợ nữa'**
+  String adScheduleLockRemaining(int count);
+
+  /// No description provided for @adScheduleLockHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem quảng cáo ngắn để xem toàn bộ lịch trả nợ'**
+  String get adScheduleLockHint;
+
+  /// No description provided for @adScheduleLockButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem quảng cáo để xem tiếp'**
+  String get adScheduleLockButton;
+
+  /// No description provided for @adExportTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem quảng cáo để xuất file {type}'**
+  String adExportTitle(String type);
+
+  /// No description provided for @adExportHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quảng cáo ngắn khoảng 15-30 giây, không watermark khi xuất xong.'**
+  String get adExportHint;
+
+  /// No description provided for @adExportButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem quảng cáo'**
+  String get adExportButton;
+
   /// No description provided for @tableColPeriod.
   ///
   /// In vi, this message translates to:
@@ -2125,6 +2167,18 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'tháng'**
   String get unitMonths;
+
+  /// No description provided for @unitBillion.
+  ///
+  /// In vi, this message translates to:
+  /// **'tỷ'**
+  String get unitBillion;
+
+  /// No description provided for @unitMillion.
+  ///
+  /// In vi, this message translates to:
+  /// **'triệu'**
+  String get unitMillion;
 
   /// No description provided for @partialInfoBox.
   ///

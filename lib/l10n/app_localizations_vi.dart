@@ -618,6 +618,33 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get adLoadFailed => 'Không tải được quảng cáo, vui lòng thử lại sau.';
+
+  @override
+  String adScheduleLockRemaining(int count) {
+    return 'Còn $count kỳ trả nợ nữa';
+  }
+
+  @override
+  String get adScheduleLockHint =>
+      'Xem quảng cáo ngắn để xem toàn bộ lịch trả nợ';
+
+  @override
+  String get adScheduleLockButton => 'Xem quảng cáo để xem tiếp';
+
+  @override
+  String adExportTitle(String type) {
+    return 'Xem quảng cáo để xuất file $type';
+  }
+
+  @override
+  String get adExportHint =>
+      'Quảng cáo ngắn khoảng 15-30 giây, không watermark khi xuất xong.';
+
+  @override
+  String get adExportButton => 'Xem quảng cáo';
+
+  @override
   String get tableColPeriod => 'Kỳ';
 
   @override

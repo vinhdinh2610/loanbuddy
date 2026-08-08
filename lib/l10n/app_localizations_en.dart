@@ -162,7 +162,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeLoanTypeConsumer => 'Personal Loan';
 
   @override
-  String get homeMethodDeclining => 'Declining Balance';
+  String get homeMethodDeclining => 'Equal Principal';
 
   @override
   String get homeMethodInterestOnly => 'Interest Only';
@@ -318,14 +318,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get calcPaymentMethod => 'Payment Method';
 
   @override
-  String get calcMethodDeclining => 'Equal Principal, Decreasing Interest';
+  String get calcMethodDeclining => 'Equal Principal';
 
   @override
   String get calcMethodDecliningDesc =>
       'Fixed principal each month, interest decreases';
 
   @override
-  String get calcMethodEqual => 'Equal Monthly Installments';
+  String get calcMethodEqual => 'Equal Installment';
 
   @override
   String get calcMethodEqualDesc => 'Total monthly payment remains constant';
@@ -338,7 +338,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Pay interest only each month, repay full principal at end';
 
   @override
-  String get calcScheduleButton => 'Calculate Schedule';
+  String get calcScheduleButton => 'Calculate';
 
   @override
   String get calcValidatorAmount => 'Enter amount';
@@ -359,7 +359,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get comparisonCompareButton => 'Compare Now';
 
   @override
-  String get comparisonPrincipal => 'Principal (VND)';
+  String get comparisonPrincipal => 'Loan Amount';
 
   @override
   String get comparisonFixedRate => 'Fixed Rate (%/yr)';
@@ -377,7 +377,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get comparisonGrace => 'Grace Period (months)';
 
   @override
-  String get comparisonMethodDeclining => 'Declining Balance';
+  String get comparisonMethodDeclining => 'Equal Principal';
 
   @override
   String get comparisonMethodEqual => 'Equal Installment';
@@ -458,24 +458,24 @@ class AppLocalizationsEn extends AppLocalizations {
       'Enter your information to assess financial health';
 
   @override
-  String get estimatorIncome => 'Your actual monthly income (VND)';
+  String get estimatorIncome => 'Your actual monthly income)';
 
   @override
-  String get estimatorExpenses => 'Your approximate monthly expenses (VND)';
+  String get estimatorExpenses => 'Your approximate monthly expenses';
 
   @override
   String get estimatorExistingDebt =>
-      'How much do you currently pay on existing loans per month? (VND)';
+      'How much do you currently pay on existing loans per month?';
 
   @override
-  String get estimatorLoanAmount => 'Desired loan amount (VND)';
+  String get estimatorLoanAmount => 'Desired loan amount';
 
   @override
   String get estimatorTermMonths => 'Loan term (months)';
 
   @override
   String get estimatorRateNote =>
-      'Estimated rate 12%/yr · Equal monthly installments';
+      'Estimated rate 12%/yr · Equal monthly installment';
 
   @override
   String get estimatorButton => 'Assess';
@@ -622,6 +622,33 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get adLoadFailed => 'Couldn\'t load the ad, please try again.';
+
+  @override
+  String adScheduleLockRemaining(int count) {
+    return '$count more payment periods';
+  }
+
+  @override
+  String get adScheduleLockHint =>
+      'Watch a short ad to see the full repayment schedule';
+
+  @override
+  String get adScheduleLockButton => 'Watch ad to continue';
+
+  @override
+  String adExportTitle(String type) {
+    return 'Watch an ad to export $type';
+  }
+
+  @override
+  String get adExportHint =>
+      'Short ad, about 15-30 seconds. No watermark after export.';
+
+  @override
+  String get adExportButton => 'Watch ad';
+
+  @override
   String get tableColPeriod => 'Period';
 
   @override
@@ -697,7 +724,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rateCheckerMethod => 'Interest calculation method';
 
   @override
-  String get rateCheckerMethodDeclining => 'Declining balance';
+  String get rateCheckerMethodDeclining => 'Equal Principal';
 
   @override
   String get rateCheckerMethodEqual => 'Equal installment';
@@ -756,7 +783,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fullPayoffMethod => 'Interest calculation method';
 
   @override
-  String get fullPayoffMethodDeclining => 'Declining balance';
+  String get fullPayoffMethodDeclining => 'Equal Principal';
 
   @override
   String get fullPayoffMethodEqual => 'Equal installment';
@@ -768,16 +795,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fullPayoffFixedRate => 'Fixed interest rate';
 
   @override
-  String get fullPayoffFixedPeriod => 'Promotional period';
+  String get fullPayoffFixedPeriod => 'Fixed period';
 
   @override
-  String get fullPayoffFloatingRate => 'Floating rate (after promotional)';
+  String get fullPayoffFloatingRate => 'Floating rate (after fixed period)';
 
   @override
   String get fullPayoffTargetDate => 'Expected payoff date';
 
   @override
-  String get fullPayoffPenaltyRate => 'Early repayment penalty';
+  String get fullPayoffPenaltyRate => 'Early repayment fee';
 
   @override
   String get fullPayoffButton => 'Calculate';
@@ -943,7 +970,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get earlySelectSubtitle => 'Choose the scenario you want to calculate';
 
   @override
-  String get earlySelectFullTitle => 'Full payoff';
+  String get earlySelectFullTitle => 'Full Prepayment';
 
   @override
   String get earlySelectFullDesc =>
@@ -961,7 +988,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Applies to mortgage loans only. Results are for reference.';
 
   @override
-  String get refinanceTitle => 'Debt Refinancing';
+  String get refinanceTitle => 'Refinance Calculation';
 
   @override
   String get refinanceSubtitle =>
@@ -974,7 +1001,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get refinanceCurrentLoanInfo => 'Information from your current bank';
 
   @override
-  String get refinanceRemainingBalance => 'Remaining balance (VND)';
+  String get refinanceRemainingBalance => 'Remaining balance';
 
   @override
   String get refinanceRemainingTerm => 'Remaining term';
@@ -995,7 +1022,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get refinanceMethodEqual => 'Equal installment';
 
   @override
-  String get refinanceNewLoan => 'Planned new loan';
+  String get refinanceNewLoan => 'New loan';
 
   @override
   String get refinanceNewLoanInfo => 'Bank you want to refinance with';
@@ -1010,7 +1037,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get refinanceFixedRate => 'Fixed interest rate';
 
   @override
-  String get refinancePromoTerm => 'Promotional period';
+  String get refinancePromoTerm => 'Fixed period';
 
   @override
   String get refinanceFloatingRate => 'Floating rate';
@@ -1019,7 +1046,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get refinanceProcessingFee => 'Processing fee';
 
   @override
-  String get refinanceButton => 'Analyze Refinancing';
+  String get refinanceButton => 'Calculation';
 
   @override
   String get refinanceValidation =>

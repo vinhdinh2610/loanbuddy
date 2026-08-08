@@ -279,6 +279,23 @@
       "error": { "type": "String" }
     }
   },
+  "adLoadFailed": "Không tải được quảng cáo, vui lòng thử lại sau.",
+  "adScheduleLockRemaining": "Còn {count} kỳ trả nợ nữa",
+  "@adScheduleLockRemaining": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "adScheduleLockHint": "Xem quảng cáo ngắn để xem toàn bộ lịch trả nợ",
+  "adScheduleLockButton": "Xem quảng cáo để xem tiếp",
+  "adExportTitle": "Xem quảng cáo để xuất file {type}",
+  "@adExportTitle": {
+    "placeholders": {
+      "type": { "type": "String" }
+    }
+  },
+  "adExportHint": "Quảng cáo ngắn khoảng 15-30 giây, không watermark khi xuất xong.",
+  "adExportButton": "Xem quảng cáo",
   "tableColPeriod": "Kỳ",
   "tableColTotal": "Tổng trả",
   "tableColPrincipal": "Gốc",

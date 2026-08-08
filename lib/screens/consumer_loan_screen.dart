@@ -5,6 +5,7 @@ import '../models/database_helper.dart';
 import 'consumer_schedule_screen.dart';
 import 'dart:math' as math;
 import '../widgets/responsive_helper.dart';
+import '../widgets/ad_banner_widget.dart';
 
 class ConsumerLoanScreen extends StatefulWidget {
   const ConsumerLoanScreen({super.key});
@@ -239,6 +240,8 @@ class _ConsumerLoanScreenState extends State<ConsumerLoanScreen> {
                 ]),
               ]),
             ),
+            const SizedBox(height: 16),
+            const Center(child: AdBannerWidget()),
             const SizedBox(height: 16),
 
             Container(

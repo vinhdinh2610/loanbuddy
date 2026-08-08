@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'dart:math';
 import '../l10n/app_localizations.dart';
 import '../widgets/responsive_helper.dart';
+import '../widgets/ad_banner_widget.dart';
 
 class LoanEstimatorScreen extends StatefulWidget {
   const LoanEstimatorScreen({super.key});
@@ -461,6 +462,8 @@ class _LoanEstimatorScreenState extends State<LoanEstimatorScreen> {
                     ),
                     if (_showResult) ...[
                       const SizedBox(height: 14),
+                      const Center(child: AdBannerWidget()),
+                      const SizedBox(height: 16),
                       _buildResult(),
                     ],
                   ]),
