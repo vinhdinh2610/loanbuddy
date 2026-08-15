@@ -113,6 +113,9 @@ class _AppRootState extends State<AppRoot> {
   Future<void> _completeOnboarding() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_onboardingCompleteKey, true);
+    // Xin quyền App Tracking Transparency ngay sau khi user hoàn tất
+    // Onboarding (chỉ có tác dụng trên iOS, Android tự bỏ qua).
+    await AdService.requestTrackingAuthorization();
     if (!mounted) return;
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (_) => const SplashScreen()),

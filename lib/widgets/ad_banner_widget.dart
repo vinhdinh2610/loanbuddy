@@ -39,7 +39,7 @@ class _AdBannerWidgetState extends State<AdBannerWidget> {
     if (size == null || !mounted) return;
 
     _bannerAd = BannerAd(
-      adUnitId: AdService.testBannerAndroid,
+      adUnitId: AdService.bannerAdUnitId,
       size: size,
       request: const AdRequest(),
       listener: BannerAdListener(
