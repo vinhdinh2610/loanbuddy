@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/responsive_helper.dart';
 import '../widgets/ad_banner_widget.dart';
+import '../widgets/thousands_formatter.dart';
 
 class DebtRefinanceScreen extends StatefulWidget {
   const DebtRefinanceScreen({super.key});
@@ -62,16 +63,6 @@ class _DebtRefinanceScreenState extends State<DebtRefinanceScreen> {
       buf.write(s[i]);
     }
     return buf.toString();
-  }
-
-  void _handleAmountInput(TextEditingController ctrl, String v) {
-    final clean = v.replaceAll(',', '');
-    final n = double.tryParse(clean);
-    if (n != null) {
-      final fmt = _fmtFull(n);
-      ctrl.value = TextEditingValue(
-          text: fmt, selection: TextSelection.collapsed(offset: fmt.length));
-    }
   }
 
   double _parseAmount(String v) => double.tryParse(v.replaceAll(',', '')) ?? 0;
@@ -230,7 +221,7 @@ class _DebtRefinanceScreenState extends State<DebtRefinanceScreen> {
         centerTitle: true,
         title: RichText(
           text: const TextSpan(
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+            style: TextStyle(fontSize: 19, fontWeight: FontWeight.w800),
             children: [
               TextSpan(text: 'Loan', style: TextStyle(color: Color(0xFF1B4332))),
               TextSpan(text: 'Buddy', style: TextStyle(color: Color(0xFFE8A020))),
@@ -243,7 +234,10 @@ class _DebtRefinanceScreenState extends State<DebtRefinanceScreen> {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: ResponsiveFormWidth(
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        behavior: HitTestBehavior.opaque,
+        child: ResponsiveFormWidth(
         maxWidth: 480,
         child: ListView(
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
@@ -255,7 +249,7 @@ class _DebtRefinanceScreenState extends State<DebtRefinanceScreen> {
                   color: Color(0xFF1A1A1A))),
           const SizedBox(height: 4),
           Text(l.refinanceSubtitle,
-              style: const TextStyle(fontSize: 14, color: Color(0xFF888888))),
+              style: const TextStyle(fontSize: 16, color: Color(0xFF888888))),
           const SizedBox(height: 20),
 
           Container(
@@ -278,8 +272,7 @@ class _DebtRefinanceScreenState extends State<DebtRefinanceScreen> {
                   _label(l.refinanceRemainingBalance),
                   _field(_balanceCtrl, '0',
                       isAmount: true,
-                      onChanged: (v) => setState(
-                          () => _handleAmountInput(_balanceCtrl, v))),
+                      onChanged: (v) => setState(() {})),
                   const SizedBox(height: 10),
 
                   _twoFieldRow(
@@ -340,7 +333,7 @@ class _DebtRefinanceScreenState extends State<DebtRefinanceScreen> {
                       _fmtFull(_parseAmount(_balanceCtrl.text)),
                       textAlign: TextAlign.right,
                       style: const TextStyle(
-                          fontSize: 14,
+                          fontSize: 16,
                           fontWeight: FontWeight.w600,
                           color: Color(0xFF999999)),
                     ),
@@ -366,9 +359,7 @@ class _DebtRefinanceScreenState extends State<DebtRefinanceScreen> {
                   const SizedBox(height: 10),
 
                   _label(l.refinanceProcessingFee),
-                  _field(_feeCtrl, '0',
-                      isAmount: true,
-                      onChanged: (v) => _handleAmountInput(_feeCtrl, v)),
+                  _field(_feeCtrl, '0', isAmount: true),
                   const SizedBox(height: 10),
 
                   _label(l.refinancePaymentMethod),
@@ -395,14 +386,14 @@ class _DebtRefinanceScreenState extends State<DebtRefinanceScreen> {
                             borderRadius: BorderRadius.circular(50))),
                     child: Text(l.refinanceButton,
                         style: const TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w800)),
+                            fontSize: 17, fontWeight: FontWeight.w800)),
                   ),
                   const SizedBox(height: 12),
                   Text(
                     l.resultDisclaimer,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                      fontSize: 11,
+                      fontSize: 12,
                       color: Color(0xFF888888),
                       fontStyle: FontStyle.italic,
                     ),
@@ -417,6 +408,7 @@ class _DebtRefinanceScreenState extends State<DebtRefinanceScreen> {
             ]),
           ),
         ],
+        ),
         ),
       ),
     );
@@ -438,7 +430,7 @@ class _DebtRefinanceScreenState extends State<DebtRefinanceScreen> {
           Expanded(
             child: Text(
               l.refinanceNoResult,
-              style: const TextStyle(fontSize: 12, color: Color(0xFF555555)),
+              style: const TextStyle(fontSize: 14, color: Color(0xFF555555)),
             ),
           ),
         ]),
@@ -447,7 +439,7 @@ class _DebtRefinanceScreenState extends State<DebtRefinanceScreen> {
 
     return Column(children: [
       Text(l.refinanceResultHeader,
-          style: const TextStyle(fontSize: 10, color: Color(0xFFAAAAAA))),
+          style: const TextStyle(fontSize: 11, color: Color(0xFFAAAAAA))),
       const SizedBox(height: 10),
       const Center(child: AdBannerWidget()),
       const SizedBox(height: 16),
@@ -474,7 +466,7 @@ class _DebtRefinanceScreenState extends State<DebtRefinanceScreen> {
                   Text(l.refinanceTotalCost,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: 12, color: Color(0xFFFFFFFF99))),
+                      style: const TextStyle(fontSize: 14, color: Color(0xFFFFFFFF99))),
                   const SizedBox(width: 10),
                   Flexible(
                     child: FittedBox(
@@ -482,7 +474,7 @@ class _DebtRefinanceScreenState extends State<DebtRefinanceScreen> {
                       alignment: Alignment.centerRight,
                       child: Text(_fmtFull(_totalCost),
                           style: const TextStyle(
-                              fontSize: 17,
+                              fontSize: 20,
                               fontWeight: FontWeight.w800,
                               color: Color(0xFFF5F0E8))),
                     ),
@@ -500,7 +492,7 @@ class _DebtRefinanceScreenState extends State<DebtRefinanceScreen> {
                   children: [
                     Text(l.refinanceBreakevenMonths,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 11, color: Color(0xFFFFFFFF99))),
+                        style: const TextStyle(fontSize: 13, color: Color(0xFFFFFFFF99))),
                     const SizedBox(height: 4),
                     Text(
                       _breakevenMonth != null
@@ -508,7 +500,7 @@ class _DebtRefinanceScreenState extends State<DebtRefinanceScreen> {
                           : l.refinanceNoBreakeven,
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                          fontSize: 30, fontWeight: FontWeight.w800, color: _gold),
+                          fontSize: 32, fontWeight: FontWeight.w800, color: _gold),
                     ),
                   ],
                 ),
@@ -539,7 +531,7 @@ class _DebtRefinanceScreenState extends State<DebtRefinanceScreen> {
             Text(
               l.refinanceResultDisclaimer,
               style: const TextStyle(
-                  fontSize: 9.5,
+                  fontSize: 10.5,
                   color: Color(0xFFFFFFFF77),
                   fontStyle: FontStyle.italic,
                   height: 1.4),
@@ -555,14 +547,14 @@ class _DebtRefinanceScreenState extends State<DebtRefinanceScreen> {
         children: [
           Flexible(
             child: Text(label,
-                style: const TextStyle(fontSize: 11, color: Color(0xFFFFFFFFAA))),
+                style: const TextStyle(fontSize: 13, color: Color(0xFFFFFFFFAA))),
           ),
           const SizedBox(width: 10),
           Flexible(
             child: Text(value,
                 textAlign: TextAlign.right,
                 style: const TextStyle(
-                    fontSize: 13,
+                    fontSize: 16,
                     fontWeight: FontWeight.w700,
                     color: Color(0xFFF5F0E8))),
           ),
@@ -584,7 +576,7 @@ class _DebtRefinanceScreenState extends State<DebtRefinanceScreen> {
           label,
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 11,
+            fontSize: 13,
             fontWeight: FontWeight.w600,
             color: selected ? Colors.white : const Color(0xFF888888),
           ),
@@ -604,10 +596,10 @@ class _DebtRefinanceScreenState extends State<DebtRefinanceScreen> {
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
       child: Row(children: [
         Container(
-            width: 36, height: 36,
+            width: 40, height: 40,
             decoration: BoxDecoration(
                 color: iconBg, borderRadius: BorderRadius.circular(10)),
-            child: Icon(icon, color: iconColor, size: 18)),
+            child: Icon(icon, color: iconColor, size: 20)),
         const SizedBox(width: 10),
         Expanded(
           child: Column(
@@ -615,11 +607,11 @@ class _DebtRefinanceScreenState extends State<DebtRefinanceScreen> {
               children: [
             Text(title,
                 style: const TextStyle(
-                    fontSize: 15,
+                    fontSize: 17,
                     fontWeight: FontWeight.w700,
                     color: Color(0xFF1A1A1A))),
             Text(subtitle,
-                style: const TextStyle(fontSize: 11, color: Color(0xFF888888))),
+                style: const TextStyle(fontSize: 13, color: Color(0xFF888888))),
           ]),
         ),
       ]),
@@ -656,7 +648,7 @@ class _DebtRefinanceScreenState extends State<DebtRefinanceScreen> {
         padding: const EdgeInsets.only(bottom: 4),
         child: Text(text,
             style: const TextStyle(
-                fontSize: 11,
+                fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: Color(0xFF888888))),
       );
@@ -672,7 +664,7 @@ class _DebtRefinanceScreenState extends State<DebtRefinanceScreen> {
         textAlign: TextAlign.right,
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: const TextStyle(color: Color(0xFFBBBBBB), fontSize: 13),
+          hintStyle: const TextStyle(color: Color(0xFFBBBBBB), fontSize: 15),
           filled: true,
           fillColor: _bg,
           border: OutlineInputBorder(
@@ -681,15 +673,15 @@ class _DebtRefinanceScreenState extends State<DebtRefinanceScreen> {
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
           suffixText: suffix,
-          suffixStyle: const TextStyle(fontSize: 11, color: Color(0xFF999999)),
+          suffixStyle: const TextStyle(fontSize: 13, color: Color(0xFF999999)),
         ),
         style: const TextStyle(
-            fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xFF1A1A1A)),
+            fontSize: 16, fontWeight: FontWeight.w600, color: Color(0xFF1A1A1A)),
         keyboardType: isDecimal
             ? const TextInputType.numberWithOptions(decimal: true)
             : TextInputType.number,
         inputFormatters: isAmount
-            ? [FilteringTextInputFormatter.allow(RegExp(r'[\d,]'))]
+            ? const [ThousandsSeparatorInputFormatter()]
             : isDecimal
                 ? [FilteringTextInputFormatter.allow(RegExp(r'[\d.]'))]
                 : [FilteringTextInputFormatter.digitsOnly],

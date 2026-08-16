@@ -137,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Text(
             l.homeGreeting,
-            style: const TextStyle(fontSize: 16, color: Color(0xFF1B4332)),
+            style: const TextStyle(fontSize: 18, color: Color(0xFF1B4332)),
           ),
           const SizedBox(height: 4),
           Text(
@@ -281,22 +281,22 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: 48,
-              height: 48,
+              width: 50,
+              height: 50,
               decoration: BoxDecoration(
                 color: iconBg,
                 borderRadius: BorderRadius.circular(14),
               ),
-              child: Icon(icon, color: iconColor, size: 24),
+              child: Icon(icon, color: iconColor, size: 26),
             ),
             const SizedBox(height: 8),
             SizedBox(
-              height: 28,
+              height: 36,
               child: Center(
                 child: Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 11,
+                    fontSize: 13,
                     fontWeight: FontWeight.w700,
                     color: Color(0xFF1A1A1A),
                   ),
@@ -333,13 +333,13 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Stack(clipBehavior: Clip.none, children: [
               Container(
-                width: 38,
-                height: 38,
+                width: 42,
+                height: 42,
                 decoration: BoxDecoration(
                   color: iconBg,
-                  borderRadius: BorderRadius.circular(11),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                child: Icon(icon, color: iconColor, size: 19),
+                child: Icon(icon, color: iconColor, size: 21),
               ),
               if (comingSoon)
                 Positioned(
@@ -365,7 +365,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text(
                 title,
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w700,
                   height: 1.25,
                   color: comingSoon
@@ -419,13 +419,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Text(b.title,
                               style: const TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 13,
                                   fontWeight: FontWeight.w700,
                                   color: Colors.white)),
                           const SizedBox(height: 3),
                           Text(b.subtitle,
                               style: TextStyle(
-                                  fontSize: 10,
+                                  fontSize: 11,
                                   color: Colors.white.withOpacity(0.8),
                                   height: 1.3),
                               maxLines: 2,
@@ -517,13 +517,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                   child: Row(children: [
                     Container(
-                      width: 38,
-                      height: 38,
+                      width: 40,
+                      height: 40,
                       decoration: BoxDecoration(
                         color: isMortgage
                             ? const Color(0xFFFFF8E1)
                             : const Color(0xFFE3F2FD),
-                        borderRadius: BorderRadius.circular(11),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                       child: Icon(
                         isMortgage
@@ -532,7 +532,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: isMortgage
                             ? const Color(0xFFF57F17)
                             : const Color(0xFF1565C0),
-                        size: 19,
+                        size: 21,
                       ),
                     ),
                     const SizedBox(width: 10),
@@ -543,13 +543,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           Text(
                             '${_typeLabel(h.type, l)} · ${_methodLabel(h.method, l)}',
                             style: const TextStyle(
-                                fontSize: 9, color: Color(0xFF888888)),
+                                fontSize: 11, color: Color(0xFF888888)),
                           ),
                           const SizedBox(height: 1),
                           Text(
                             '${_fmtFull(h.amount)}đ',
                             style: const TextStyle(
-                                fontSize: 13,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w800,
                                 color: Color(0xFF1A1A1A)),
                           ),
@@ -557,7 +557,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Text(
                             '${((h.floatRate > 0 ? h.floatRate : h.fixedRate) * 100).toStringAsFixed(1)}${l.homePerYear} · ${l.homeMonths(h.termMonths)} · ${_fmtDate(h.createdAt)}',
                             style: const TextStyle(
-                                fontSize: 8, color: Color(0xFFAAAAAA)),
+                                fontSize: 10, color: Color(0xFFAAAAAA)),
                           ),
                         ],
                       ),
@@ -572,12 +572,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Row(mainAxisSize: MainAxisSize.min, children: [
                         Text(l.homeReview,
                             style: const TextStyle(
-                                fontSize: 9,
+                                fontSize: 11,
                                 fontWeight: FontWeight.w700,
                                 color: _darkGreen)),
                         const SizedBox(width: 2),
                         const Icon(Icons.chevron_right_rounded,
-                            size: 12, color: _darkGreen),
+                            size: 13, color: _darkGreen),
                       ]),
                     ),
                   ]),
@@ -593,7 +593,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _sectionLabel(String text) => Text(
         text,
         style: const TextStyle(
-          fontSize: 13,
+          fontSize: 15,
           fontWeight: FontWeight.w600,
           color: Color(0xFF888888),
         ),

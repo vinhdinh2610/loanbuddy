@@ -4,6 +4,7 @@ import 'dart:math';
 import '../l10n/app_localizations.dart';
 import '../widgets/responsive_helper.dart';
 import '../widgets/ad_banner_widget.dart';
+import '../widgets/thousands_formatter.dart';
 
 class LoanEstimatorScreen extends StatefulWidget {
   const LoanEstimatorScreen({super.key});
@@ -51,16 +52,9 @@ class _LoanEstimatorScreenState extends State<LoanEstimatorScreen> {
     return '${_fmtFull(n)} đ';
   }
 
-  void _handleAmountInput(
-      TextEditingController ctrl, Function(double) setter, String v) {
+  void _handleAmountInput(Function(double) setter, String v) {
     final n = double.tryParse(v.replaceAll(',', ''));
-    if (n != null) {
-      setter(n);
-      final fmt = _fmtFull(n);
-      ctrl.value = TextEditingValue(
-          text: fmt,
-          selection: TextSelection.collapsed(offset: fmt.length));
-    }
+    if (n != null) setter(n);
   }
 
   void _calc() {
@@ -155,7 +149,7 @@ class _LoanEstimatorScreenState extends State<LoanEstimatorScreen> {
         padding: const EdgeInsets.only(bottom: 4),
         child: Text(text,
             style: const TextStyle(
-                fontSize: 11,
+                fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: Color(0xFF888888))),
       );
@@ -169,7 +163,7 @@ class _LoanEstimatorScreenState extends State<LoanEstimatorScreen> {
         decoration: InputDecoration(
           hintText: hint,
           hintStyle:
-              const TextStyle(color: Color(0xFFBBBBBB), fontSize: 13),
+              const TextStyle(color: Color(0xFFBBBBBB), fontSize: 15),
           filled: true,
           fillColor: const Color(0xFFF5F0E8),
           border: OutlineInputBorder(
@@ -179,14 +173,14 @@ class _LoanEstimatorScreenState extends State<LoanEstimatorScreen> {
               const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         ),
         style: const TextStyle(
-            fontSize: 14,
+            fontSize: 16,
             fontWeight: FontWeight.w600,
             color: Color(0xFF1A1A1A)),
         keyboardType: isInt
             ? TextInputType.number
             : const TextInputType.numberWithOptions(decimal: false),
         inputFormatters: isAmount
-            ? [FilteringTextInputFormatter.allow(RegExp(r'[\d,]'))]
+            ? const [ThousandsSeparatorInputFormatter()]
             : [FilteringTextInputFormatter.digitsOnly],
         onChanged: onChanged,
       );
@@ -197,12 +191,12 @@ class _LoanEstimatorScreenState extends State<LoanEstimatorScreen> {
             color: _gold.withOpacity(0.08),
             borderRadius: BorderRadius.circular(8)),
         child: Row(children: [
-          const Icon(Icons.info_outline_rounded, size: 14, color: _gold),
+          const Icon(Icons.info_outline_rounded, size: 16, color: _gold),
           const SizedBox(width: 6),
           Expanded(
               child: Text(text,
                   style: const TextStyle(
-                      fontSize: 11, color: Color(0xFF888888)))),
+                      fontSize: 13, color: Color(0xFF888888)))),
         ]),
       );
 
@@ -222,11 +216,11 @@ class _LoanEstimatorScreenState extends State<LoanEstimatorScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
           Container(
-              width: 40, height: 40,
+              width: 44, height: 44,
               decoration: BoxDecoration(
                   color: info.color.withOpacity(0.12),
                   shape: BoxShape.circle),
-              child: Icon(info.icon, color: info.color, size: 20)),
+              child: Icon(info.icon, color: info.color, size: 22)),
           const SizedBox(width: 12),
           Expanded(
               child: Column(
@@ -234,17 +228,17 @@ class _LoanEstimatorScreenState extends State<LoanEstimatorScreen> {
                   children: [
             Text(l.estimatorResultTitle,
                 style: const TextStyle(
-                    fontSize: 11, color: Color(0xFF888888))),
+                    fontSize: 13, color: Color(0xFF888888))),
             const SizedBox(height: 2),
             Text(info.label,
                 style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 18,
                     fontWeight: FontWeight.w800,
                     color: info.color)),
             const SizedBox(height: 4),
             Text(info.message,
                 style: const TextStyle(
-                    fontSize: 12,
+                    fontSize: 14,
                     color: Color(0xFF555555),
                     height: 1.4)),
           ])),
@@ -290,7 +284,7 @@ class _LoanEstimatorScreenState extends State<LoanEstimatorScreen> {
           Flexible(
               child: Text(label,
                   style: const TextStyle(
-                      fontSize: 12,
+                      fontSize: 14,
                       fontWeight: FontWeight.w500,
                       color: Color(0xFF888888)))),
           const SizedBox(width: 12),
@@ -298,7 +292,7 @@ class _LoanEstimatorScreenState extends State<LoanEstimatorScreen> {
               child: Text(value,
                   textAlign: TextAlign.right,
                   style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 17,
                       fontWeight: FontWeight.w800,
                       color: valueColor ?? const Color(0xFF1A1A1A)))),
         ]),
@@ -315,7 +309,7 @@ class _LoanEstimatorScreenState extends State<LoanEstimatorScreen> {
         centerTitle: true,
         title: RichText(
           text: const TextSpan(
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+            style: TextStyle(fontSize: 19, fontWeight: FontWeight.w800),
             children: [
               TextSpan(
                   text: 'Loan',
@@ -332,7 +326,10 @@ class _LoanEstimatorScreenState extends State<LoanEstimatorScreen> {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: ResponsiveFormWidth(
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        behavior: HitTestBehavior.opaque,
+        child: ResponsiveFormWidth(
         maxWidth: 480,
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
@@ -345,7 +342,7 @@ class _LoanEstimatorScreenState extends State<LoanEstimatorScreen> {
             const SizedBox(height: 4),
             Text(l.estimatorSubtitle,
                 style: const TextStyle(
-                    fontSize: 14, color: Color(0xFF888888))),
+                    fontSize: 16, color: Color(0xFF888888))),
             const SizedBox(height: 20),
 
             Container(
@@ -360,14 +357,14 @@ class _LoanEstimatorScreenState extends State<LoanEstimatorScreen> {
                       const EdgeInsets.fromLTRB(16, 16, 16, 12),
                   child: Row(children: [
                     Container(
-                        width: 36, height: 36,
+                        width: 40, height: 40,
                         decoration: BoxDecoration(
                             color: _gold.withOpacity(0.12),
                             borderRadius: BorderRadius.circular(10)),
                         child: const Icon(
                             Icons.account_balance_wallet_outlined,
                             color: _gold,
-                            size: 18)),
+                            size: 20)),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Column(
@@ -376,12 +373,12 @@ class _LoanEstimatorScreenState extends State<LoanEstimatorScreen> {
                           children: [
                         Text(l.estimatorSectionTitle,
                             style: const TextStyle(
-                                fontSize: 15,
+                                fontSize: 17,
                                 fontWeight: FontWeight.w700,
                                 color: Color(0xFF1A1A1A))),
                         Text(l.estimatorHint,
                             style: const TextStyle(
-                                fontSize: 11,
+                                fontSize: 13,
                                 color: Color(0xFF888888))),
                       ]),
                     ),
@@ -397,33 +394,25 @@ class _LoanEstimatorScreenState extends State<LoanEstimatorScreen> {
                     _field(_incomeCtrl, '55,000,000',
                         isAmount: true,
                         onChanged: (v) => _handleAmountInput(
-                            _incomeCtrl,
-                            (n) => _income = n,
-                            v)),
+                            (n) => _income = n, v)),
                     const SizedBox(height: 10),
                     _label(l.estimatorExpenses),
                     _field(_expenseCtrl, '15,000,000',
                         isAmount: true,
                         onChanged: (v) => _handleAmountInput(
-                            _expenseCtrl,
-                            (n) => _expense = n,
-                            v)),
+                            (n) => _expense = n, v)),
                     const SizedBox(height: 10),
                     _label(l.estimatorExistingDebt),
                     _field(_existingDebtCtrl, '0',
                         isAmount: true,
                         onChanged: (v) => _handleAmountInput(
-                            _existingDebtCtrl,
-                            (n) => _existingDebt = n,
-                            v)),
+                            (n) => _existingDebt = n, v)),
                     const SizedBox(height: 10),
                     _label(l.estimatorLoanAmount),
                     _field(_loanAmountCtrl, '2,000,000,000',
                         isAmount: true,
                         onChanged: (v) => _handleAmountInput(
-                            _loanAmountCtrl,
-                            (n) => _loanAmount = n,
-                            v)),
+                            (n) => _loanAmount = n, v)),
                     const SizedBox(height: 10),
                     _label(l.estimatorTermMonths),
                     _field(_termCtrl, '360',
@@ -447,7 +436,7 @@ class _LoanEstimatorScreenState extends State<LoanEstimatorScreen> {
                                   BorderRadius.circular(50))),
                       child: Text(l.estimatorButton,
                           style: const TextStyle(
-                              fontSize: 15,
+                              fontSize: 17,
                               fontWeight: FontWeight.w800)),
                     ),
                     const SizedBox(height: 12),
@@ -455,7 +444,7 @@ class _LoanEstimatorScreenState extends State<LoanEstimatorScreen> {
                       l.resultDisclaimerShort,
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                        fontSize: 11,
+                        fontSize: 12,
                         color: Color(0xFF888888),
                         fontStyle: FontStyle.italic,
                       ),
@@ -471,6 +460,7 @@ class _LoanEstimatorScreenState extends State<LoanEstimatorScreen> {
               ]),
             ),
           ],
+        ),
         ),
       ),
     );

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/responsive_helper.dart';
 import '../widgets/ad_banner_widget.dart';
+import '../widgets/thousands_formatter.dart';
 
 class RateCheckerScreen extends StatefulWidget {
   const RateCheckerScreen({super.key});
@@ -50,17 +51,6 @@ class _RateCheckerScreenState extends State<RateCheckerScreen> {
     if (n >= 1e9) return '${(n / 1e9).toStringAsFixed(2)} tỷ';
     if (n >= 1e6) return '${(n / 1e6).toStringAsFixed(1)} triệu';
     return '${_fmtFull(n)} đ';
-  }
-
-  void _handleAmountInput(TextEditingController ctrl, String v) {
-    final clean = v.replaceAll(',', '');
-    final n = double.tryParse(clean);
-    if (n != null) {
-      final fmt = _fmtFull(n);
-      ctrl.value = TextEditingValue(
-          text: fmt,
-          selection: TextSelection.collapsed(offset: fmt.length));
-    }
   }
 
   double _parseAmount(String v) =>
@@ -201,7 +191,7 @@ class _RateCheckerScreenState extends State<RateCheckerScreen> {
         centerTitle: true,
         title: RichText(
           text: const TextSpan(
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+            style: TextStyle(fontSize: 19, fontWeight: FontWeight.w800),
             children: [
               TextSpan(
                   text: 'Loan',
@@ -218,7 +208,10 @@ class _RateCheckerScreenState extends State<RateCheckerScreen> {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: ResponsiveFormWidth(
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        behavior: HitTestBehavior.opaque,
+        child: ResponsiveFormWidth(
         maxWidth: 480,
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
@@ -231,7 +224,7 @@ class _RateCheckerScreenState extends State<RateCheckerScreen> {
             const SizedBox(height: 4),
             Text(l.rateCheckerSubtitle,
                 style: const TextStyle(
-                    fontSize: 14, color: Color(0xFF888888))),
+                    fontSize: 16, color: Color(0xFF888888))),
             const SizedBox(height: 20),
 
             Container(
@@ -246,12 +239,12 @@ class _RateCheckerScreenState extends State<RateCheckerScreen> {
                       const EdgeInsets.fromLTRB(16, 16, 16, 12),
                   child: Row(children: [
                     Container(
-                        width: 36, height: 36,
+                        width: 40, height: 40,
                         decoration: BoxDecoration(
                             color: _gold.withOpacity(0.12),
                             borderRadius: BorderRadius.circular(10)),
                         child: const Icon(Icons.bar_chart_rounded,
-                            color: _gold, size: 18)),
+                            color: _gold, size: 20)),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Column(
@@ -260,12 +253,12 @@ class _RateCheckerScreenState extends State<RateCheckerScreen> {
                           children: [
                         Text(l.rateCheckerSectionTitle,
                             style: const TextStyle(
-                                fontSize: 15,
+                                fontSize: 17,
                                 fontWeight: FontWeight.w700,
                                 color: Color(0xFF1A1A1A))),
                         Text(l.rateCheckerHint,
                             style: const TextStyle(
-                                fontSize: 11,
+                                fontSize: 13,
                                 color: Color(0xFF888888))),
                       ]),
                     ),
@@ -278,10 +271,7 @@ class _RateCheckerScreenState extends State<RateCheckerScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                     _label(l.rateCheckerOriginalAmount),
-                    _field(_amountCtrl, '2,000,000,000',
-                        isAmount: true,
-                        onChanged: (v) =>
-                            _handleAmountInput(_amountCtrl, v)),
+                    _field(_amountCtrl, '2,000,000,000', isAmount: true),
                     const SizedBox(height: 10),
 
                     Row(
@@ -312,7 +302,7 @@ class _RateCheckerScreenState extends State<RateCheckerScreen> {
                                           vertical: 12),
                                 ),
                                 style: const TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w600,
                                     color: Color(0xFF1A1A1A)),
                               ),
@@ -336,10 +326,7 @@ class _RateCheckerScreenState extends State<RateCheckerScreen> {
                     const SizedBox(height: 10),
 
                     _label(l.rateCheckerLastPayment),
-                    _field(_paymentCtrl, '18,642,624',
-                        isAmount: true,
-                        onChanged: (v) =>
-                            _handleAmountInput(_paymentCtrl, v)),
+                    _field(_paymentCtrl, '18,642,624', isAmount: true),
                     const SizedBox(height: 10),
 
                     _label(l.rateCheckerMethod),
@@ -375,7 +362,7 @@ class _RateCheckerScreenState extends State<RateCheckerScreen> {
                                   BorderRadius.circular(50))),
                       child: Text(l.rateCheckerButton,
                           style: const TextStyle(
-                              fontSize: 15,
+                              fontSize: 17,
                               fontWeight: FontWeight.w800)),
                     ),
                     const SizedBox(height: 12),
@@ -383,7 +370,7 @@ class _RateCheckerScreenState extends State<RateCheckerScreen> {
                       l.resultDisclaimerShort,
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                        fontSize: 11,
+                        fontSize: 12,
                         color: Color(0xFF888888),
                         fontStyle: FontStyle.italic,
                       ),
@@ -398,6 +385,7 @@ class _RateCheckerScreenState extends State<RateCheckerScreen> {
               ]),
             ),
           ],
+        ),
         ),
       ),
     );
@@ -420,7 +408,7 @@ class _RateCheckerScreenState extends State<RateCheckerScreen> {
           Expanded(
             child: Text(l.rateCheckerNoResult,
                 style: const TextStyle(
-                    fontSize: 12, color: Color(0xFF555555))),
+                    fontSize: 14, color: Color(0xFF555555))),
           ),
         ]),
       );
@@ -431,7 +419,7 @@ class _RateCheckerScreenState extends State<RateCheckerScreen> {
     return Column(children: [
       Text(l.rateCheckerResultHeader,
           style: const TextStyle(
-              fontSize: 10, color: Color(0xFFAAAAAA))),
+              fontSize: 11, color: Color(0xFFAAAAAA))),
       const SizedBox(height: 10),
       const Center(child: AdBannerWidget()),
       const SizedBox(height: 16),
@@ -447,27 +435,27 @@ class _RateCheckerScreenState extends State<RateCheckerScreen> {
           children: [
             Text(l.rateCheckerResultTitle,
                 style: const TextStyle(
-                    fontSize: 11, color: Color(0xFFFFFFFF99))),
+                    fontSize: 13, color: Color(0xFFFFFFFF99))),
             const SizedBox(height: 6),
             FittedBox(
               fit: BoxFit.scaleDown,
               alignment: Alignment.centerLeft,
               child: Text('$ratePct${l.homePerYear}',
                   style: const TextStyle(
-                      fontSize: 30,
+                      fontSize: 32,
                       fontWeight: FontWeight.w800,
                       color: _gold)),
             ),
             const SizedBox(height: 8),
             Text(l.rateCheckerResultNote,
                 style: const TextStyle(
-                    fontSize: 11,
+                    fontSize: 13,
                     color: Color(0xFFFFFFFFCC),
                     height: 1.5)),
             const SizedBox(height: 10),
             Text(l.rateCheckerResultDisclaimer,
                 style: const TextStyle(
-                    fontSize: 9.5,
+                    fontSize: 10.5,
                     color: Color(0xFFFFFFFF77),
                     fontStyle: FontStyle.italic,
                     height: 1.4)),
@@ -491,7 +479,7 @@ class _RateCheckerScreenState extends State<RateCheckerScreen> {
           label,
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 10.5,
+            fontSize: 12.5,
             fontWeight: FontWeight.w600,
             color: selected ? Colors.white : const Color(0xFF888888),
           ),
@@ -504,7 +492,7 @@ class _RateCheckerScreenState extends State<RateCheckerScreen> {
         padding: const EdgeInsets.only(bottom: 4),
         child: Text(text,
             style: const TextStyle(
-                fontSize: 11,
+                fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: Color(0xFF888888))),
       );
@@ -520,7 +508,7 @@ class _RateCheckerScreenState extends State<RateCheckerScreen> {
         decoration: InputDecoration(
           hintText: hint,
           hintStyle:
-              const TextStyle(color: Color(0xFFBBBBBB), fontSize: 13),
+              const TextStyle(color: Color(0xFFBBBBBB), fontSize: 15),
           filled: true,
           fillColor: _bg,
           border: OutlineInputBorder(
@@ -530,15 +518,15 @@ class _RateCheckerScreenState extends State<RateCheckerScreen> {
               const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
           suffixText: suffix,
           suffixStyle: const TextStyle(
-              fontSize: 11, color: Color(0xFF999999)),
+              fontSize: 13, color: Color(0xFF999999)),
         ),
         style: const TextStyle(
-            fontSize: 14,
+            fontSize: 16,
             fontWeight: FontWeight.w600,
             color: Color(0xFF1A1A1A)),
         keyboardType: TextInputType.number,
         inputFormatters: isAmount
-            ? [FilteringTextInputFormatter.allow(RegExp(r'[\d,]'))]
+            ? const [ThousandsSeparatorInputFormatter()]
             : [FilteringTextInputFormatter.digitsOnly],
         onChanged: onChanged,
       );
@@ -549,12 +537,12 @@ class _RateCheckerScreenState extends State<RateCheckerScreen> {
             color: _gold.withOpacity(0.08),
             borderRadius: BorderRadius.circular(8)),
         child: Row(children: [
-          const Icon(Icons.info_outline_rounded, size: 14, color: _gold),
+          const Icon(Icons.info_outline_rounded, size: 16, color: _gold),
           const SizedBox(width: 6),
           Expanded(
               child: Text(text,
                   style: const TextStyle(
-                      fontSize: 11, color: Color(0xFF888888)))),
+                      fontSize: 13, color: Color(0xFF888888)))),
         ]),
       );
 }

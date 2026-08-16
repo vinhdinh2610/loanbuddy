@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/responsive_helper.dart';
 import '../widgets/ad_banner_widget.dart';
+import '../widgets/thousands_formatter.dart';
 
 enum _Priority { graceOnPrincipal, reducePayment, shortenTerm }
 
@@ -63,16 +64,6 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
       buf.write(s[i]);
     }
     return buf.toString();
-  }
-
-  void _handleAmountInput(TextEditingController ctrl, String v) {
-    final clean = v.replaceAll(',', '');
-    final n = double.tryParse(clean);
-    if (n != null) {
-      final fmt = _fmtFull(n);
-      ctrl.value = TextEditingValue(
-          text: fmt, selection: TextSelection.collapsed(offset: fmt.length));
-    }
   }
 
   double _parseAmount(String v) => double.tryParse(v.replaceAll(',', '')) ?? 0;
@@ -378,7 +369,7 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
         centerTitle: true,
         title: RichText(
           text: const TextSpan(
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+            style: TextStyle(fontSize: 19, fontWeight: FontWeight.w800),
             children: [
               TextSpan(text: 'Loan', style: TextStyle(color: Color(0xFF1B4332))),
               TextSpan(text: 'Buddy', style: TextStyle(color: Color(0xFFE8A020))),
@@ -391,7 +382,10 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: ResponsiveFormWidth(
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        behavior: HitTestBehavior.opaque,
+        child: ResponsiveFormWidth(
         maxWidth: 480,
         child: ListView(
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
@@ -403,7 +397,7 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
                   color: Color(0xFF1A1A1A))),
           const SizedBox(height: 4),
           Text(l.partialSubtitle,
-              style: const TextStyle(fontSize: 14, color: Color(0xFF888888))),
+              style: const TextStyle(fontSize: 16, color: Color(0xFF888888))),
           const SizedBox(height: 20),
 
           Container(
@@ -414,12 +408,12 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
                 child: Row(children: [
                   Container(
-                      width: 36, height: 36,
+                      width: 40, height: 40,
                       decoration: BoxDecoration(
                           color: const Color(0xFFE3F2FD),
                           borderRadius: BorderRadius.circular(10)),
                       child: const Icon(Icons.payments_outlined,
-                          color: Color(0xFF1565C0), size: 18)),
+                          color: Color(0xFF1565C0), size: 20)),
                   const SizedBox(width: 10),
                   Expanded(
                     child: Column(
@@ -427,12 +421,12 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
                         children: [
                       Text(l.partialSectionTitle,
                           style: const TextStyle(
-                              fontSize: 15,
+                              fontSize: 17,
                               fontWeight: FontWeight.w700,
                               color: Color(0xFF1A1A1A))),
                       Text(l.fillCompletely,
                           style: const TextStyle(
-                              fontSize: 11, color: Color(0xFF888888))),
+                              fontSize: 13, color: Color(0xFF888888))),
                     ]),
                   ),
                 ]),
@@ -444,9 +438,7 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                   _label(l.fullPayoffOriginalAmount),
-                  _field(_amountCtrl, '2,000,000,000',
-                      isAmount: true,
-                      onChanged: (v) => _handleAmountInput(_amountCtrl, v)),
+                  _field(_amountCtrl, '2,000,000,000', isAmount: true),
                   const SizedBox(height: 10),
 
                   _twoFieldRow(
@@ -495,9 +487,7 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
                   const SizedBox(height: 10),
 
                   _label(l.partialExtraAmount),
-                  _field(_extraCtrl, '300,000,000',
-                      isAmount: true,
-                      onChanged: (v) => _handleAmountInput(_extraCtrl, v)),
+                  _field(_extraCtrl, '300,000,000', isAmount: true),
                   const SizedBox(height: 14),
 
                   Row(
@@ -552,14 +542,14 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
                             borderRadius: BorderRadius.circular(50))),
                     child: Text(l.partialButton,
                         style: const TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w800)),
+                            fontSize: 17, fontWeight: FontWeight.w800)),
                   ),
                   const SizedBox(height: 12),
                   Text(
                     l.resultDisclaimerShort,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                      fontSize: 11,
+                      fontSize: 12,
                       color: Color(0xFF888888),
                       fontStyle: FontStyle.italic,
                     ),
@@ -574,6 +564,7 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
             ]),
           ),
         ],
+        ),
         ),
       ),
     );
@@ -594,17 +585,17 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
           children: [
             Text(title,
                 style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: 18,
                     fontWeight: FontWeight.w700,
                     color: Color(0xFF1A1A1A))),
             const SizedBox(height: 10),
             Text(body,
                 style: const TextStyle(
-                    fontSize: 13, color: Color(0xFF555555), height: 1.6)),
+                    fontSize: 15, color: Color(0xFF555555), height: 1.6)),
             const SizedBox(height: 10),
             Text(note,
                 style: const TextStyle(
-                    fontSize: 12,
+                    fontSize: 14,
                     color: Color(0xFF888888),
                     fontStyle: FontStyle.italic)),
           ],
@@ -632,13 +623,13 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
           children: [
             Expanded(child: Text(title,
                 style: TextStyle(
-                    fontSize: 12.5,
+                    fontSize: 14.5,
                     fontWeight: FontWeight.w700,
                     color: selected ? Colors.white : const Color(0xFF888888)))),
             GestureDetector(
               onTap: onInfoTap,
               child: Container(
-                width: 18, height: 18,
+                width: 20, height: 20,
                 decoration: BoxDecoration(
                   color: selected
                       ? Colors.white.withOpacity(0.13)
@@ -648,7 +639,7 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
                 child: Center(
                   child: Text('!',
                       style: TextStyle(
-                          fontSize: 11,
+                          fontSize: 13,
                           fontWeight: FontWeight.w700,
                           color: selected ? Colors.white : const Color(0xFF999999))),
                 ),
@@ -676,7 +667,7 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
           Expanded(
             child: Text(
               l.partialNoResult,
-              style: const TextStyle(fontSize: 12, color: Color(0xFF555555)),
+              style: const TextStyle(fontSize: 14, color: Color(0xFF555555)),
             ),
           ),
         ]),
@@ -685,7 +676,7 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
 
     return Column(children: [
       Text(l.partialResultHeader,
-          style: const TextStyle(fontSize: 10, color: Color(0xFFAAAAAA))),
+          style: const TextStyle(fontSize: 11, color: Color(0xFFAAAAAA))),
       const SizedBox(height: 10),
       const Center(child: AdBannerWidget()),
       const SizedBox(height: 16),
@@ -700,14 +691,14 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(l.partialRemainingBalance,
-                style: const TextStyle(fontSize: 11, color: Color(0xFFFFFFFF99))),
+                style: const TextStyle(fontSize: 13, color: Color(0xFFFFFFFF99))),
             const SizedBox(height: 6),
             FittedBox(
               fit: BoxFit.scaleDown,
               alignment: Alignment.centerLeft,
               child: Text(_fmtFull(_newBalance),
                   style: const TextStyle(
-                      fontSize: 24, fontWeight: FontWeight.w800, color: _gold)),
+                      fontSize: 27, fontWeight: FontWeight.w800, color: _gold)),
             ),
             const SizedBox(height: 14),
 
@@ -744,7 +735,7 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(l.partialInterestSaved,
-                      style: const TextStyle(fontSize: 11, color: Color(0xFFFFFFFFAA))),
+                      style: const TextStyle(fontSize: 13, color: Color(0xFFFFFFFFAA))),
                   const SizedBox(height: 6),
                   FittedBox(
                     fit: BoxFit.scaleDown,
@@ -752,7 +743,7 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
                     child: Text(
                       '${_interestSaved >= 0 ? '+' : ''}${_fmtFull(_interestSaved)}',
                       style: const TextStyle(
-                          fontSize: 18,
+                          fontSize: 21,
                           fontWeight: FontWeight.w800,
                           color: Color(0xFFA5D6A7)),
                     ),
@@ -765,7 +756,7 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
             Text(
               l.partialResultDisclaimer,
               style: const TextStyle(
-                  fontSize: 9.5,
+                  fontSize: 10.5,
                   color: Color(0xFFFFFFFF77),
                   fontStyle: FontStyle.italic,
                   height: 1.4),
@@ -779,10 +770,10 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
   Widget _resultRow(String label, String value) => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Flexible(child: Text(label, style: const TextStyle(fontSize: 11, color: Color(0xFFFFFFFFAA)))),
+          Flexible(child: Text(label, style: const TextStyle(fontSize: 13, color: Color(0xFFFFFFFFAA)))),
           Flexible(child: Text(value,
               style: const TextStyle(
-                  fontSize: 13, fontWeight: FontWeight.w700, color: Colors.white))),
+                  fontSize: 16, fontWeight: FontWeight.w700, color: Colors.white))),
         ],
       );
 
@@ -793,17 +784,17 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
           Expanded(child: Padding(
             padding: const EdgeInsets.only(top: 1),
             child: Text(label,
-                style: const TextStyle(fontSize: 11, color: Color(0xFFFFFFFFAA))),
+                style: const TextStyle(fontSize: 13, color: Color(0xFFFFFFFFAA))),
           )),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(value,
                   style: const TextStyle(
-                      fontSize: 13, fontWeight: FontWeight.w700, color: Colors.white)),
+                      fontSize: 16, fontWeight: FontWeight.w700, color: Colors.white)),
               const SizedBox(height: 1),
               Text(sub,
-                  style: const TextStyle(fontSize: 10, color: Color(0xFFA5D6A7))),
+                  style: const TextStyle(fontSize: 12, color: Color(0xFFA5D6A7))),
             ],
           ),
         ],
@@ -823,7 +814,7 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
           label,
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 11,
+            fontSize: 13,
             fontWeight: FontWeight.w600,
             color: selected ? Colors.white : const Color(0xFF888888),
           ),
@@ -873,7 +864,7 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
             const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       ),
       style: const TextStyle(
-          fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xFF1A1A1A)),
+          fontSize: 16, fontWeight: FontWeight.w600, color: Color(0xFF1A1A1A)),
     );
   }
 
@@ -881,7 +872,7 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
         padding: const EdgeInsets.only(bottom: 4),
         child: Text(text,
             style: const TextStyle(
-                fontSize: 11,
+                fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: Color(0xFF888888))),
       );
@@ -897,7 +888,7 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
         textAlign: TextAlign.right,
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: const TextStyle(color: Color(0xFFBBBBBB), fontSize: 13),
+          hintStyle: const TextStyle(color: Color(0xFFBBBBBB), fontSize: 15),
           filled: true,
           fillColor: _bg,
           border: OutlineInputBorder(
@@ -906,15 +897,15 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
           suffixText: suffix,
-          suffixStyle: const TextStyle(fontSize: 11, color: Color(0xFF999999)),
+          suffixStyle: const TextStyle(fontSize: 13, color: Color(0xFF999999)),
         ),
         style: const TextStyle(
-            fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xFF1A1A1A)),
+            fontSize: 16, fontWeight: FontWeight.w600, color: Color(0xFF1A1A1A)),
         keyboardType: isDecimal
             ? const TextInputType.numberWithOptions(decimal: true)
             : TextInputType.number,
         inputFormatters: isAmount
-            ? [FilteringTextInputFormatter.allow(RegExp(r'[\d,]'))]
+            ? const [ThousandsSeparatorInputFormatter()]
             : isDecimal
                 ? [FilteringTextInputFormatter.allow(RegExp(r'[\d.]'))]
                 : [FilteringTextInputFormatter.digitsOnly],
@@ -927,11 +918,11 @@ class _PartialPrepaymentScreenState extends State<PartialPrepaymentScreen> {
             color: _gold.withOpacity(0.08),
             borderRadius: BorderRadius.circular(8)),
         child: Row(children: [
-          const Icon(Icons.info_outline_rounded, size: 14, color: _gold),
+          const Icon(Icons.info_outline_rounded, size: 16, color: _gold),
           const SizedBox(width: 6),
           Expanded(
               child: Text(text,
-                  style: const TextStyle(fontSize: 11, color: Color(0xFF888888)))),
+                  style: const TextStyle(fontSize: 13, color: Color(0xFF888888)))),
         ]),
       );
 }

@@ -6,6 +6,7 @@ import '../models/database_helper.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/responsive_helper.dart';
 import '../widgets/ad_banner_widget.dart';
+import '../widgets/thousands_formatter.dart';
 import 'schedule_screen.dart';
 
 class CalculatorScreen extends StatefulWidget {
@@ -40,34 +41,6 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     _floatRateCtrl.dispose(); _p1Ctrl.dispose(); _p2Ctrl.dispose();
     _p3Ctrl.dispose(); _p4Ctrl.dispose(); _p5Ctrl.dispose(); _p6Ctrl.dispose();
     super.dispose();
-  }
-
-  String _formatWithComma(int n) {
-    final s = n.toString();
-    final buf = StringBuffer();
-    for (int i = 0; i < s.length; i++) {
-      if (i > 0 && (s.length - i) % 3 == 0) buf.write(',');
-      buf.write(s[i]);
-    }
-    return buf.toString();
-  }
-
-  void _onAmountChanged(String value) {
-    final clean = value.replaceAll(',', '');
-    if (clean.isEmpty) return;
-    final n = int.tryParse(clean);
-    if (n == null) return;
-    final formatted = _formatWithComma(n);
-    if (formatted == value) return;
-    final oldCursor = _amountCtrl.selection.baseOffset;
-    final oldLength = value.length;
-    final newLength = formatted.length;
-    final diff = newLength - oldLength;
-    final newCursor = (oldCursor + diff).clamp(0, newLength);
-    _amountCtrl.value = TextEditingValue(
-      text: formatted,
-      selection: TextSelection.collapsed(offset: newCursor),
-    );
   }
 
   double _parseAmount() =>
@@ -114,7 +87,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         centerTitle: true,
         title: RichText(
           text: const TextSpan(
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+            style: TextStyle(fontSize: 19, fontWeight: FontWeight.w800),
             children: [
               TextSpan(text: 'Loan', style: TextStyle(color: Color(0xFF1B4332))),
               TextSpan(text: 'Buddy', style: TextStyle(color: Color(0xFFE8A020))),
@@ -141,7 +114,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             ),
       ),
       drawer: AppDrawer(currentIndex: 0),
-      body: Form(
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        behavior: HitTestBehavior.opaque,
+        child: Form(
         key: _formKey,
         child: ResponsiveFormWidth(
           maxWidth: 480,
@@ -197,7 +173,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                     borderRadius: BorderRadius.circular(50)),
                 ),
                 child: Text(l.calcScheduleButton,
-                  style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w800,
+                  style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w800,
                     letterSpacing: 0.3)),
               ),
               const SizedBox(height: 12),
@@ -205,7 +181,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 l.resultDisclaimerShort,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  fontSize: 11,
+                  fontSize: 12,
                   color: Color(0xFF888888),
                   fontStyle: FontStyle.italic,
                 ),
@@ -213,13 +189,14 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             ],
           ),
         ),
+        ),
       ),
     );
   }
 
   Widget _sectionTitle(String t) => Padding(
     padding: const EdgeInsets.only(bottom: 8, left: 4),
-    child: Text(t, style: const TextStyle(fontSize: 13,
+    child: Text(t, style: const TextStyle(fontSize: 15,
       fontWeight: FontWeight.w600, color: Color(0xFF888888))),
   );
 
@@ -242,23 +219,23 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Icon(icon, size: 20, color: _gold),
+        Icon(icon, size: 22, color: _gold),
         const SizedBox(width: 12),
         Expanded(flex: 3,
           child: Text(label,
-            style: const TextStyle(fontSize: 13, color: Color(0xFF444444)))),
+            style: const TextStyle(fontSize: 15, color: Color(0xFF444444)))),
         const SizedBox(width: 8),
-        SizedBox(width: 90, child: field),
+        SizedBox(width: 96, child: field),
       ]),
   );
 
   Widget _inputRowWide(IconData icon, String label, Widget field) => Padding(
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
     child: Row(children: [
-      Icon(icon, size: 20, color: _gold),
+      Icon(icon, size: 22, color: _gold),
       const SizedBox(width: 12),
       Expanded(flex: 2,
-        child: Text(label, style: const TextStyle(fontSize: 13,
+        child: Text(label, style: const TextStyle(fontSize: 15,
           color: Color(0xFF444444)))),
       Expanded(flex: 3, child: field),
     ]),
@@ -276,14 +253,14 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         ),
         child: Row(children: [
           Container(
-            width: 22, height: 22,
+            width: 24, height: 24,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
                 color: selected ? _gold : Colors.grey.shade400, width: 2),
             ),
             child: selected ? Center(
-              child: Container(width: 10, height: 10,
+              child: Container(width: 11, height: 11,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle, color: _gold)),
             ) : null,
@@ -293,10 +270,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(label, style: TextStyle(
-                fontSize: 14, fontWeight: FontWeight.w600,
+                fontSize: 16, fontWeight: FontWeight.w600,
                 color: selected ? const Color(0xFF1A1A1A) : const Color(0xFF444444))),
               Text(sub, style: const TextStyle(
-                fontSize: 11, color: Color(0xFF888888))),
+                fontSize: 13, color: Color(0xFF888888))),
             ],
           )),
         ]),
@@ -315,18 +292,17 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8),
         borderSide: BorderSide(color: Colors.grey.shade300)),
       suffixText: 'đ',
-      suffixStyle: const TextStyle(fontSize: 12, color: Color(0xFF888888)),
+      suffixStyle: const TextStyle(fontSize: 14, color: Color(0xFF888888)),
     ),
     keyboardType: TextInputType.number,
-    inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[\d,]'))],
-    onChanged: _onAmountChanged,
+    inputFormatters: const [ThousandsSeparatorInputFormatter()],
     validator: (v) {
       if (v == null || v.isEmpty) return l.calcValidatorAmount;
       final clean = v.replaceAll(',', '');
       if (int.tryParse(clean) == null) return l.calcValidatorInvalid;
       return null;
     },
-    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
   );
 
   Widget _intField(TextEditingController ctrl, AppLocalizations l, {String suffix = ''}) =>
@@ -341,12 +317,12 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: Colors.grey.shade300)),
         suffixText: suffix,
-        suffixStyle: const TextStyle(fontSize: 12, color: Color(0xFF888888)),
+        suffixStyle: const TextStyle(fontSize: 14, color: Color(0xFF888888)),
       ),
       keyboardType: TextInputType.number,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       validator: (v) => (v == null || v.isEmpty) ? l.calcValidatorValue : null,
-      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
     );
 
   Widget _decField(TextEditingController ctrl, AppLocalizations l, {String suffix = ''}) =>
@@ -361,11 +337,11 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: Colors.grey.shade300)),
         suffixText: suffix,
-        suffixStyle: const TextStyle(fontSize: 12, color: Color(0xFF888888)),
+        suffixStyle: const TextStyle(fontSize: 14, color: Color(0xFF888888)),
       ),
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[\d.]'))],
       validator: (v) => (v == null || v.isEmpty) ? l.calcValidatorValue : null,
-      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
     );
 }

@@ -111,11 +111,11 @@ class _ConsumerScheduleScreenState extends State<ConsumerScheduleScreen> {
               const SizedBox(height: 20),
               Text(lc.scheduleExportTitle,
                   style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w700)),
+                      fontSize: 17, fontWeight: FontWeight.w700)),
               const SizedBox(height: 6),
               Text(lc.scheduleChooseFormat,
                   style: const TextStyle(
-                      fontSize: 12, color: Color(0xFF888888))),
+                      fontSize: 13, color: Color(0xFF888888))),
               const SizedBox(height: 16),
               _exportOption(
                 icon: Icons.picture_as_pdf_outlined,
@@ -179,12 +179,12 @@ class _ConsumerScheduleScreenState extends State<ConsumerScheduleScreen> {
               Text(lc.adExportTitle(typeName),
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w700)),
+                      fontSize: 17, fontWeight: FontWeight.w700)),
               const SizedBox(height: 6),
               Text(lc.adExportHint,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                      fontSize: 12, color: Color(0xFF888888))),
+                      fontSize: 13, color: Color(0xFF888888))),
               const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
@@ -196,7 +196,7 @@ class _ConsumerScheduleScreenState extends State<ConsumerScheduleScreen> {
                   icon: const Icon(Icons.play_arrow_rounded, size: 18),
                   label: Text(lc.adExportButton,
                       style: const TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.w700)),
+                          fontSize: 15, fontWeight: FontWeight.w700)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: _gold,
                     foregroundColor: _green,
@@ -220,7 +220,7 @@ class _ConsumerScheduleScreenState extends State<ConsumerScheduleScreen> {
                   ),
                   child: Text(lc.cancel,
                       style: const TextStyle(
-                          fontSize: 14,
+                          fontSize: 15,
                           fontWeight: FontWeight.w600,
                           color: Color(0xFF888888))),
                 ),
@@ -278,20 +278,20 @@ class _ConsumerScheduleScreenState extends State<ConsumerScheduleScreen> {
         const SizedBox(height: 12),
         Text(l.adScheduleLockRemaining(remaining),
             style: const TextStyle(
-                fontSize: 14,
+                fontSize: 15,
                 fontWeight: FontWeight.w700,
                 color: Color(0xFF1A1A1A))),
         const SizedBox(height: 4),
         Text(l.adScheduleLockHint,
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 12, color: Color(0xFF888888))),
+            style: const TextStyle(fontSize: 13, color: Color(0xFF888888))),
         const SizedBox(height: 16),
         ElevatedButton.icon(
           onPressed: _watchAdToUnlockSchedule,
           icon: const Icon(Icons.play_circle_outline_rounded, size: 18),
           label: Text(l.adScheduleLockButton,
               style: const TextStyle(
-                  fontSize: 13, fontWeight: FontWeight.w700)),
+                  fontSize: 14, fontWeight: FontWeight.w700)),
           style: ElevatedButton.styleFrom(
             backgroundColor: _gold,
             foregroundColor: _green,
@@ -376,14 +376,14 @@ class _ConsumerScheduleScreenState extends State<ConsumerScheduleScreen> {
                   Text(lc.scheduleFileReady(typeName),
                       style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 12,
+                          fontSize: 13,
                           fontWeight: FontWeight.w600)),
                 ]),
               ),
               const SizedBox(height: 14),
               Text(lc.scheduleShareAction,
                   style: const TextStyle(
-                      fontSize: 15, fontWeight: FontWeight.w700)),
+                      fontSize: 16, fontWeight: FontWeight.w700)),
               const SizedBox(height: 16),
               SizedBox(
                 width: double.infinity,
@@ -395,7 +395,7 @@ class _ConsumerScheduleScreenState extends State<ConsumerScheduleScreen> {
                   icon: const Icon(Icons.share_rounded, size: 18),
                   label: Text(lc.scheduleShareFile(typeName),
                       style: const TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.w700)),
+                          fontSize: 15, fontWeight: FontWeight.w700)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: _gold,
                     foregroundColor: _green,
@@ -419,7 +419,7 @@ class _ConsumerScheduleScreenState extends State<ConsumerScheduleScreen> {
                       size: 18, color: _green),
                   label: Text(lc.scheduleSaveFile(typeName),
                       style: const TextStyle(
-                          fontSize: 14,
+                          fontSize: 15,
                           fontWeight: FontWeight.w600,
                           color: _green)),
                   style: OutlinedButton.styleFrom(
@@ -541,10 +541,10 @@ class _ConsumerScheduleScreenState extends State<ConsumerScheduleScreen> {
                     children: [
                   Text(title,
                       style: const TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.w600)),
+                          fontSize: 15, fontWeight: FontWeight.w600)),
                   Text(sub,
                       style: const TextStyle(
-                          fontSize: 12, color: Color(0xFF888888))),
+                          fontSize: 13, color: Color(0xFF888888))),
                 ])),
             const Icon(Icons.arrow_forward_ios_rounded,
                 size: 14, color: Color(0xFF888888)),
@@ -568,7 +568,7 @@ class _ConsumerScheduleScreenState extends State<ConsumerScheduleScreen> {
         centerTitle: true,
         title: RichText(
           text: const TextSpan(
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+            style: TextStyle(fontSize: 19, fontWeight: FontWeight.w800),
             children: [
               TextSpan(text: 'Loan', style: TextStyle(color: Color(0xFF1B4332))),
               TextSpan(text: 'Buddy', style: TextStyle(color: Color(0xFFE8A020))),
@@ -593,7 +593,7 @@ class _ConsumerScheduleScreenState extends State<ConsumerScheduleScreen> {
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
             childAspectRatio:
-                (MediaQuery.of(context).size.width / 2 - 20) / 140,
+                (MediaQuery.of(context).size.width / 2 - 20) / 166,
             children: [
               _card(Icons.account_balance_wallet_outlined,
                   _navy, const Color(0xFFE8EAF6),
@@ -627,7 +627,7 @@ class _ConsumerScheduleScreenState extends State<ConsumerScheduleScreen> {
               icon: const Icon(Icons.upload_rounded,
                   size: 14, color: _gold),
               label: Text(l.scheduleExportFile,
-                  style: const TextStyle(fontSize: 12, color: _gold)),
+                  style: const TextStyle(fontSize: 13, color: _gold)),
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(color: _gold, width: 1),
                 padding: const EdgeInsets.symmetric(
@@ -646,7 +646,7 @@ class _ConsumerScheduleScreenState extends State<ConsumerScheduleScreen> {
             child: Column(children: [
               Container(
                 padding: const EdgeInsets.symmetric(
-                    vertical: 12, horizontal: 12),
+                    vertical: 12, horizontal: 8),
                 decoration: const BoxDecoration(
                     color: _gold,
                     borderRadius: BorderRadius.vertical(
@@ -676,7 +676,7 @@ class _ConsumerScheduleScreenState extends State<ConsumerScheduleScreen> {
                   final r = _schedule[i];
                   return Container(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 9, horizontal: 12),
+                        vertical: 9, horizontal: 8),
                     decoration: BoxDecoration(
                         border: Border(
                             top: BorderSide(
@@ -704,7 +704,7 @@ class _ConsumerScheduleScreenState extends State<ConsumerScheduleScreen> {
         flex: flex,
         child: Text(text,
             style: const TextStyle(
-                fontSize: 10,
+                fontSize: 12,
                 fontWeight: FontWeight.w700,
                 color: Color(0xFF1A1A1A)),
             textAlign: TextAlign.center),
@@ -715,14 +715,16 @@ class _ConsumerScheduleScreenState extends State<ConsumerScheduleScreen> {
           Color color = const Color(0xFF444444)}) =>
       Expanded(
         flex: flex,
-        child: Text(text,
-            style: TextStyle(
-                fontSize: 10,
-                fontWeight:
-                    bold ? FontWeight.w700 : FontWeight.normal,
-                color: color),
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis),
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(text,
+              style: TextStyle(
+                  fontSize: 12,
+                  fontWeight:
+                      bold ? FontWeight.w700 : FontWeight.normal,
+                  color: color),
+              textAlign: TextAlign.center),
+        ),
       );
 
   Widget _card(IconData icon, Color iconColor, Color iconBg,
@@ -737,18 +739,18 @@ class _ConsumerScheduleScreenState extends State<ConsumerScheduleScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                  width: 36, height: 36,
+                  width: 40, height: 40,
                   decoration: BoxDecoration(
                       color: iconBg,
                       borderRadius: BorderRadius.circular(10)),
-                  child: Icon(icon, color: iconColor, size: 20)),
+                  child: Icon(icon, color: iconColor, size: 22)),
               const SizedBox(height: 6),
               Text(label,
                   style: const TextStyle(
-                      fontSize: 10, color: Color(0xFF888888))),
+                      fontSize: 12, color: Color(0xFF888888))),
               Text(value,
                   style: const TextStyle(
-                      fontSize: 15,
+                      fontSize: 18,
                       fontWeight: FontWeight.w800,
                       color: Color(0xFF1A1A1A))),
               Container(
@@ -759,7 +761,7 @@ class _ConsumerScheduleScreenState extends State<ConsumerScheduleScreen> {
                       borderRadius: BorderRadius.circular(20)),
                   child: Text(sub,
                       style: TextStyle(
-                          fontSize: 10,
+                          fontSize: 12,
                           color: subColor,
                           fontWeight: FontWeight.w600))),
             ]),

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import '../l10n/app_localizations.dart';
 import '../models/loan_model.dart';
 import '../widgets/ad_banner_widget.dart';
+import '../widgets/thousands_formatter.dart';
 
 class ComparisonScreen extends StatefulWidget {
   const ComparisonScreen({super.key});
@@ -88,7 +89,7 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
         centerTitle: true,
         title: RichText(
           text: const TextSpan(
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+            style: TextStyle(fontSize: 19, fontWeight: FontWeight.w800),
             children: [
               TextSpan(text: 'Loan', style: TextStyle(color: Color(0xFF1B4332))),
               TextSpan(text: 'Buddy', style: TextStyle(color: Color(0xFFE8A020))),
@@ -101,7 +102,10 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: ListView(
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        behavior: HitTestBehavior.opaque,
+        child: ListView(
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
         children: [
           Text(l.comparisonTitle,
@@ -142,14 +146,14 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
                 borderRadius: BorderRadius.circular(50)),
             ),
             child: Text(l.comparisonCompareButton,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
           ),
           const SizedBox(height: 12),
           Text(
             l.resultDisclaimerShort,
             textAlign: TextAlign.center,
             style: const TextStyle(
-              fontSize: 11,
+              fontSize: 12,
               color: Color(0xFF888888),
               fontStyle: FontStyle.italic,
             ),
@@ -162,6 +166,7 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
             _buildResults(l),
           ],
         ],
+        ),
       ),
     );
   }
@@ -178,19 +183,19 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
           Expanded(child: Row(children: [
-            Container(width: 10, height: 10,
+            Container(width: 11, height: 11,
               decoration: BoxDecoration(color: opt.color,
                 shape: BoxShape.circle)),
             const SizedBox(width: 8),
             Text(l.comparisonOptionLabel(opt.index),
-              style: const TextStyle(fontSize: 15,
+              style: const TextStyle(fontSize: 17,
                 fontWeight: FontWeight.w700, color: Color(0xFF1A1A1A))),
           ])),
           if (_options.length > 2)
             GestureDetector(
               onTap: () => _removeOption(idx),
               child: const Icon(Icons.close_rounded,
-                color: Color(0xFFCCCCCC), size: 20)),
+                color: Color(0xFFCCCCCC), size: 22)),
         ])),
 
       Padding(
@@ -201,10 +206,6 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
               final n = double.tryParse(v.replaceAll(',', ''));
               if (n != null) {
                 setState(() => opt.amount = n);
-                final fmt = _fmtFull(n);
-                opt.amountCtrl.value = TextEditingValue(
-                  text: fmt,
-                  selection: TextSelection.collapsed(offset: fmt.length));
               }
             }),
           const SizedBox(height: 10),
@@ -253,7 +254,7 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
         Text(
           label,
           style: const TextStyle(
-            fontSize: 11,
+            fontSize: 13,
             fontWeight: FontWeight.w600,
             color: Color(0xFF888888),
           ),
@@ -272,7 +273,7 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
               horizontal: 12, vertical: 12),
           ),
           style: const TextStyle(
-            fontSize: 14,
+            fontSize: 16,
             fontWeight: FontWeight.w600,
             color: Color(0xFF1A1A1A),
           ),
@@ -280,7 +281,7 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
             ? TextInputType.number
             : const TextInputType.numberWithOptions(decimal: true),
           inputFormatters: isAmount
-            ? [FilteringTextInputFormatter.allow(RegExp(r'[\d,]'))]
+            ? const [ThousandsSeparatorInputFormatter()]
             : isInt
               ? [FilteringTextInputFormatter.digitsOnly]
               : [FilteringTextInputFormatter.allow(RegExp(r'[\d.]'))],
@@ -304,7 +305,7 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
             color: selected ? opt.color : Colors.transparent,
             width: 1.5)),
         child: Text(label, textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600,
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600,
             color: selected ? opt.color : const Color(0xFF888888))),
       ),
     );
@@ -348,11 +349,11 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
               borderRadius: BorderRadius.vertical(top: Radius.circular(16))),
             child: Row(children: [
               const Expanded(flex: 3,
-                child: Text('', style: TextStyle(fontSize: 12))),
+                child: Text('', style: TextStyle(fontSize: 14))),
               ..._results.map((r) => Expanded(flex: 2,
                 child: Text(l.comparisonResultLabel(r.index),
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 12,
+                  style: const TextStyle(fontSize: 14,
                     fontWeight: FontWeight.w700,
                     color: Color(0xFF1A1A1A))))),
             ]),
@@ -366,7 +367,7 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
             child: Row(children: [
               Expanded(flex: 3,
                 child: Text(row['label']!,
-                  style: const TextStyle(fontSize: 12,
+                  style: const TextStyle(fontSize: 14,
                     color: Color(0xFF555555)))),
               ..._results.map((r) {
                 double val;
@@ -382,7 +383,7 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
                 return Expanded(flex: 2,
                   child: Text(_fmt(val),
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 12,
+                    style: TextStyle(fontSize: 15,
                       fontWeight: FontWeight.w700,
                       color: isBest
                         ? _gold
@@ -407,7 +408,7 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
               ? const Color(0xFF4CAF50)
               : bestList.first.color.withOpacity(0.3))),
         child: Row(children: [
-          Container(width: 40, height: 40,
+          Container(width: 44, height: 44,
             decoration: BoxDecoration(
               color: allEqual
                 ? const Color(0xFF4CAF50).withOpacity(0.2)
@@ -420,13 +421,13 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
               color: allEqual
                 ? const Color(0xFF4CAF50)
                 : bestList.first.color,
-              size: 22)),
+              size: 24)),
           const SizedBox(width: 12),
           Expanded(child: Column(
             crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(
               winnerText,
-              style: TextStyle(fontSize: 14,
+              style: TextStyle(fontSize: 16,
                 fontWeight: FontWeight.w700,
                 color: allEqual
                   ? const Color(0xFF4CAF50)
@@ -434,7 +435,7 @@ class _ComparisonScreenState extends State<ComparisonScreen> {
             if (!allEqual)
               Text(
                 l.comparisonSavingDiff(_fmtFull(_results.map((r) => r.totalAmount).reduce((a, b) => a > b ? a : b) - minTotal)),
-                style: const TextStyle(fontSize: 12,
+                style: const TextStyle(fontSize: 14,
                   color: Color(0xFF555555))),
           ])),
         ]),

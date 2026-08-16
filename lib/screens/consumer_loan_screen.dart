@@ -6,6 +6,7 @@ import 'consumer_schedule_screen.dart';
 import 'dart:math' as math;
 import '../widgets/responsive_helper.dart';
 import '../widgets/ad_banner_widget.dart';
+import '../widgets/thousands_formatter.dart';
 
 class ConsumerLoanScreen extends StatefulWidget {
   const ConsumerLoanScreen({super.key});
@@ -101,7 +102,7 @@ class _ConsumerLoanScreenState extends State<ConsumerLoanScreen> {
     required Function(String) onChanged,
   }) =>
       SizedBox(
-        width: 90,
+        width: 96,
         child: TextField(
           controller: ctrl,
           textAlign: TextAlign.right,
@@ -112,7 +113,7 @@ class _ConsumerLoanScreenState extends State<ConsumerLoanScreen> {
               ? [FilteringTextInputFormatter.allow(RegExp(r'[\d.]'))]
               : [FilteringTextInputFormatter.digitsOnly],
           style: const TextStyle(
-              fontSize: 14, fontWeight: FontWeight.w700,
+              fontSize: 16, fontWeight: FontWeight.w700,
               color: Color(0xFF1A1A1A)),
           decoration: InputDecoration(
             isDense: true,
@@ -125,7 +126,7 @@ class _ConsumerLoanScreenState extends State<ConsumerLoanScreen> {
                 borderSide: BorderSide.none),
             suffixText: suffix,
             suffixStyle: const TextStyle(
-                fontSize: 12, color: Color(0xFF888888)),
+                fontSize: 14, color: Color(0xFF888888)),
           ),
           onChanged: onChanged,
         ),
@@ -145,7 +146,7 @@ class _ConsumerLoanScreenState extends State<ConsumerLoanScreen> {
         centerTitle: true,
         title: RichText(
           text: const TextSpan(
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+            style: TextStyle(fontSize: 19, fontWeight: FontWeight.w800),
             children: [
               TextSpan(text: 'Loan', style: TextStyle(color: Color(0xFF1B4332))),
               TextSpan(text: 'Buddy', style: TextStyle(color: Color(0xFFE8A020))),
@@ -158,7 +159,10 @@ class _ConsumerLoanScreenState extends State<ConsumerLoanScreen> {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: ResponsiveFormWidth(
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        behavior: HitTestBehavior.opaque,
+        child: ResponsiveFormWidth(
         maxWidth: 480,
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
@@ -208,14 +212,14 @@ class _ConsumerLoanScreenState extends State<ConsumerLoanScreen> {
                   Expanded(child: Column(children: [
                     Text(l.consumerMonthlyPayment,
                         style: const TextStyle(
-                            fontSize: 12, color: Color(0xFF888888))),
+                            fontSize: 14, color: Color(0xFF888888))),
                     const SizedBox(height: 4),
                     FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
                       child: Text(_fmtFull(_monthlyPayment),
                           style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: 21,
                               fontWeight: FontWeight.w800,
                               color: Color(0xFF1A1A1A))),
                     ),
@@ -225,14 +229,14 @@ class _ConsumerLoanScreenState extends State<ConsumerLoanScreen> {
                   Expanded(child: Column(children: [
                     Text(l.consumerTotalPayment,
                         style: const TextStyle(
-                            fontSize: 12, color: Color(0xFF888888))),
+                            fontSize: 14, color: Color(0xFF888888))),
                     const SizedBox(height: 4),
                     FittedBox(
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerLeft,
                       child: Text(_fmtFull(_totalAmount),
                           style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: 21,
                               fontWeight: FontWeight.w800,
                               color: Color(0xFF1A1A1A))),
                     ),
@@ -259,15 +263,16 @@ class _ConsumerLoanScreenState extends State<ConsumerLoanScreen> {
                       children: [
                     Expanded(child: Text(l.consumerLoanAmount,
                         style: const TextStyle(
-                            fontSize: 14,
+                            fontSize: 16,
                             fontWeight: FontWeight.w500,
                             color: Color(0xFF1A1A1A)))),
                     Expanded(child: TextField(
                         controller: _amountController,
                         textAlign: TextAlign.right,
                         keyboardType: TextInputType.number,
+                        inputFormatters: const [ThousandsSeparatorInputFormatter()],
                         style: const TextStyle(
-                            fontSize: 14,
+                            fontSize: 16,
                             fontWeight: FontWeight.w700,
                             color: Color(0xFF1A1A1A)),
                         decoration: InputDecoration(
@@ -285,12 +290,6 @@ class _ConsumerLoanScreenState extends State<ConsumerLoanScreen> {
                           final n = double.tryParse(clean);
                           if (n != null && n >= 5000000 && n <= 2000000000) {
                             setState(() => _loanAmount = n);
-                            final formatted = _fmtFull(n);
-                            _amountController.value = TextEditingValue(
-                              text: formatted,
-                              selection: TextSelection.collapsed(
-                                  offset: formatted.length),
-                            );
                           }
                         },
                       ),
@@ -318,7 +317,7 @@ class _ConsumerLoanScreenState extends State<ConsumerLoanScreen> {
                       children: [
                     Expanded(child: Text(l.consumerAnnualRate,
                         style: const TextStyle(
-                            fontSize: 14,
+                            fontSize: 16,
                             fontWeight: FontWeight.w500,
                             color: Color(0xFF1A1A1A)))),
                     _inputBox(_rateController, '%', isDecimal: true,
@@ -349,7 +348,7 @@ class _ConsumerLoanScreenState extends State<ConsumerLoanScreen> {
                       children: [
                     Expanded(child: Text(l.consumerTermMonths,
                         style: const TextStyle(
-                            fontSize: 14,
+                            fontSize: 16,
                             fontWeight: FontWeight.w500,
                             color: Color(0xFF1A1A1A)))),
                     _inputBox(_termController, l.unitMonths,
@@ -388,19 +387,20 @@ class _ConsumerLoanScreenState extends State<ConsumerLoanScreen> {
               ),
               child: Text(l.consumerScheduleButton,
                   style: const TextStyle(
-                      fontSize: 17, fontWeight: FontWeight.w800)),
+                      fontSize: 19, fontWeight: FontWeight.w800)),
             ),
             const SizedBox(height: 12),
             Text(
               l.resultDisclaimerShort,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                fontSize: 11,
+                fontSize: 12,
                 color: Color(0xFF888888),
                 fontStyle: FontStyle.italic,
               ),
             ),
           ],
+        ),
         ),
       ),
     );
@@ -419,11 +419,11 @@ class _ConsumerLoanScreenState extends State<ConsumerLoanScreen> {
                 children: [
               Text(label,
                   style: const TextStyle(
-                      fontSize: 12, color: Color(0xFF888888))),
+                      fontSize: 14, color: Color(0xFF888888))),
               const SizedBox(height: 2),
               Text(value,
                   style: const TextStyle(
-                      fontSize: 15,
+                      fontSize: 17,
                       fontWeight: FontWeight.w700,
                       color: Color(0xFF1A1A1A))),
             ])),
@@ -492,7 +492,7 @@ class _PieChartPainter extends CustomPainter {
           text: text,
           style: TextStyle(
               color: color,
-              fontSize: 13,
+              fontSize: 14,
               fontWeight: FontWeight.w700)),
       textDirection: TextDirection.ltr,
     )..layout();
