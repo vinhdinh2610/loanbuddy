@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import '../widgets/responsive_helper.dart';
-import '../widgets/ad_banner_widget.dart';
 import 'calculator_screen.dart';
 import 'consumer_loan_screen.dart';
 import 'comparison_screen.dart';
@@ -247,8 +246,6 @@ class _HomeScreenState extends State<HomeScreen> {
           _sectionLabel(l.homeExplore),
           const SizedBox(height: 10),
           _buildDiscoverBanner(banners),
-          const SizedBox(height: 22),
-          const Center(child: AdBannerWidget()),
           const SizedBox(height: 22),
 
           if (!_loadingHistory && _recentHistory.isNotEmpty) ...[

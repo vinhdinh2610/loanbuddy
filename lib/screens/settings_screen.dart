@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import '../l10n/app_localizations.dart';
 import '../main.dart';
 import 'feedback_screen.dart';
@@ -247,10 +248,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
 }
 
 // ─── About Screen ─────────────────────────────────────────────
-class _AboutScreen extends StatelessWidget {
+class _AboutScreen extends StatefulWidget {
   const _AboutScreen();
+
+  @override
+  State<_AboutScreen> createState() => _AboutScreenState();
+}
+
+class _AboutScreenState extends State<_AboutScreen> {
   static const _gold = Color(0xFFE8A020);
   static const _bg = Color(0xFFF5F0E8);
+  String _version = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVersion();
+  }
+
+  Future<void> _loadVersion() async {
+    try {
+      final info = await PackageInfo.fromPlatform();
+      if (!mounted) return;
+      setState(() => _version = info.version);
+    } catch (_) {
+      // Giu nguyen chuoi rong neu khong doc duoc, khong lam crash man hinh.
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -304,7 +328,7 @@ class _AboutScreen extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Center(
-            child: Text(l.aboutVersion,
+            child: Text(l.aboutVersion(_version),
                 style: TextStyle(fontSize: 13, color: Colors.grey.shade500)),
           ),
           const SizedBox(height: 24),
@@ -327,7 +351,10 @@ class _AboutScreen extends StatelessWidget {
               _feature(context, Icons.home_outlined, l.aboutFeature1),
               _feature(context, Icons.account_balance_wallet_outlined, l.aboutFeature2),
               _feature(context, Icons.compare_arrows_rounded, l.aboutFeature3),
+              _feature(context, Icons.calendar_month_outlined, l.aboutFeature6),
+              _feature(context, Icons.trending_down_rounded, l.aboutFeature7),
               _feature(context, Icons.favorite_outline_rounded, l.aboutFeature4),
+              _feature(context, Icons.bar_chart_rounded, l.aboutFeature8),
               _feature(context, Icons.history_rounded, l.aboutFeature5),
             ]),
           ),

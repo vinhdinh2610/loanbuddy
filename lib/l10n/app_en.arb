@@ -113,13 +113,21 @@
   "settingsChooseLanguage": "Choose Language",
   "settingsLangVietnamese": "Tiếng Việt",
   "settingsLangEnglish": "English",
-  "aboutVersion": "Version 1.0.0",
+  "aboutVersion": "Version {version}",
+  "@aboutVersion": {
+    "placeholders": {
+      "version": { "type": "String" }
+    }
+  },
   "aboutDescription": "LoanBuddy helps you calculate repayment schedules, compare loans, and assess your financial health in a smart and intuitive way.\n\nDesigned specifically for the Vietnamese market, supporting both mortgage and personal loans with a full suite of professional features.",
   "aboutFeature1": "Mortgage loan calculator",
   "aboutFeature2": "Personal loan calculator",
   "aboutFeature3": "Loan comparison",
   "aboutFeature4": "Financial health assessment",
   "aboutFeature5": "Save search history",
+  "aboutFeature6": "Early loan settlement",
+  "aboutFeature7": "Debt refinance analysis",
+  "aboutFeature8": "Interest rate checker",
 
   "calcMortgageTitle": "Mortgage Loan",
   "calcLoanInfo": "Loan Information",

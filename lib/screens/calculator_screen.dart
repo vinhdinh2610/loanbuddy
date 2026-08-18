@@ -5,7 +5,6 @@ import '../models/loan_model.dart';
 import '../models/database_helper.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/responsive_helper.dart';
-import '../widgets/ad_banner_widget.dart';
 import '../widgets/thousands_formatter.dart';
 import 'schedule_screen.dart';
 
@@ -149,8 +148,6 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   l.calcGracePeriod, _intField(_graceCtrl, l, suffix: 'tháng')),
               ]),
 
-              const SizedBox(height: 16),
-              const Center(child: AdBannerWidget()),
               const SizedBox(height: 16),
               _sectionTitle(l.calcPaymentMethod),
               _infoCard(children: [

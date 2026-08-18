@@ -269,7 +269,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsLangEnglish => 'English';
 
   @override
-  String get aboutVersion => 'Version 1.0.0';
+  String aboutVersion(String version) {
+    return 'Version $version';
+  }
 
   @override
   String get aboutDescription =>
@@ -289,6 +291,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aboutFeature5 => 'Save search history';
+
+  @override
+  String get aboutFeature6 => 'Early loan settlement';
+
+  @override
+  String get aboutFeature7 => 'Debt refinance analysis';
+
+  @override
+  String get aboutFeature8 => 'Interest rate checker';
 
   @override
   String get calcMortgageTitle => 'Mortgage Loan';

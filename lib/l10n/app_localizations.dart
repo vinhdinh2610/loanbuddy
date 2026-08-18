@@ -593,8 +593,8 @@ abstract class AppLocalizations {
   /// No description provided for @aboutVersion.
   ///
   /// In vi, this message translates to:
-  /// **'Phiên bản 1.0.0'**
-  String get aboutVersion;
+  /// **'Phiên bản {version}'**
+  String aboutVersion(String version);
 
   /// No description provided for @aboutDescription.
   ///
@@ -631,6 +631,24 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Lưu lịch sử tra cứu'**
   String get aboutFeature5;
+
+  /// No description provided for @aboutFeature6.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tất toán trước hạn'**
+  String get aboutFeature6;
+
+  /// No description provided for @aboutFeature7.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phân tích chuyển nợ'**
+  String get aboutFeature7;
+
+  /// No description provided for @aboutFeature8.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kiểm tra lãi suất'**
+  String get aboutFeature8;
 
   /// No description provided for @calcMortgageTitle.
   ///

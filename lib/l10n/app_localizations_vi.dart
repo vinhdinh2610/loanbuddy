@@ -269,7 +269,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingsLangEnglish => 'English';
 
   @override
-  String get aboutVersion => 'Phiên bản 1.0.0';
+  String aboutVersion(String version) {
+    return 'Phiên bản $version';
+  }
 
   @override
   String get aboutDescription =>
@@ -289,6 +291,15 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get aboutFeature5 => 'Lưu lịch sử tra cứu';
+
+  @override
+  String get aboutFeature6 => 'Tất toán trước hạn';
+
+  @override
+  String get aboutFeature7 => 'Phân tích chuyển nợ';
+
+  @override
+  String get aboutFeature8 => 'Kiểm tra lãi suất';
 
   @override
   String get calcMortgageTitle => 'Vay Thế Chấp';

@@ -113,13 +113,21 @@
   "settingsChooseLanguage": "Chọn ngôn ngữ",
   "settingsLangVietnamese": "Tiếng Việt",
   "settingsLangEnglish": "English",
-  "aboutVersion": "Phiên bản 1.0.0",
+  "aboutVersion": "Phiên bản {version}",
+  "@aboutVersion": {
+    "placeholders": {
+      "version": { "type": "String" }
+    }
+  },
   "aboutDescription": "LoanBuddy giúp bạn tính toán lịch trả nợ, so sánh các khoản vay và đánh giá sức khỏe tài chính một cách thông minh và trực quan.\n\nỨng dụng được thiết kế dành riêng cho thị trường Việt Nam, hỗ trợ cả vay thế chấp lẫn vay tín chấp với đầy đủ các tính năng chuyên nghiệp.",
   "aboutFeature1": "Tính lãi vay thế chấp",
   "aboutFeature2": "Tính lãi vay tín chấp",
   "aboutFeature3": "So sánh khoản vay",
   "aboutFeature4": "Đánh giá sức khỏe tài chính",
   "aboutFeature5": "Lưu lịch sử tra cứu",
+  "aboutFeature6": "Tất toán trước hạn",
+  "aboutFeature7": "Phân tích chuyển nợ",
+  "aboutFeature8": "Kiểm tra lãi suất",
 
   "calcMortgageTitle": "Vay Thế Chấp",
   "calcLoanInfo": "Thông tin khoản vay",
