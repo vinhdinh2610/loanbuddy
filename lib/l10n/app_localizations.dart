@@ -2111,7 +2111,7 @@ abstract class AppLocalizations {
   /// No description provided for @feedbackFooter.
   ///
   /// In vi, this message translates to:
-  /// **'Bạn cũng có thể gửi email cho chúng tôi:\nvinhdinh2610@gmail.com'**
+  /// **'Bạn cũng có thể gửi email cho chúng tôi:\nadmin@loanbuddy.io.vn'**
   String get feedbackFooter;
 
   /// No description provided for @feedbackValidation.

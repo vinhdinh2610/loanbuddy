@@ -1116,7 +1116,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get feedbackFooter =>
-      'You can also email us at:\nvinhdinh2610@gmail.com';
+      'You can also email us at:\nadmin@loanbuddy.io.vn';
 
   @override
   String get feedbackValidation => 'Please enter your feedback';

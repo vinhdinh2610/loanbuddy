@@ -69,13 +69,31 @@ class PdfExport {
             pw.Container(
               padding: const pw.EdgeInsets.all(12),
               decoration: pw.BoxDecoration(color: bgColor, borderRadius: pw.BorderRadius.circular(8)),
-              child: pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
+              child: pw.Column(
                 children: [
-                  _summaryItem(font, fontBold, greyColor, darkColor, 'Số tiền vay', _fmtFull(loan.amount)),
-                  _summaryItem(font, fontBold, greyColor, goldColor, 'Tổng lãi', _fmtFull(totalInterest)),
-                  _summaryItem(font, fontBold, greyColor, darkColor, 'Tổng thanh toán', _fmtFull(totalPayment)),
-                  _summaryItem(font, fontBold, greyColor, darkColor, 'Thời hạn', '${loan.termMonths} tháng'),
+                  pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
+                    children: [
+                      _summaryItem(font, fontBold, greyColor, darkColor, 'Số tiền vay', _fmtFull(loan.amount)),
+                      _summaryItem(font, fontBold, greyColor, goldColor, 'Tổng lãi', _fmtFull(totalInterest)),
+                      _summaryItem(font, fontBold, greyColor, darkColor, 'Tổng thanh toán', _fmtFull(totalPayment)),
+                      _summaryItem(font, fontBold, greyColor, darkColor, 'Thời hạn', '${loan.termMonths} tháng'),
+                    ],
+                  ),
+                  pw.SizedBox(height: 10),
+                  pw.Divider(color: PdfColors.grey300, thickness: 0.5, height: 1),
+                  pw.SizedBox(height: 10),
+                  pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
+                    children: [
+                      _summaryItem(font, fontBold, greyColor, darkColor, 'Lãi suất cố định',
+                          '${(loan.fixedRate * 100).toStringAsFixed(2)}%/năm'),
+                      _summaryItem(font, fontBold, greyColor, darkColor, 'Thời gian lãi suất cố định',
+                          '${loan.fixedPeriod} tháng'),
+                      _summaryItem(font, fontBold, greyColor, darkColor, 'Lãi suất thả nổi',
+                          '${(loan.floatRate * 100).toStringAsFixed(2)}%/năm'),
+                    ],
+                  ),
                 ],
               ),
             ),

@@ -1109,7 +1109,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get feedbackFooter =>
-      'Bạn cũng có thể gửi email cho chúng tôi:\nvinhdinh2610@gmail.com';
+      'Bạn cũng có thể gửi email cho chúng tôi:\nadmin@loanbuddy.io.vn';
 
   @override
   String get feedbackValidation => 'Vui lòng nhập nội dung góp ý';

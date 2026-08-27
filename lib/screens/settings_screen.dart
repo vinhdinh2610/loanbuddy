@@ -155,7 +155,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               label: l.settingsPrivacyPolicy,
               onTap: () async {
                 final uri = Uri.parse(
-                    'https://loanbuddy-privacy.tiiny.site');
+                    'https://loanbuddy.io.vn');
                 if (await canLaunchUrl(uri)) {
                   await launchUrl(uri, mode: LaunchMode.externalApplication);
                 }

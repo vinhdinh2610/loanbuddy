@@ -148,7 +148,7 @@ class AppDrawer extends StatelessWidget {
                 onTap: () async {
                   Navigator.pop(context);
                   final uri = Uri.parse(
-                      'https://loanbuddy-privacy.tiiny.site');
+                      'https://loanbuddy.io.vn');
                   if (await canLaunchUrl(uri)) {
                     await launchUrl(uri, mode: LaunchMode.externalApplication);
                   }

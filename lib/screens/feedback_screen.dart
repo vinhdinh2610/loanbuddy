@@ -48,7 +48,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
         '${email.isNotEmpty ? "Từ: $email\n\n" : ""}$message');
 
     final uri = Uri.parse(
-        'mailto:vinhdinh2610@gmail.com?subject=$subject&body=$body');
+        'mailto:admin@loanbuddy.io.vn?subject=$subject&body=$body');
 
     try {
       if (await canLaunchUrl(uri)) {
