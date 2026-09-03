@@ -24,10 +24,10 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <!-- AdMob App ID (TEST) - đợt 1: chưa có tài khoản AdMob production -->
+        <!-- AdMob App ID (PRODUCTION - Android) -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713" />
+            android:value="ca-app-pub-2115132623917146~8750126040" />
     </application>
     <queries>
         <intent>

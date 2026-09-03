@@ -6,16 +6,15 @@ import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 
 /// Quản lý quảng cáo AdMob cho LoanBuddy.
 ///
-/// Dùng TEST Ad Unit ID của Google cho tất cả vị trí quảng cáo (Android + iOS)
-/// vì chưa có tài khoản AdMob production. Khi có tài khoản thật, chỉ cần thay
-/// 4 hằng số bên dưới bằng Ad Unit ID thật.
+/// Android dùng Ad Unit ID PRODUCTION thật (đã có tài khoản AdMob).
+/// iOS vẫn dùng TEST Ad Unit ID của Google cho đến khi có ID thật riêng cho iOS.
 class AdService {
   AdService._();
 
-  static const String _testBannerAndroid =
-      'ca-app-pub-3940256099942544/6300978111';
-  static const String _testRewardedAndroid =
-      'ca-app-pub-3940256099942544/5224354917';
+  static const String _bannerAndroid =
+      'ca-app-pub-2115132623917146/5713108590';
+  static const String _rewardedAndroid =
+      'ca-app-pub-2115132623917146/7900288236';
   static const String _testBannerIOS =
       'ca-app-pub-3940256099942544/2934735716';
   static const String _testRewardedIOS =
@@ -23,11 +22,11 @@ class AdService {
 
   /// Ad Unit ID banner đúng theo nền tảng hiện tại.
   static String get bannerAdUnitId =>
-      Platform.isIOS ? _testBannerIOS : _testBannerAndroid;
+      Platform.isIOS ? _testBannerIOS : _bannerAndroid;
 
   /// Ad Unit ID rewarded ad đúng theo nền tảng hiện tại.
   static String get rewardedAdUnitId =>
-      Platform.isIOS ? _testRewardedIOS : _testRewardedAndroid;
+      Platform.isIOS ? _testRewardedIOS : _rewardedAndroid;
 
   /// google_mobile_ads hỗ trợ Android/iOS, không hỗ trợ Web.
   static bool get isSupported =>
