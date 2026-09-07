@@ -8,6 +8,13 @@ import '../../widgets/onboarding/manage_options_dialog.dart';
 
 const _personalizedAdsKey = 'personalized_ads_enabled';
 
+/// Chỉ đặt true khi người dùng thực sự bấm "Tiếp tục"/"Lưu lựa chọn" ở popup
+/// consent. AdService.requestTrackingAuthorization() (hiện popup ATT hệ thống)
+/// chỉ được gọi khi cờ này là true, để tuân thủ Guideline 5.1.1(iv) của Apple:
+/// nếu người dùng đóng popup consent bằng nút X, KHÔNG được tự động hiện popup
+/// ATT hệ thống ngay sau đó.
+const attConsentDecidedKey = 'att_consent_decided';
+
 /// Màn hình 2: Cảm ơn + thông báo quảng cáo (song ngữ Việt/Anh)
 class WelcomeScreen extends StatelessWidget {
   final VoidCallback onContinue;
@@ -26,6 +33,11 @@ class WelcomeScreen extends StatelessWidget {
     await prefs.setBool(_personalizedAdsKey, enabled);
   }
 
+  Future<void> _markConsentDecided() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(attConsentDecidedKey, true);
+  }
+
   void _handleContinue(BuildContext context) {
     ConsentDialog.show(
       context,
@@ -33,6 +45,7 @@ class WelcomeScreen extends StatelessWidget {
       onAgree: () async {
         Navigator.of(context).pop();
         await _savePersonalizedAds(true);
+        await _markConsentDecided();
         onContinue();
       },
       onManageOptions: () {
@@ -43,9 +56,18 @@ class WelcomeScreen extends StatelessWidget {
           onSave: (enabled) async {
             Navigator.of(context).pop();
             await _savePersonalizedAds(enabled);
+            await _markConsentDecided();
+            onContinue();
+          },
+          onClose: () {
+            Navigator.of(context).pop();
             onContinue();
           },
         );
+      },
+      onClose: () {
+        Navigator.of(context).pop();
+        onContinue();
       },
     );
   }

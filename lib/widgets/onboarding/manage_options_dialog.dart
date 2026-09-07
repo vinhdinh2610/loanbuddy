@@ -7,11 +7,13 @@ class ManageOptionsDialog extends StatefulWidget {
   final bool isEnglish;
   final bool initialValue;
   final ValueChanged<bool> onSave;
+  final VoidCallback onClose;
 
   const ManageOptionsDialog({
     super.key,
     required this.isEnglish,
     required this.onSave,
+    required this.onClose,
     this.initialValue = true,
   });
 
@@ -19,6 +21,7 @@ class ManageOptionsDialog extends StatefulWidget {
     BuildContext context, {
     required bool isEnglish,
     required ValueChanged<bool> onSave,
+    required VoidCallback onClose,
     bool initialValue = true,
   }) {
     return showDialog(
@@ -27,6 +30,7 @@ class ManageOptionsDialog extends StatefulWidget {
       builder: (_) => ManageOptionsDialog(
         isEnglish: isEnglish,
         onSave: onSave,
+        onClose: onClose,
         initialValue: initialValue,
       ),
     );
@@ -53,14 +57,25 @@ class _ManageOptionsDialogState extends State<ManageOptionsDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: OnboardingColors.accent.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(14),
-              ),
-              child: const Icon(Icons.tune, color: OnboardingColors.accent),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: OnboardingColors.accent.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: const Icon(Icons.tune, color: OnboardingColors.accent),
+                ),
+                IconButton(
+                  onPressed: widget.onClose,
+                  icon: const Icon(Icons.close, color: OnboardingColors.textSecondary),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
             Text(

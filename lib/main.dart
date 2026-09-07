@@ -8,6 +8,7 @@ import 'screens/home_screen.dart';
 import 'screens/history_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/onboarding/onboarding_flow.dart';
+import 'screens/onboarding/welcome_screen.dart' show attConsentDecidedKey;
 import 'models/ad_service.dart';
 
 const _onboardingCompleteKey = 'onboarding_complete';
@@ -114,8 +115,14 @@ class _AppRootState extends State<AppRoot> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_onboardingCompleteKey, true);
     // Xin quyền App Tracking Transparency ngay sau khi user hoàn tất
-    // Onboarding (chỉ có tác dụng trên iOS, Android tự bỏ qua).
-    await AdService.requestTrackingAuthorization();
+    // Onboarding (chỉ có tác dụng trên iOS, Android tự bỏ qua). Chỉ gọi khi
+    // user đã thực sự bấm "Tiếp tục"/"Lưu lựa chọn" ở popup consent — nếu
+    // user đóng popup bằng nút X, KHÔNG tự động hiện popup ATT hệ thống
+    // (tuân thủ Apple Guideline 5.1.1(iv)).
+    final consentDecided = prefs.getBool(attConsentDecidedKey) ?? false;
+    if (consentDecided) {
+      await AdService.requestTrackingAuthorization();
+    }
     if (!mounted) return;
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (_) => const SplashScreen()),

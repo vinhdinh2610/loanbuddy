@@ -11,12 +11,14 @@ import 'primary_button.dart';
 class ConsentDialog extends StatelessWidget {
   final VoidCallback onAgree;
   final VoidCallback onManageOptions;
+  final VoidCallback onClose;
   final bool isEnglish;
 
   const ConsentDialog({
     super.key,
     required this.onAgree,
     required this.onManageOptions,
+    required this.onClose,
     required this.isEnglish,
   });
 
@@ -24,6 +26,7 @@ class ConsentDialog extends StatelessWidget {
     BuildContext context, {
     required VoidCallback onAgree,
     required VoidCallback onManageOptions,
+    required VoidCallback onClose,
     required bool isEnglish,
   }) {
     return showDialog(
@@ -32,6 +35,7 @@ class ConsentDialog extends StatelessWidget {
       builder: (_) => ConsentDialog(
         onAgree: onAgree,
         onManageOptions: onManageOptions,
+        onClose: onClose,
         isEnglish: isEnglish,
       ),
     );
@@ -50,14 +54,25 @@ class ConsentDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: OnboardingColors.accent.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(14),
-              ),
-              child: const Icon(Icons.shield_outlined, color: OnboardingColors.accent),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: OnboardingColors.accent.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: const Icon(Icons.shield_outlined, color: OnboardingColors.accent),
+                ),
+                IconButton(
+                  onPressed: onClose,
+                  icon: const Icon(Icons.close, color: OnboardingColors.textSecondary),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
             Text(
@@ -72,7 +87,7 @@ class ConsentDialog extends StatelessWidget {
               style: OnboardingTextStyles.body,
             ),
             const SizedBox(height: 20),
-            PrimaryButton(label: isEnglish ? 'Agree' : 'Đồng ý', onPressed: onAgree),
+            PrimaryButton(label: isEnglish ? 'Continue' : 'Tiếp tục', onPressed: onAgree),
             const SizedBox(height: 10),
             SizedBox(
               width: double.infinity,
