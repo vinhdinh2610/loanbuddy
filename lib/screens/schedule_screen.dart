@@ -556,6 +556,16 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             ],
           ),
           const SizedBox(height: 12),
+          Text(
+            l.resultDisclaimerShort,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 12,
+              color: Color(0xFF888888),
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+          const SizedBox(height: 12),
 
           if (diff > 0)
             Container(
