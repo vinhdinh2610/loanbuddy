@@ -115,10 +115,11 @@ class _AppRootState extends State<AppRoot> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_onboardingCompleteKey, true);
     // Xin quyền App Tracking Transparency ngay sau khi user hoàn tất
-    // Onboarding (chỉ có tác dụng trên iOS, Android tự bỏ qua). Chỉ gọi khi
-    // user đã thực sự bấm "Tiếp tục"/"Lưu lựa chọn" ở popup consent — nếu
-    // user đóng popup bằng nút X, KHÔNG tự động hiện popup ATT hệ thống
-    // (tuân thủ Apple Guideline 5.1.1(iv)).
+    // Onboarding (chỉ có tác dụng trên iOS, Android tự bỏ qua). Gọi bất kể
+    // user đã thoát popup consent tự thiết kế bằng cách nào (Tiếp tục, Lưu
+    // lựa chọn, hay nút Đóng/X) — popup đó chỉ giải thích trước, không được
+    // phép thay quyền quyết định của popup ATT thật của Apple (yêu cầu review
+    // của Apple, Guideline 5.1.1(iv)).
     final consentDecided = prefs.getBool(attConsentDecidedKey) ?? false;
     if (consentDecided) {
       await AdService.requestTrackingAuthorization();

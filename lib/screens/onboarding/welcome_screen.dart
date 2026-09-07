@@ -8,11 +8,14 @@ import '../../widgets/onboarding/manage_options_dialog.dart';
 
 const _personalizedAdsKey = 'personalized_ads_enabled';
 
-/// Chỉ đặt true khi người dùng thực sự bấm "Tiếp tục"/"Lưu lựa chọn" ở popup
-/// consent. AdService.requestTrackingAuthorization() (hiện popup ATT hệ thống)
-/// chỉ được gọi khi cờ này là true, để tuân thủ Guideline 5.1.1(iv) của Apple:
-/// nếu người dùng đóng popup consent bằng nút X, KHÔNG được tự động hiện popup
-/// ATT hệ thống ngay sau đó.
+/// Đặt true khi người dùng đã đi qua/đóng popup consent tự thiết kế (bấm
+/// "Tiếp tục", "Lưu lựa chọn", hoặc nút Đóng/X — bất kể lựa chọn nào).
+/// AdService.requestTrackingAuthorization() (hiện popup ATT thật của hệ
+/// thống) chỉ được gọi khi cờ này là true. Popup consent tự thiết kế chỉ có
+/// vai trò giải thích/thông báo trước — KHÔNG có vai trò quyết định có gọi
+/// ATT hay không; quyết định thật sự (Allow/Ask App Not to Track) luôn nằm
+/// ở popup hệ thống của Apple. Theo yêu cầu review của Apple: đóng popup
+/// bằng nút X vẫn phải dẫn tới việc hiện popup ATT hệ thống ngay sau đó.
 const attConsentDecidedKey = 'att_consent_decided';
 
 /// Màn hình 2: Cảm ơn + thông báo quảng cáo (song ngữ Việt/Anh)
@@ -59,14 +62,16 @@ class WelcomeScreen extends StatelessWidget {
             await _markConsentDecided();
             onContinue();
           },
-          onClose: () {
+          onClose: () async {
             Navigator.of(context).pop();
+            await _markConsentDecided();
             onContinue();
           },
         );
       },
-      onClose: () {
+      onClose: () async {
         Navigator.of(context).pop();
+        await _markConsentDecided();
         onContinue();
       },
     );
