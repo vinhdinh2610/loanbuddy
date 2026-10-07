@@ -29,7 +29,7 @@
 	<key>NSUserTrackingUsageDescription</key>
 	<string>Dữ liệu này được dùng để hiển thị quảng cáo phù hợp hơn với bạn.</string>
 	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-3940256099942544~1458002511</string>
+	<string>ca-app-pub-2115132623917146~4849106149</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>UIApplicationSceneManifest</key>
